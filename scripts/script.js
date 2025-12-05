@@ -11,8 +11,18 @@ show_song_container = document.querySelector('.show-song-container')
 
 // swiperjs
 
+// let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || [];
+spotifyData = {
+  categories: [],
+  newReleases: [],
+  searchResults: []
+};
 
 
+// reload
+function home() {
+  location.reload()
+}
 
 let allSongs = [];
 
@@ -137,14 +147,23 @@ async function categorySongs() {
 const categorySongsUI = async () => {
   const data = await categorySongs();
   category.innerHTML = ''
+
+  spotifyData.categories = [];
+
   data.items.forEach(item => {
+
+    spotifyData.categories.push({
+      id: item.id,
+      name: item.name
+    });
+
     const li = document.createElement("li");
     li.dataset.id = item.id;
     li.className = 'p-2 bg-gray-600 hover:bg-neutral-700 transition-all'
     li.textContent = `${item.name}`
     category.append(li)
   })
-  // console.log(data);
+  localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -159,7 +178,7 @@ async function attachCategoryEvents() {
     li.addEventListener("click", () => {
       const catID = li.dataset.id
       console.log(catID);
-      
+
     })
   })
 }
@@ -168,40 +187,62 @@ getNewReleases()
 async function getNewReleases() {
   const token = await getToken();
 
-  const res = await fetch(`https://api.spotify.com/v1/browse/new-releases`
-    , {
-      headers: { "Authorization": `Bearer ${token}` }
-    })
-  const data = await res.json();
+  const res = await fetch(`https://api.spotify.com/v1/browse/new-releases`, {
+    headers: { "Authorization": `Bearer ${token}` }
+  });
 
-  return data.albums.items;
+  const data = await res.json();
+  const releaseData = data.albums.items;
+
+  // ALWAYS RESET ARRAY
+  spotifyData.newReleases = [];
+
+  releaseData.forEach(r => {
+    const artistsName = r.artists.map(a => a.name).join(', ');
+
+    spotifyData.newReleases.push({
+      image: r.images[0].url,
+      name: r.name,
+      artist: artistsName
+    });
+  });
+
+  // SAVE IN LOCAL STORAGE
+  localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
+
+  return spotifyData.newReleases;
 }
 
-async function newReleases() {
-  const data = await getNewReleases();
-  data.forEach(r => {
-
-    const artistsName = r.artists.map(artist => {
-      return artist.name;
-    }).join(',')
-
+async function newReleasesUI() {
+  let stored = JSON.parse(localStorage.getItem("spotifyData"));
+  // If spotifyData missing or newReleases missing or empty → fetch fresh
+  if (!stored || !stored.newReleases || stored.newReleases.length === 0) {
+    await getNewReleases();
+    stored = JSON.parse(localStorage.getItem("spotifyData"));
+  }
+  const data = stored.newReleases;   // now safe & guaranteed
+  show_song_container.innerHTML = '';
+  data.forEach(item => {
     const div = document.createElement("div");
-    div.className = "song-card flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition";
+    div.className =
+      "song-card flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition";
 
-    div.innerHTML =
-      `
+    div.innerHTML = `
       <div class="relative w-full h-48 overflow-hidden rounded-lg group">
-        <img class="w-full h-full object-cover" src="${r.images
-      [0].url}" alt="">
-        <div class="absolute play-icon">
+        <img class="w-full h-full object-cover" src="${item.image}" alt="">
+        <div
+          class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 bg-green-500 text-black h-9 w-9 grid place-items-center rounded-full shadow-lg cursor-pointer">
           <i class="fa-solid fa-play"></i>
         </div>
       </div>
       <div class="caption mt-3">
-        <h3 class="text-base font-semibold truncate">${r.name}</h3>
-        <p class="text-gray-400 text-sm truncate">${artistsName}</p>
-      </div>`
-    show_song_container.append(div)
-  })
+        <h3 class="text-base font-semibold truncate">${item.name}</h3>
+        <p class="text-gray-400 text-sm truncate">${item.artist}</p>
+      </div>
+    `;
+
+    show_song_container.append(div);
+  });
 }
-newReleases()
+
+newReleasesUI()
