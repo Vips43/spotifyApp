@@ -1,17 +1,13 @@
 {
   "dependencies": {
     "@tailwindcss/cli": "^4.1.11",
-    "cors": "^2.8.5",
-    "express": "^5.2.1",
-    "node-fetch": "^3.3.2",
     "tailwindcss": "^4.1.11"
   },
   "scripts": {
-    "start":"node api/server.js",
     "dev": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch",
     "build": "npx tailwindcss -i ./src/input.css -o ./src/output.css"
   },
-  "name": "spotify",
+  "name": "spotify-app",
   "version": "1.0.0",
   "description": "",
   "main": "api/server.js",
