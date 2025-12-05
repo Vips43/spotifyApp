@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+
+.scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+.scrollbar-hidden::-webkit-scrollbar{
+    display: none;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+	width: 8px;
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+	background-color: #3d3d3d;
+	border: 2px solid #555555;
+}
+.toggle_category{
+    @apply max-h-96 opacity-100 
+}
+.play-icon{
+    @apply bottom-2 right-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-3 transition-all duration-300 bg-green-500 text-black h-9 w-9 grid place-items-center rounded-full shadow-lg cursor-pointer
+}

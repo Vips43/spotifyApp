@@ -42,4 +42,16 @@ const songsData = [
     path:'../music/Dum Dum Asees Kaur 128 Kbps.mp3',
     movName:'Asees kaur-album'
   },
+  {
+    name:'Teri Yaadein',
+    image:'../images/teri-yaadeinglory-500-500.jpg',
+    path:'../music/Teri Yaadeinglory 128 Kbps.mp3',
+    movName:'Yo Yo Honey Singh, Grini'
+  },
+  {
+    name:'Sanware',
+    image:'../images/Sanware-Hansraj-Raghuwanshi-500-500.jpg',
+    path:'../music/Sanware Hansraj Raghuwanshi 128 Kbps.mp3',
+    movName:'Hansraj Raghuwanshi'
+  },
 ]

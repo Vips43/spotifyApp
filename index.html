@@ -2,78 +2,153 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify</title>
-    <link rel="stylesheet" href="css/all.min.css" />
-    <link rel="stylesheet" href="styles/mobile.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="styles/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spotify</title>
+
+  <!-- Tailwind output -->
+  <link rel="stylesheet" href="src/output.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <!-- swpiperjs -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+
+  <link rel="icon" href="images/spotify-logo.png" type="image/png" />
 </head>
 
-<body>
-    <nav class="navigation">
-        <section class="section-1">
-            <div class="logo">
-                <img src="images/spotify-logo.png" height="40px">
-            </div>
-            <button class="home-icon"><i class="fa-solid fa-house" style="color: #ffffff;"></i></button>
-        </section>
-        <section class="input">
-            <button><i class="fa-solid fa-search" style="color: #ffffff;"></i></button>
-            <input type="text" placeholder="What do you want to play?" />
-            <button><i class="fa-solid fa-folder" style="color: #ffffff;"></i></button>
-        </section>
-        <section class="nav-downloads">
-            <div class="mob-menu"><span>|||</span></div>
-            <div class="child-container">
-                <span class="nav-downloads-child">Premium</span>
-                <span class="nav-downloads-child">Support</span>
-                <span class="nav-downloads-child">Download</span>
-            </div>
-        </section>
-        <section class="log-in">
-            <span class="log-in-child"><i class="fa-solid fa-circle-arrow-down" style="color: #ffffff;"></i> Install App</span>
-            <span class="log-in-child">Sign Up</span>
-            <span class="log-in-child">Log in</span>
-        </section>
-    </nav>
-    
-    
-    <div class="body">
-        
-        <div class="title">
-            <h1>Trending songs</h1>
-        </div>
-        
-        
-        <div class="song-list">
-            
-            
-            <!-- <div class="song-container">
-                <div class="song-img">
-                    <img id="img" src="../images/pehla-tu-duja-tu-son-of-sardaar-2-500-500.jpg" alt="">
-                    <div class="play-icon">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
-                </div>
-                <audio class="audio" src="../music/Pehla Tu Duja Tu Son Of Sardaar 2 128 Kbps.mp3"></audio>
-                <div class="caption">
-                    <h3>Son of Sardaar 2</h3>
-                    <p>Pehla Tu Duja Tu - Son Of Sardaar</p>
-                </div>
-            </div> -->
-            
-            
-            
-            
-        </div>
-        
-    </div>
-    
+<body class="bg-black max-h-screen text-white font-sans">
 
-    
-    <script src="scripts/data.js" type="text/javascript" charset="utf-8"></script>
-    <script src="scripts/script.js"></script>
+  <!-- NAVBAR -->
+  <nav class="flex items-center justify-between p-3 bg-black border-b border-neutral-800">
+    <!-- LEFT -->
+    <div class="flex items-center gap-4">
+      <img src="images/spotify-logo.png" class="w-10 h-10 rounded-full bg-white" />
+
+      <button class="w-10 h-10 flex items-center justify-center bg-neutral-700 rounded-full">
+        <i class="fa-solid fa-house text-white"></i>
+      </button>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="flex items-center bg-neutral-700 rounded-full px-2 py-1 flex-1 mx-4">
+      <button id="input_Btn" class="px-3">
+        <i class="fa-solid fa-search"></i>
+      </button>
+      <input id="input_Search" type="text" class="w-full bg-transparent outline-none text-white px-2"
+        placeholder="What do you want to play?" />
+      <button class="px-3">
+        <i class="fa-solid fa-folder text-white"></i>
+      </button>
+    </div>
+
+    <!-- MENU RIGHT -->
+    <div class="hidden lg:flex items-center gap-4">
+      <span class="cursor-pointer">Premium</span>
+      <span class="cursor-pointer">Support</span>
+      <span class="cursor-pointer">Download</span>
+    </div>
+
+    <div class="flex items-center gap-4 ml-4">
+      <span class="cursor-pointer hidden md:flex items-center gap-2">
+        <i class="fa-solid fa-circle-arrow-down"></i> Install App
+      </span>
+      <span class="cursor-pointer">Sign Up</span>
+      <span class="cursor-pointer bg-white text-black px-4 py-2 rounded-full">Log in</span>
+    </div>
+  </nav>
+
+  <!-- MAIN LAYOUT -->
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-64 bg-black border-r border-neutral-800 hidden md:block">
+      <div class="p-4">
+        <div class="flex items-center gap-2 mb-4 cursor-pointer">
+          <i class="fa-solid fa-folder-closed"></i>
+          <h3 class="text-lg font-semibold">Your Library</h3>
+        </div>
+
+        <!-- CATEGORY DROPDOWN -->
+        <div class="space-y-2 category_container">
+          <h3 class="flex items-center justify-between bg-neutral-700 px-3 py-2 rounded cursor-pointer">
+            <span>Song Categories</span>
+            <i class="fa-solid fa-angle-down transition"></i>
+          </h3>
+          <div id="category_div"
+            class="overflow-y-auto max-h-0 opacity-0 scrollbar transition-all duration-300 ease-in-out">
+            <ul id="category" class="space-y-2 max-h-full overflow-y-auto bg-neutral-800 rounded p-2 scrollbar"></ul>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT BODY -->
+    <main class="flex-1 p-5 overflow-auto">
+
+      <!-- TITLE -->
+      <div class="mb-4" id="main_body_title">
+        <h1 class="text-2xl font-bold title">Trending songs</h1>
+      </div>
+
+      <!-- SONG GRID -->
+      <div class="song-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 scrollbar">
+
+        <!-- JS Will Inject Songs Here -->
+        <!-- <div class="song-container  border p-2 grid gap-2">
+          <div class="relative song-img w-full">
+            <img id="img" class="w-full" src="images/aavan-jaavan-war-2-500-500.jpg" alt="">
+            <div
+              class="play-icon h-8 w-8 p-1 grid place-items-center bg-green-600 rounded-full absolute top-0 right-0 translate-y-60 -translate-x-5">
+              <i class="fa-solid fa-play"></i>
+            </div>
+          </div>
+          <a class="audio" href="${song.songSRC}"></a>
+          <div class="caption ">
+            <h3>${song.artistName}</h3>
+            <p class="text-gray-400 text-sm">${song.trackName}</p>
+          </div>
+        </div> -->
+      </div>
+      <!-- SHOWS SECTION -->
+      <section class="w-full my-10">
+        <!-- Section Heading -->
+        <div class="mb-4">
+          <h3 class="text-2xl font-bold capitalize">New releases</h3>
+        </div>
+        <!-- Horizontal Scroll Container (Swiper-ready) -->
+        <div class="show-song-container flex gap-5 overflow-x-auto scrollbar-hidden py-4">
+
+          <!-- CARD -->
+          <!-- <div
+              class="song-card flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition">
+              <div class="relative w-full h-48 overflow-hidden rounded-lg group">
+                <img class="w-full h-full object-cover" src="images/aavan-jaavan-war-2-500-500.jpg" alt="">
+                <div class="absolute play-icon">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+              </div>
+              <div class="caption mt-3">
+                <h3 class="text-base font-semibold truncate">Song Artist</h3>
+                <p class="text-gray-400 text-sm truncate">Song Title</p>
+              </div>
+            </div> -->
+
+        </div>
+      </section>
+
+
+
+
+    </main>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="scripts/script.js"></script>
+  <!-- swpiperjs -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+
 </body>
 
 </html>
