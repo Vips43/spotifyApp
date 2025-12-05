@@ -59,7 +59,7 @@
   </nav>
 
   <!-- MAIN LAYOUT -->
-  <div class="flex h-screen overflow-hidden">
+  <div class="flex w-full h-screen overflow-hidden">
 
     <!-- LEFT SIDEBAR -->
     <aside class="bg-black border-r border-neutral-800 
@@ -108,7 +108,7 @@
 
 
     <!-- RIGHT BODY -->
-    <main class="flex-1 p-5 overflow-auto">
+    <main class="flex-1 p-2 md:p-5 overflow-auto scrollbar-hidden">
 
       <!-- TITLE -->
       <div class="mb-4" id="main_body_title">
@@ -116,7 +116,7 @@
       </div>
 
       <!-- SONG GRID -->
-      <div class="song-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 scrollbar">
+      <div class="song-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-auto">
 
         <!-- JS Will Inject Songs Here -->
         <!-- <div class="song-container  border p-2 grid gap-2">

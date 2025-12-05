@@ -12,7 +12,7 @@ show_song_container = document.querySelector('.show-song-container')
 // swiperjs
 
 // let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || [];
-spotifyData = {
+spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
   categories: [],
   newReleases: [],
   searchResults: []
@@ -44,37 +44,51 @@ async function getSongsData(query) {
   try {
     const response = await fetch(url, options);
     const result = await response.json();
-
+    console.log(result);
+    
     return result;
   } catch (error) {
     console.error(error);
   }
 }
 
-// getSongsData('hanuman')
+// getSongsData('maharana pratap')    //spotify rapi api
 
-
+document.addEventListener("DOMContentLoaded",()=>{
+  if(spotifyData.searchResults&&spotifyData.searchResults.length>0){
+    searchSongsUI(spotifyData.searchResults);
+    title.innerHTML = "Last Search Results";
+  }
+})
 
 function searchSongsUI(songArr) {
+
   song_list.innerHTML = ''
 
   songArr.forEach((song, i) => {
     let div = document.createElement("div")
-    div.className = 'song-container  border p-2 grid gap-2'
+    div.className =
+      "song-container flex-shrink-0 w-50 p-3 bg-neutral-900 rounded-xl hover:bg-neutral-800 transition grid gap-3 overflow-hidden";
 
-    div.innerHTML =
-      `
-        <div class="song-img w-full relative">
-            <img id="img" class="w-full" src="${song.imgURL}" alt="">
-            <div class="play-icon h-8 w-8 p-1 grid place-items-center bg-green-600 rounded-full absolute top-0 right-0 translate-y-60 -translate-x-5">
-              <i class="fa-solid fa-play"></i>
-            </div>
+    div.innerHTML = `
+        <div class="relative w-44 h-44 overflow-hidden rounded-lg group">
+          <img class=" h-full object-cover rounded-lg" src="${song.imgURL}" alt="">
+
+          <!-- Play Icon -->
+          <div 
+            class="absolute play-icon">
+            <i class="fa-solid fa-play"></i>
           </div>
-          <a class="audio" href="${song.songSRC}"></a>
-          <div class="caption ">
-            <h3>${song.artistName}</h3>
-            <p class="text-gray-400 text-sm">${song.trackName}</p>
-          </div>`
+        </div>
+
+        <a class="audio" href="${song.songSRC}"></a>
+
+        <div class="caption">
+          <h3 class="font-semibold truncate">${song.artistName}</h3>
+          <p class="text-gray-400 text-sm truncate">${song.trackName}</p>
+        </div>
+`;
+
 
     song_list.append(div);
   })
@@ -89,19 +103,21 @@ input_Btn.addEventListener("click", async () => {
 
   title.innerHTML = `Searched results for: <span class="capitalize font font-bold text-white">${search}</span>`
 
-  allSongs = data.map(item => {
+  let results = data.map(item => {
     // const track = item.data;
     return {
       songSRC: item.href || '#',
-
       trackName: item.name || "Unknown Track",
       imgURL: item.album.images[0].url || "fallback.jpg",
       artistName: item.artists[0].name || "Unknown Artist",
       // duration: track.duration?.totalMilliseconds || 0
     }
-
   })
-  searchSongsUI(allSongs)
+
+  spotifyData.searchResults = results;
+  localStorage.setItem("spotifyData", JSON.stringify(spotifyData))
+
+  searchSongsUI(results)
 })
 
 
@@ -124,9 +140,9 @@ async function searchSongs(query) {
   );
 
   const data = await res.json();
-  // console.log(data.tracks.items);
+  console.log(data.tracks.items);
   return data.tracks.items;
-}
+} searchSongs('maharana pratap')
 async function categorySongs() {
   const token = await getToken();
 
@@ -231,7 +247,7 @@ async function newReleasesUI() {
       <div class="relative w-full h-48 overflow-hidden rounded-lg group">
         <img class="w-full h-full object-cover" src="${item.image}" alt="">
         <div
-          class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 bg-green-500 text-black h-9 w-9 grid place-items-center rounded-full shadow-lg cursor-pointer">
+          class="absolute play-icon">
           <i class="fa-solid fa-play"></i>
         </div>
       </div>
