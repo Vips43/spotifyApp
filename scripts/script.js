@@ -6,7 +6,9 @@ let input_Search = document.getElementById('input_Search'),
   // title = document.querySelector('.title h1'),
   category_container = document.querySelector('.category_container h3'),
   title = document.querySelector('#main_body_title h1')
-show_song_container = document.querySelector('.show-song-container')
+show_song_container = document.querySelector('.show-song-container');
+const loader = document.getElementById("loader");
+
 
 
 // swiperjs
@@ -99,7 +101,16 @@ input_Btn.addEventListener("click", async () => {
   let search = input_Search.value.trim()
   if (!search) return 0;
 
+  // SHOW LOADER & HIDE SONG LIST
+  loader.classList.remove("hidden");
+  song_list.classList.add("hidden");
+  title.innerHTML = "Searching...";
+
   let data = await searchSongs(search);
+
+  // Hide loader when finished
+  loader.classList.add("hidden");
+  song_list.classList.remove("hidden");
 
   title.innerHTML = `Searched results for: <span class="capitalize font font-bold text-white">${search}</span>`
 
@@ -123,12 +134,12 @@ input_Btn.addEventListener("click", async () => {
 async function getToken() {
   try {
     const res = await fetch("http://localhost:5000/token");
-    if(!res.ok){ return console.log(res)}
+    if (!res.ok) { return console.log(res) }
     const data = await res.json();
     return data.access_token;
-  } catch(err) {
+  } catch (err) {
     console.error("there is an error", err);
-    
+
   }
 }
 

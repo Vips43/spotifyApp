@@ -80,7 +80,8 @@
         <div class="space-y-2 category_container">
 
           <!-- Header -->
-          <h3 class="flex items-center justify-center md:justify-between gap-2 bg-neutral-700 px-3 py-2 rounded cursor-pointer">
+          <h3
+            class="flex items-center justify-center md:justify-between gap-2 bg-neutral-700 px-3 py-2 rounded cursor-pointer">
 
             <!-- Category icon (always visible on mobile) -->
             <i class="fa-solid fa-list text-lg"></i>
@@ -89,9 +90,9 @@
             <span class="hidden md:block">Song Categories</span>
 
             <!-- Arrow only on md+ -->
-             <div class=" hidden md:flex transition">
-               <i class="fa-solid fa-angle-down"></i>
-              </div>
+            <div class=" hidden md:flex transition">
+              <i class="fa-solid fa-angle-down"></i>
+            </div>
           </h3>
 
           <!-- Category List -->
@@ -106,16 +107,19 @@
       </div>
     </aside>
 
-    <!-- loading state -->
-     <div class="">
-      <div class="grid place-items-center gap-2">
-        <div class="border-4 border-b-transparent border-green-600 p-5 rounded-full animate-spin"></div>
-        <div class=" text-green-700 font-bold flex gap-2">Loading  <span class="typewriter-animation"> . . . .</span></div>
-      </div>
-     </div>
+    
     <!-- RIGHT BODY -->
     <main class="flex-1 p-2 md:p-5 overflow-auto scrollbar-hidden">
-
+      
+      <!-- Loader -->
+      <div id="loader" class="hidden py-10 mx-auto">
+        <div class="grid place-items-center gap-2">
+          <div class="border-4 border-b-transparent border-green-600 p-5 rounded-full animate-spin"></div>
+          <div class="text-green-700 font-bold flex gap-2">
+            Loading <span class="typewriter-animation"> . . . .</span>
+          </div>
+        </div>
+      </div>
       <!-- TITLE -->
       <div class="mb-4" id="main_body_title">
         <h1 class="text-2xl font-bold title">Trending songs</h1>
