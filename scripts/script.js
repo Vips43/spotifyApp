@@ -132,16 +132,11 @@ input_Btn.addEventListener("click", async () => {
 
 
 async function getToken() {
-  try {
-    const res = await fetch("/api/server");
-    if (!res.ok) { return console.log(res) }
-    const data = await res.json();
-    return data.access_token;
-  } catch (err) {
-    console.error("there is an error", err);
-
-  }
+  const res = await fetch("http://localhost:5000/token");
+  const data = await res.json();
+  return data.access_token;
 }
+
 
 async function searchSongs(query) {
   const token = await getToken(); // get fresh token
