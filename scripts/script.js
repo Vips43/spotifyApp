@@ -45,7 +45,7 @@ async function getSongsData(query) {
     const response = await fetch(url, options);
     const result = await response.json();
     console.log(result);
-    
+
     return result;
   } catch (error) {
     console.error(error);
@@ -54,8 +54,8 @@ async function getSongsData(query) {
 
 // getSongsData('maharana pratap')    //spotify rapi api
 
-document.addEventListener("DOMContentLoaded",()=>{
-  if(spotifyData.searchResults&&spotifyData.searchResults.length>0){
+document.addEventListener("DOMContentLoaded", () => {
+  if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
     searchSongsUI(spotifyData.searchResults);
     title.innerHTML = "Last Search Results";
   }
@@ -110,7 +110,6 @@ input_Btn.addEventListener("click", async () => {
       trackName: item.name || "Unknown Track",
       imgURL: item.album.images[0].url || "fallback.jpg",
       artistName: item.artists[0].name || "Unknown Artist",
-      // duration: track.duration?.totalMilliseconds || 0
     }
   })
 
@@ -122,9 +121,15 @@ input_Btn.addEventListener("click", async () => {
 
 
 async function getToken() {
-  const res = await fetch("http://localhost:5000/token");
-  const data = await res.json();
-  return data.access_token;
+  try {
+    const res = await fetch("http://localhost:5000/token");
+    if(!res.ok){ return console.log(res)}
+    const data = await res.json();
+    return data.access_token;
+  } catch(err) {
+    console.error("there is an error", err);
+    
+  }
 }
 
 async function searchSongs(query) {
@@ -140,7 +145,7 @@ async function searchSongs(query) {
   );
 
   const data = await res.json();
-  console.log(data.tracks.items);
+  // console.log(data.tracks.items);
   return data.tracks.items;
 } searchSongs('maharana pratap')
 async function categorySongs() {
@@ -194,7 +199,6 @@ async function attachCategoryEvents() {
     li.addEventListener("click", () => {
       const catID = li.dataset.id
       console.log(catID);
-
     })
   })
 }
