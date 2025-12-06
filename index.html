@@ -8,7 +8,7 @@
 
   <!-- Tailwind output -->
   <link rel="stylesheet" href="src/output.css" />
-
+  <link rel="stylesheet" href="src/style.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
   <!-- swpiperjs -->
@@ -63,7 +63,7 @@
 
     <!-- LEFT SIDEBAR -->
     <aside class="bg-black border-r border-neutral-800 
-              w-16 md:w-64 transition-all duration-300">
+              w-16 sm:w-56 lg:w-64 transition-all duration-300">
 
       <div class="p-4">
 
@@ -73,7 +73,7 @@
           <i class="fa-solid fa-folder-closed text-xl"></i>
 
           <!-- Text only on md+ -->
-          <h3 class="hidden md:block text-lg font-semibold">Your Library</h3>
+          <h3 class="hidden sm:block md:block text-lg font-semibold">Your Library</h3>
         </div>
 
         <!-- CATEGORY DROPDOWN -->
@@ -87,7 +87,7 @@
             <i class="fa-solid fa-list text-lg"></i>
 
             <!-- Text only on md+ -->
-            <span class="hidden md:block">Song Categories</span>
+            <span class="hidden sm:block sm:text-sm">Song Categories</span>
 
             <!-- Arrow only on md+ -->
             <div class=" hidden md:flex transition">
@@ -111,18 +111,9 @@
     <!-- RIGHT BODY -->
     <main class="flex-1 p-2 md:p-5 overflow-auto scrollbar-hidden">
       
-      <!-- Loader -->
-      <div id="loader" class="hidden py-10 mx-auto">
-        <div class="grid place-items-center gap-2">
-          <div class="border-4 border-b-transparent border-green-600 p-5 rounded-full animate-spin"></div>
-          <div class="text-green-700 font-bold flex gap-2">
-            Loading <span class="typewriter-animation"> . . . .</span>
-          </div>
-        </div>
-      </div>
       <!-- TITLE -->
-      <div class="mb-4" id="main_body_title">
-        <h1 class="text-2xl font-bold title">Trending songs</h1>
+      <div class="mb-4 " id="main_body_title">
+        <h1 class="text-lg sm:text-2xl font-bold title p-1 flex items-center max-h-7 w-fit">Trending songs </h1>
       </div>
 
       <!-- SONG GRID -->
@@ -144,6 +135,7 @@
           </div>
         </div> -->
       </div>
+
       <!-- SHOWS SECTION -->
       <section class="w-full my-10">
         <!-- Section Heading -->
@@ -154,28 +146,11 @@
         <div class="show-song-container flex gap-5 overflow-x-auto scrollbar-hidden py-4">
 
           <!-- CARD -->
-          <!-- <div
-              class="song-card flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition">
-              <div class="relative w-full h-48 overflow-hidden rounded-lg group">
-                <img class="w-full h-full object-cover" src="images/aavan-jaavan-war-2-500-500.jpg" alt="">
-                <div class="absolute play-icon">
-                  <i class="fa-solid fa-play"></i>
-                </div>
-              </div>
-              <div class="caption mt-3">
-                <h3 class="text-base font-semibold truncate">Song Artist</h3>
-                <p class="text-gray-400 text-sm truncate">Song Title</p>
-              </div>
-            </div> -->
 
         </div>
       </section>
 
-
-
-
     </main>
-
   </div>
 
   <!-- SCRIPT -->
@@ -184,5 +159,4 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
 </body>
-
 </html>

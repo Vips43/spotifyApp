@@ -57,10 +57,10 @@ async function getSongsData(query) {
 // getSongsData('maharana pratap')    //spotify rapi api
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
-    searchSongsUI(spotifyData.searchResults);
-    title.innerHTML = "Last Search Results";
-  }
+  // if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
+  //   searchSongsUI(spotifyData.searchResults);
+  //   title.innerHTML = "Last Search Results";
+  // }
 })
 
 function searchSongsUI(songArr) {
@@ -102,17 +102,17 @@ input_Btn.addEventListener("click", async () => {
   if (!search) return 0;
 
   // SHOW LOADER & HIDE SONG LIST
-  loader.classList.remove("hidden");
+  // loader.classList.remove("hidden");
   song_list.classList.add("hidden");
-  title.innerHTML = "Searching...";
+  title.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`;
 
   let data = await searchSongs(search);
 
   // Hide loader when finished
-  loader.classList.add("hidden");
+  // loader.classList.add("hidden");
   song_list.classList.remove("hidden");
 
-  title.innerHTML = `Searched results for: <span class="capitalize font font-bold text-white">${search}</span>`
+  title.innerHTML = `Searched results for: &nbsp; <span class="capitalize font font-bold text-white"> ${search} </span>`
 
   let results = data.map(item => {
     // const track = item.data;
@@ -151,9 +151,12 @@ async function searchSongs(query) {
   );
 
   const data = await res.json();
-  // console.log(data.tracks.items);
+  // console.log(data);
+  
   return data.tracks.items;
 } searchSongs('maharana pratap')
+
+
 async function categorySongs() {
   const token = await getToken();
 
@@ -166,8 +169,8 @@ async function categorySongs() {
     }
   );
   const data = await res.json();
-  //  console.log(data.categories);
-
+  // console.log(data.categories.items[0]);
+  
   return data.categories;
 }
 
@@ -183,7 +186,6 @@ const categorySongsUI = async () => {
       id: item.id,
       name: item.name
     });
-
     const li = document.createElement("li");
     li.dataset.id = item.id;
     li.className = 'p-2 bg-gray-600 hover:bg-neutral-700 transition-all'
@@ -197,7 +199,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   await categorySongsUI();
   attachCategoryEvents();
 })
-
 async function attachCategoryEvents() {
   const li = category.querySelectorAll('li')
 
@@ -219,13 +220,14 @@ async function getNewReleases() {
 
   const data = await res.json();
   const releaseData = data.albums.items;
+  // console.log(releaseData);
+  
 
   // ALWAYS RESET ARRAY
   spotifyData.newReleases = [];
 
   releaseData.forEach(r => {
     const artistsName = r.artists.map(a => a.name).join(', ');
-
     spotifyData.newReleases.push({
       image: r.images[0].url,
       name: r.name,
@@ -235,7 +237,6 @@ async function getNewReleases() {
 
   // SAVE IN LOCAL STORAGE
   localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
-
   return spotifyData.newReleases;
 }
 
@@ -272,3 +273,22 @@ async function newReleasesUI() {
 }
 
 newReleasesUI()
+
+
+async function searchS() {
+  const token = await getToken(); // get fresh token
+
+  const res = await fetch(
+    `https://api.spotify.com/v1/shows/38bS44xjbVVZ3No3ByF1dJ`,
+    {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+  );
+
+  const data = await res.json();
+  console.log(data);
+  
+  // return data.tracks.items;
+} searchS()

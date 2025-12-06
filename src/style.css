@@ -1,0 +1,13 @@
+.typewriter-animation {
+ height: 30px;
+ overflow: hidden;
+ animation: typewriter 1s steps(10) infinite;
+}
+@keyframes typewriter {
+ from {
+  width: 0;
+ }
+ to {
+  width: 100%;
+ }
+}
