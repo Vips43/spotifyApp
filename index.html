@@ -41,8 +41,8 @@
     </div>
 
     <!-- SEARCH BAR -->
-    <div class="flex items-center bg-neutral-700 rounded-full px-2 py-1 flex-1 mx-4">
-      <button id="input_Btn" class="px-3">
+    <div class="flex items-center justify-between bg-neutral-700 rounded-2xl flex-1 mx-4">
+      <button id="input_Btn" class="px-2.5 py-2 rounded-2xl hover:bg-neutral-800">
         <i class="fa-solid fa-search"></i>
       </button>
       <input id="input_Search" type="text" class="w-full bg-transparent outline-none text-white px-2"
@@ -91,16 +91,13 @@
 
           <!-- Header -->
           <h3
-            class="flex items-center justify-center md:justify-between gap-2 bg-neutral-700 px-3 py-2 rounded cursor-pointer">
-
+            class="flex items-center justify-center sm:justify-between gap-2 bg-neutral-700 px-3 py-2 rounded cursor-pointer">
             <!-- Category icon (always visible on mobile) -->
             <i class="fa-solid fa-list text-lg"></i>
-
             <!-- Text only on md+ -->
-            <span class="hidden sm:block sm:text-sm">Song Categories</span>
-
+            <span class="hidden sm:block sm:text-sm">Song Genre</span>
             <!-- Arrow only on md+ -->
-            <div class=" hidden md:flex transition">
+            <div class=" hidden sm:flex transition">
               <i class="fa-solid fa-angle-down transition-all"></i>
             </div>
           </h3>
@@ -110,10 +107,7 @@
             class="opacity-0 max-h-0 overflow-y-auto w-fit sm:w-full  scrollbar transition-all duration-300 ease-in-out">
 
             <ul id="category" class="space-y-2 grid max-h-full  bg-neutral-800 rounded p-0.5 sm:p-2 sm:scrollbar">
-              <!-- <li
-                class="p-2 bg-gray-700 hover:bg-gray-600 rounded cursor-pointer capitalize flex items-center justify-center sm:justify-start">
-                <i class="fa-solid fa-1"></i> <span class="hidden sm:flex">fjejfefjefj</span>
-              </li> -->
+          
             </ul>
           </div>
         </div>
@@ -124,43 +118,26 @@
 
     <!-- RIGHT BODY -->
     <main class="flex-1 p-2 md:p-5 overflow-auto scrollbar-hidden">
-
       <!-- TITLE -->
       <div class="mb-4 " id="main_body_title">
         <h1 class="text-lg sm:text-2xl font-bold title p-1 flex items-center max-h-7 w-fit">Trending songs </h1>
       </div>
 
       <!-- SONG GRID -->
-      <div class="song-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-auto">
-
+      <div class="song-list grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-auto">
         <!-- JS Will Inject Songs Here -->
-        <!-- <div class="song-container  border p-2 grid gap-2">
-          <div class="relative song-img w-full">
-            <img id="img" class="w-full" src="images/aavan-jaavan-war-2-500-500.jpg" alt="">
-            <div
-              class="play-icon h-8 w-8 p-1 grid place-items-center bg-green-600 rounded-full absolute top-0 right-0 translate-y-60 -translate-x-5">
-              <i class="fa-solid fa-play"></i>
-            </div>
-          </div>
-          <a class="audio" href="${song.songSRC}"></a>
-          <div class="caption ">
-            <h3>${song.artistName}</h3>
-            <p class="text-gray-400 text-sm">${song.trackName}</p>
-          </div>
-        </div> -->
       </div>
+      <!-- SHOWS SECTION Genre -->
 
-      <!-- SHOWS SECTION -->
+
       <section class="w-full my-10">
         <!-- Section Heading -->
         <div class="mb-4">
           <h3 class="show-song-container-h3 text-2xl font-bold capitalize">New releases</h3>
         </div>
         <!-- Horizontal Scroll Container (Swiper-ready) -->
-        <div class="show-song-container flex gap-5 overflow-x-auto scrollbar-hidden py-4 ">
-
-          <!-- CARD -->
-
+        <div class="show-song-container flex gap-5 overflow-x-auto scrollbar-hidden py-4">
+        <!-- CARD -->
         </div>
       </section>
     </main>

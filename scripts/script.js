@@ -10,15 +10,10 @@ show_song_container_h3 = document.querySelector('.show-song-container-h3');
 const loader = document.getElementById("loader");
 
 
-
 // swiperjs
-
 spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
-  categories: [],
-  newReleases: [],
-  searchResults: []
+  categories: [], newReleases: [], searchResults: []
 };
-
 
 // reload
 function home() {
@@ -62,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function searchSongsUI(songArr) {
 
   song_list.innerHTML = ''
-
   songArr.forEach((song, i) => {
     let div = document.createElement("div")
     div.className =
@@ -152,8 +146,6 @@ async function searchSongs(query) {
   return data.tracks.items;
 }
 //  searchSongs('maharana pratap')
-
-
 // localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -171,8 +163,6 @@ async function getNewReleases() {
   const data = await res.json();
   const releaseData = data.albums.items;
   // console.log(releaseData);
-
-
   // ALWAYS RESET ARRAY
   spotifyData.newReleases = [];
 
@@ -240,53 +230,55 @@ async function searchGenrePlaylists(genre) {
     }
   );
   const data = await res.json();
-  console.log(data);
-  
   return data;
 }
-searchGenrePlaylists('hiphop')
+// searchGenrePlaylists('pop')
 
 function renderGenres() {
   category.innerHTML = "";
 
   GENRES.forEach((g, i) => {
     const li = document.createElement("li");
-    li.className = "p-2 bg-neutral-900 hover:bg-neutral-600 rounded cursor-pointer capitalize flex gap-2 items-center justify-center sm:justify-start font-inter transition-all";
+    li.className = "p-2 bg-neutral-900 hover:bg-neutral-700/95 rounded cursor-pointer capitalize flex gap-2 items-center justify-center sm:justify-start font-inter transition-all";
 
     li.innerHTML = `
     <span 
     class="inline-flex h-7 w-7 items-center justify-center rounded-full font-inter bg-neutral-700 text-xs font-bold text-white">
-    ${i+1}</span> 
+    ${i + 1}</span> 
     <span class="hidden sm:flex">${g}</span>`
 
     li.onclick = async () => {
+      const liText = li.querySelector(".hidden");
       const data = await searchGenrePlaylists(g);
       if (data.playlists.items) {
-        renderPlaylistsUI(data.playlists.items);
         show_song_container_h3.innerHTML = `
-      <h2 class="text-2xl font-bold mb-4">${li.textContent}</h2>`;
+        <h2 class="text-2xl font-bold mb-4">Genre: ${liText.textContent}</h2>`;
+        renderPlaylistsUI(data.playlists.items);
       } else {
         show_song_container.innerHTML = "No playlists found.";
       }
-      };
+    };
     category.append(li);
   });
 }
 
 function renderPlaylistsUI(playlists) {
-  
   show_song_container.innerHTML = ``;
+  song_list.innerHTML = ``;
+  title.innerHTML = ``;
+
   const wrapper = document.createElement("div");
   wrapper.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6";
 
   playlists.forEach(pl => {
-    const card = document.createElement("div");
-    card.className = `
+    if (pl) {
+      const card = document.createElement("div");
+      card.className = `
       bg-neutral-900 p-3 rounded-xl hover:bg-neutral-800 transition cursor-pointer
-    `;
-    card.innerHTML = `
+      `;
+      card.innerHTML = `
       <div class="relative w-full h-44 rounded-lg overflow-hidden group">
-        <img src="${pl.images[0]?.url}" class="w-full h-full object-cover" />
+        <img src="${pl.images[0].url}" class="w-full h-full object-cover" />
 
         <div class="absolute play-icon">
           <i class="fa-solid fa-play"></i>
@@ -294,18 +286,21 @@ function renderPlaylistsUI(playlists) {
       </div>
 
       <h3 class="font-semibold mt-3 truncate">${pl.name}</h3>
-      <p class="text-gray-400 text-sm truncate">${pl.owner.display_name}</p>
+  <p class="text-gray-400 text-sm truncate">${pl.owner.display_name}</p>
     `;
 
-    card.onclick = () => showPlaylistTracks(pl.id);
+      card.onclick = () => showPlaylistTracks(pl.id,pl.name);
 
-    wrapper.append(card);
+      wrapper.append(card);
+    }
   });
 
   show_song_container.append(wrapper);
 }
-async function showPlaylistTracks(playlistId) {
+
+async function showPlaylistTracks(playlistId, name) {
   const token = await getAccessToken();
+  console.log(playlistId);
 
   const res = await fetch(
     `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=40`,
@@ -317,29 +312,34 @@ async function showPlaylistTracks(playlistId) {
   const data = await res.json();
   console.log("TRACKS:", data.items);
 
+  show_song_container_h3.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`
+  
   renderTrackUI(data.items);
+  
+  show_song_container_h3.innerHTML = `
+    <h2 class="text-2xl font-bold mb-4">${name}</h2>`;
 }
 function renderTrackUI(tracks) {
-  show_song_container_h3.innerHTML = `
-    <h2 class="text-2xl font-bold mb-4">Tracks</h2>
-  `;
-
+  show_song_container.innerHTML = ``;
   tracks.forEach(t => {
     const track = t.track;
-    if (!track) return;
+    if (!track && !track.album.images[0]?.url) return;
 
     const div = document.createElement("div");
-    div.className = `
-      grid gap-4 mb-3 w-48 bg-neutral-900 hover:bg-neutral-800 
-      p-3 rounded-xl transition cursor-pointer border
-    `;
+    div.className =
+      "song-card flex-shrink-0 w-44 h-fit sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition";
 
     div.innerHTML = `
-      <img src="${track.album.images[2]?.url}" class="w-16 h-16 rounded-lg" />
-
-      <div>
-        <h3 class="font-semibold">${track.name}</h3>
-        <p class="text-gray-400 text-sm">${track.artists.map(a => a.name).join(", ")}</p>
+      <div class="relative w-full h-48 overflow-hidden rounded-lg group">
+        <img class="object-cover" src="${track.album.images[0]?.url}" alt="">
+        <div
+          class="absolute play-icon">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+      <div class="caption mt-3">
+        <h3 class="text-base font-semibold truncate">${track.name}</h3>
+        <p class="text-gray-400 text-sm truncate">${track.artists.map(a => a.name).join(", ")}</p>
       </div>
     `;
 
