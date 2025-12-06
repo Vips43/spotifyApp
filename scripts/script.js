@@ -3,7 +3,6 @@ let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn'),
   categoryContainerDiv = document.querySelector('.category_container div'),
   category_div = document.getElementById('category_div'),
-  // title = document.querySelector('.title h1'),
   category_container = document.querySelector('.category_container h3'),
   title = document.querySelector('#main_body_title h1')
 show_song_container = document.querySelector('.show-song-container');
@@ -14,7 +13,6 @@ const loader = document.getElementById("loader");
 
 // swiperjs
 
-// let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || [];
 spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
   categories: [],
   newReleases: [],
