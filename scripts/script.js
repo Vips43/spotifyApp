@@ -241,7 +241,6 @@ async function searchGenrePlaylists(genre) {
       headers: { Authorization: `Bearer ${token}` }
     }
   );
-
   const data = await res.json();
   console.log(data);
   
@@ -254,26 +253,30 @@ function renderGenres() {
 
   GENRES.forEach((g, i) => {
     const li = document.createElement("li");
-    li.className = "p-2 bg-neutral-900 hover:bg-neutral-600 rounded cursor-pointer capitalize flex gap-2 items-center justify-center sm:justify-start transition-all";
+    li.className = "p-2 bg-neutral-900 hover:bg-neutral-600 rounded cursor-pointer capitalize flex gap-2 items-center justify-center sm:justify-start font-inter transition-all";
 
-    li.innerHTML = `<span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-neutral-700 text-xs font-semibold text-white">${i+1}</span> <span class="hidden sm:flex">${g}</span>`
+    li.innerHTML = `
+    <span 
+    class="inline-flex h-7 w-7 items-center justify-center rounded-full font-inter bg-neutral-700 text-xs font-bold text-white">
+    ${i+1}</span> 
+    <span class="hidden sm:flex">${g}</span>`
 
     li.onclick = async () => {
       const data = await searchGenrePlaylists(g);
-      if (data.playlists?.items) {
+      if (data.playlists.items) {
         renderPlaylistsUI(data.playlists.items);
+        show_song_container_h3.innerHTML = `
+      <h2 class="text-2xl font-bold mb-4">${li.textContent}</h2>`;
       } else {
         show_song_container.innerHTML = "No playlists found.";
       }
-    };
-
+      };
     category.append(li);
   });
 }
 
 function renderPlaylistsUI(playlists) {
-  show_song_container_h3.innerHTML = `
-    <h2 class="text-2xl font-bold mb-4">Playlists</h2>`;
+  
   show_song_container.innerHTML = ``;
   const wrapper = document.createElement("div");
   wrapper.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6";

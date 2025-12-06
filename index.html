@@ -5,6 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spotify-App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind output -->
   <link rel="stylesheet" href="src/output.css" />
@@ -15,9 +18,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
 
   <link rel="icon" href="images/spotify-logo.png" type="image/png" />
+  <style>
+    /* Smooth, clean text everywhere */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
 </head>
 
-<body class="bg-black max-h-screen text-white font-sans">
+<body class="bg-black max-h-screen text-white font-inter">
 
   <!-- NAVBAR -->
   <nav class="flex items-center justify-between p-3 bg-black border-b border-neutral-800">
