@@ -251,9 +251,10 @@ function renderGenres() {
       const liText = li.querySelector(".hidden");
       const data = await searchGenrePlaylists(g);
       if (data.playlists.items) {
+        renderPlaylistsUI(data.playlists.items); //pass the data
         show_song_container_h3.innerHTML = `
-        <h2 class="text-2xl font-bold mb-4">Genre: ${liText.textContent}</h2>`;
-        renderPlaylistsUI(data.playlists.items);
+        <h2 class="text-2xl font-bold mb-4">Genre: ${liText.textContent}</h2>`;  // set heading
+
       } else {
         show_song_container.innerHTML = "No playlists found.";
       }
@@ -272,13 +273,15 @@ function renderPlaylistsUI(playlists) {
 
   playlists.forEach(pl => {
     if (pl) {
+      console.log(pl);
+
       const card = document.createElement("div");
       card.className = `
       bg-neutral-900 p-3 rounded-xl hover:bg-neutral-800 transition cursor-pointer
       `;
       card.innerHTML = `
       <div class="relative w-full h-44 rounded-lg overflow-hidden group">
-        <img src="${pl.images[0].url}" class="w-full h-full object-cover" />
+        <img src="${pl.images[1]?.url || pl.images[2]?.url || pl.images[0]?.url}" class="w-full h-full object-cover" />
 
         <div class="absolute play-icon">
           <i class="fa-solid fa-play"></i>
@@ -289,7 +292,7 @@ function renderPlaylistsUI(playlists) {
   <p class="text-gray-400 text-sm truncate">${pl.owner.display_name}</p>
     `;
 
-      card.onclick = () => showPlaylistTracks(pl.id,pl.name);
+      card.onclick = () => showPlaylistTracks(pl.id, pl.name);
 
       wrapper.append(card);
     }
@@ -299,6 +302,9 @@ function renderPlaylistsUI(playlists) {
 }
 
 async function showPlaylistTracks(playlistId, name) {
+  show_song_container_h3.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`;
+  title.innerHTML = '';
+
   const token = await getAccessToken();
   console.log(playlistId);
 
@@ -312,10 +318,8 @@ async function showPlaylistTracks(playlistId, name) {
   const data = await res.json();
   console.log("TRACKS:", data.items);
 
-  show_song_container_h3.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`
-  
   renderTrackUI(data.items);
-  
+
   show_song_container_h3.innerHTML = `
     <h2 class="text-2xl font-bold mb-4">${name}</h2>`;
 }
@@ -331,9 +335,8 @@ function renderTrackUI(tracks) {
 
     div.innerHTML = `
       <div class="relative w-full h-48 overflow-hidden rounded-lg group">
-        <img class="object-cover" src="${track.album.images[0]?.url}" alt="">
-        <div
-          class="absolute play-icon">
+        <img class="object-cover" src="${track.album.images[1]?.url || track.album.images[2]?.url || track.album.images[0]?.url}" alt="">
+        <div class="absolute play-icon">
           <i class="fa-solid fa-play"></i>
         </div>
       </div>
