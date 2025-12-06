@@ -33,34 +33,31 @@ category_container.addEventListener("click", () => {
   category_container.querySelector("i").classList.toggle("rotate-180")
 })
 
-async function getSongsData(query) {
-  const url = `https://spotify23.p.rapidapi.com/search/?q=${query}&type=tracks%2Cusers&offset=0&limit=20&numberOfTopResults=20`;
-  const options = {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': '4ca77398a4msh7763f9eafb81d5ap10d5a5jsn98c9be3a8843',
-      'x-rapidapi-host': 'spotify23.p.rapidapi.com'
-    }
-  };
 
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    console.log(result);
+  const clientId = `ae099a85abfd490f942ad96cecc1e3fe`;
+  const clientSecret = `08929370795044bb9726eccb1421c08c`;
+  
+  async function getAccessToken() {
+    const result = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization":
+        "Basic " +
+        btoa(clientId + ":" + clientSecret).toString("base64"),
+    },
+    body: "grant_type=client_credentials",
+  });
 
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
+  const data = await result.json();  
+  return data.access_token;
 }
 
-// getSongsData('maharana pratap')    //spotify rapi api
-
 document.addEventListener("DOMContentLoaded", () => {
-  // if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
-  //   searchSongsUI(spotifyData.searchResults);
-  //   title.innerHTML = "Last Search Results";
-  // }
+  if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
+    searchSongsUI(spotifyData.searchResults);
+    title.innerHTML = "Last Search Results";
+  }
 })
 
 function searchSongsUI(songArr) {
@@ -131,15 +128,15 @@ input_Btn.addEventListener("click", async () => {
 })
 
 
-async function getToken() {
-  const res = await fetch("http://localhost:5000/token");
-  const data = await res.json();
-  return data.access_token;
-}
+// async function getToken() {
+//   const res = await fetch("http://localhost:5000/token");
+//   const data = await res.json();
+//   return data.access_token;
+// }
 
 
 async function searchSongs(query) {
-  const token = await getToken(); // get fresh token
+  const token = await getAccessToken(); // get fresh token
 
   const res = await fetch(
     `https://api.spotify.com/v1/search?q=${query}&type=track`,
@@ -158,10 +155,10 @@ async function searchSongs(query) {
 
 
 async function categorySongs() {
-  const token = await getToken();
+  const token = await getAccessToken();
 
   const res = await fetch(
-    `https://api.spotify.com/v1/browse/categories`,
+    `https://api.spotify.com/v1/browse/categories?locale=sv_US`,
     {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -169,7 +166,7 @@ async function categorySongs() {
     }
   );
   const data = await res.json();
-  // console.log(data.categories.items[0]);
+  console.log(data.categories.items[0]);
   
   return data.categories;
 }
@@ -204,15 +201,16 @@ async function attachCategoryEvents() {
 
   li.forEach(li => {
     li.addEventListener("click", () => {
-      const catID = li.dataset.id
+      const catID = li.innerHTML
       console.log(catID);
+      searchS(catID.toLowerCase())
     })
   })
 }
 
 getNewReleases()
 async function getNewReleases() {
-  const token = await getToken();
+  const token = await getAccessToken();
 
   const res = await fetch(`https://api.spotify.com/v1/browse/new-releases`, {
     headers: { "Authorization": `Bearer ${token}` }
@@ -275,20 +273,22 @@ async function newReleasesUI() {
 newReleasesUI()
 
 
-async function searchS() {
-  const token = await getToken(); // get fresh token
+async function searchS(q) {
+  const token = await getAccessToken(); // get fresh token
 
   const res = await fetch(
-    `https://api.spotify.com/v1/shows/38bS44xjbVVZ3No3ByF1dJ`,
+    `https://api.spotify.com/v1/browse/categories/${q}/playlists?limit=20`,
     {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
+      method:"GET",
+      headers: { "Authorization": `Bearer ${token}` }
     }
   );
 
   const data = await res.json();
   console.log(data);
   
-  // return data.tracks.items;
-} searchS()
+  // return data;
+} 
+
+
+
