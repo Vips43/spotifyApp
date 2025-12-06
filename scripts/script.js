@@ -7,6 +7,7 @@ let input_Search = document.getElementById('input_Search'),
   category_container = document.querySelector('.category_container h3'),
   title = document.querySelector('#main_body_title h1')
 show_song_container = document.querySelector('.show-song-container');
+show_song_container_h3 = document.querySelector('.show-song-container-h3');
 const loader = document.getElementById("loader");
 
 
@@ -30,17 +31,17 @@ let allSongs = [];
 
 category_container.addEventListener("click", () => {
   category_div.classList.toggle('toggle_category')
-  category_container.querySelector("i").classList.toggle("rotate-180")
+  category_container.querySelector(".fa-angle-down").classList.toggle("rotate-180")
 })
 
 
-  const clientId = `ae099a85abfd490f942ad96cecc1e3fe`;
-  const clientSecret = `08929370795044bb9726eccb1421c08c`;
-  
-  async function getAccessToken() {
-    const result = await fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: {
+const clientId = `ae099a85abfd490f942ad96cecc1e3fe`;
+const clientSecret = `08929370795044bb9726eccb1421c08c`;
+
+async function getAccessToken() {
+  const result = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "Authorization":
         "Basic " +
@@ -49,15 +50,15 @@ category_container.addEventListener("click", () => {
     body: "grant_type=client_credentials",
   });
 
-  const data = await result.json();  
+  const data = await result.json();
   return data.access_token;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
-    searchSongsUI(spotifyData.searchResults);
-    title.innerHTML = "Last Search Results";
-  }
+  // if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
+  //   searchSongsUI(spotifyData.searchResults);
+  //   title.innerHTML = "Last Search Results";
+  // }
 })
 
 function searchSongsUI(songArr) {
@@ -149,64 +150,17 @@ async function searchSongs(query) {
 
   const data = await res.json();
   // console.log(data);
-  
+
   return data.tracks.items;
-} searchSongs('maharana pratap')
-
-
-async function categorySongs() {
-  const token = await getAccessToken();
-
-  const res = await fetch(
-    `https://api.spotify.com/v1/browse/categories?locale=sv_US`,
-    {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    }
-  );
-  const data = await res.json();
-  console.log(data.categories.items[0]);
-  
-  return data.categories;
 }
+//  searchSongs('maharana pratap')
 
-const categorySongsUI = async () => {
-  const data = await categorySongs();
-  category.innerHTML = ''
 
-  spotifyData.categories = [];
-
-  data.items.forEach(item => {
-
-    spotifyData.categories.push({
-      id: item.id,
-      name: item.name
-    });
-    const li = document.createElement("li");
-    li.dataset.id = item.id;
-    li.className = 'p-2 bg-gray-600 hover:bg-neutral-700 transition-all'
-    li.textContent = `${item.name}`
-    category.append(li)
-  })
-  localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
-}
+// localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await categorySongsUI();
-  attachCategoryEvents();
+  renderGenres()
 })
-async function attachCategoryEvents() {
-  const li = category.querySelectorAll('li')
-
-  li.forEach(li => {
-    li.addEventListener("click", () => {
-      const catID = li.innerHTML
-      console.log(catID);
-      searchS(catID.toLowerCase())
-    })
-  })
-}
 
 getNewReleases()
 async function getNewReleases() {
@@ -219,7 +173,7 @@ async function getNewReleases() {
   const data = await res.json();
   const releaseData = data.albums.items;
   // console.log(releaseData);
-  
+
 
   // ALWAYS RESET ARRAY
   spotifyData.newReleases = [];
@@ -273,22 +227,121 @@ async function newReleasesUI() {
 newReleasesUI()
 
 
-async function searchS(q) {
-  const token = await getAccessToken(); // get fresh token
+const GENRES = [
+  "pop", "hiphop", "dance", "chill", "party",
+  "romance", "workout", "indie", "bollywood",
+  "punjabi", "rock", "sad", "happy", "focus",
+];
+async function searchGenrePlaylists(genre) {
+  const token = await getAccessToken();
 
   const res = await fetch(
-    `https://api.spotify.com/v1/browse/categories/${q}/playlists?limit=20`,
+    `https://api.spotify.com/v1/search?q=genre:%22${genre}%22&type=playlist&limit=20`,
     {
-      method:"GET",
-      headers: { "Authorization": `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` }
     }
   );
 
   const data = await res.json();
   console.log(data);
   
-  // return data;
-} 
+  return data;
+}
+searchGenrePlaylists('hiphop')
 
+function renderGenres() {
+  category.innerHTML = "";
 
+  GENRES.forEach((g, i) => {
+    const li = document.createElement("li");
+    li.className = "p-2 bg-neutral-900 hover:bg-neutral-600 rounded cursor-pointer capitalize flex gap-2 items-center justify-center sm:justify-start transition-all";
 
+    li.innerHTML = `<span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-neutral-700 text-xs font-semibold text-white">${i+1}</span> <span class="hidden sm:flex">${g}</span>`
+
+    li.onclick = async () => {
+      const data = await searchGenrePlaylists(g);
+      if (data.playlists?.items) {
+        renderPlaylistsUI(data.playlists.items);
+      } else {
+        show_song_container.innerHTML = "No playlists found.";
+      }
+    };
+
+    category.append(li);
+  });
+}
+
+function renderPlaylistsUI(playlists) {
+  show_song_container_h3.innerHTML = `
+    <h2 class="text-2xl font-bold mb-4">Playlists</h2>`;
+  show_song_container.innerHTML = ``;
+  const wrapper = document.createElement("div");
+  wrapper.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6";
+
+  playlists.forEach(pl => {
+    const card = document.createElement("div");
+    card.className = `
+      bg-neutral-900 p-3 rounded-xl hover:bg-neutral-800 transition cursor-pointer
+    `;
+    card.innerHTML = `
+      <div class="relative w-full h-44 rounded-lg overflow-hidden group">
+        <img src="${pl.images[0]?.url}" class="w-full h-full object-cover" />
+
+        <div class="absolute play-icon">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+
+      <h3 class="font-semibold mt-3 truncate">${pl.name}</h3>
+      <p class="text-gray-400 text-sm truncate">${pl.owner.display_name}</p>
+    `;
+
+    card.onclick = () => showPlaylistTracks(pl.id);
+
+    wrapper.append(card);
+  });
+
+  show_song_container.append(wrapper);
+}
+async function showPlaylistTracks(playlistId) {
+  const token = await getAccessToken();
+
+  const res = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=40`,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+
+  const data = await res.json();
+  console.log("TRACKS:", data.items);
+
+  renderTrackUI(data.items);
+}
+function renderTrackUI(tracks) {
+  show_song_container_h3.innerHTML = `
+    <h2 class="text-2xl font-bold mb-4">Tracks</h2>
+  `;
+
+  tracks.forEach(t => {
+    const track = t.track;
+    if (!track) return;
+
+    const div = document.createElement("div");
+    div.className = `
+      grid gap-4 mb-3 w-48 bg-neutral-900 hover:bg-neutral-800 
+      p-3 rounded-xl transition cursor-pointer border
+    `;
+
+    div.innerHTML = `
+      <img src="${track.album.images[2]?.url}" class="w-16 h-16 rounded-lg" />
+
+      <div>
+        <h3 class="font-semibold">${track.name}</h3>
+        <p class="text-gray-400 text-sm">${track.artists.map(a => a.name).join(", ")}</p>
+      </div>
+    `;
+
+    show_song_container.append(div);
+  });
+}

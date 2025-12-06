@@ -91,15 +91,19 @@
 
             <!-- Arrow only on md+ -->
             <div class=" hidden md:flex transition">
-              <i class="fa-solid fa-angle-down"></i>
+              <i class="fa-solid fa-angle-down transition-all"></i>
             </div>
           </h3>
 
           <!-- Category List -->
           <div id="category_div"
-            class="overflow-y-auto max-h-0 opacity-0 scrollbar transition-all duration-300 ease-in-out">
+            class="opacity-0 max-h-0 overflow-y-auto w-fit sm:w-full  scrollbar transition-all duration-300 ease-in-out">
 
-            <ul id="category" class="space-y-2 max-h-full overflow-y-auto bg-neutral-800 rounded p-2 scrollbar">
+            <ul id="category" class="space-y-2 grid max-h-full  bg-neutral-800 rounded p-0.5 sm:p-2 sm:scrollbar">
+              <!-- <li
+                class="p-2 bg-gray-700 hover:bg-gray-600 rounded cursor-pointer capitalize flex items-center justify-center sm:justify-start">
+                <i class="fa-solid fa-1"></i> <span class="hidden sm:flex">fjejfefjefj</span>
+              </li> -->
             </ul>
           </div>
         </div>
@@ -107,10 +111,10 @@
       </div>
     </aside>
 
-    
+
     <!-- RIGHT BODY -->
     <main class="flex-1 p-2 md:p-5 overflow-auto scrollbar-hidden">
-      
+
       <!-- TITLE -->
       <div class="mb-4 " id="main_body_title">
         <h1 class="text-lg sm:text-2xl font-bold title p-1 flex items-center max-h-7 w-fit">Trending songs </h1>
@@ -140,16 +144,15 @@
       <section class="w-full my-10">
         <!-- Section Heading -->
         <div class="mb-4">
-          <h3 class="text-2xl font-bold capitalize">New releases</h3>
+          <h3 class="show-song-container-h3 text-2xl font-bold capitalize">New releases</h3>
         </div>
         <!-- Horizontal Scroll Container (Swiper-ready) -->
-        <div class="show-song-container flex gap-5 overflow-x-auto scrollbar-hidden py-4">
+        <div class="show-song-container flex gap-5 overflow-x-auto scrollbar-hidden py-4 ">
 
           <!-- CARD -->
 
         </div>
       </section>
-
     </main>
   </div>
 
@@ -159,4 +162,5 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
 </body>
+
 </html>
