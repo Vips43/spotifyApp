@@ -7,19 +7,76 @@ let input_Search = document.getElementById('input_Search'),
   title = document.querySelector('#main_body_title h1')
 show_song_container = document.querySelector('.show-song-container');
 show_song_container_h3 = document.querySelector('.show-song-container-h3');
-const loader = document.getElementById("loader");
+const loader = document.getElementById("loader")
+let main = document.querySelector('#main')
 
 
+function alertMsg(msg, cls = "bg-yellow-800 text-white") {
+  // CREATE CONTAINER
+  const wrapper = document.createElement("div");
+  wrapper.className =
+    "fixed top-4 right-4 z-[9999] transition-all duration-300 opacity-0 translate-y-4";
+
+  // CREATE ALERT BOX
+  const alertBox = document.createElement("div");
+  alertBox.className = `px-4 py-2 rounded-lg shadow-lg flex items-center justify-between gap-4 ${cls}`;
+  alertBox.innerHTML = `
+      <span class="capitalize">${msg}</span>
+      <button class="text-black font-bold hover:opacity-70">✕</button>
+  `;
+
+  wrapper.append(alertBox);
+  document.body.append(wrapper);
+
+  // 🔥 Show animation (fade-in + slide-in)
+  requestAnimationFrame(() => {
+    wrapper.classList.remove("opacity-0", "translate-y-4");
+    wrapper.classList.add("opacity-100", "translate-y-0");
+  });
+
+  // ❌ Close button
+  alertBox.querySelector("button").addEventListener("click", () => {
+    closeAlert(wrapper);
+  });
+
+  // ⏲ Auto-remove after 3 seconds
+  setTimeout(() => closeAlert(wrapper), 3000);
+}
+
+function closeAlert(wrapper) {
+  wrapper.classList.add("opacity-0", "translate-y-4");
+  wrapper.classList.remove("opacity-100", "translate-y-0");
+
+  setTimeout(() => wrapper.remove(), 300); // wait for animation
+}
+
+
+window.addEventListener("online", check_network);
+window.addEventListener("offline", check_network);
+
+async function check_network() {
+  try {
+    const res = await fetch("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css");
+
+    if (res.ok) {
+      alertMsg("Network Connected", "bg-green-600 text-white");
+      // location.reload()
+      return true;
+    } else console.log("newtrk lost");
+
+  } catch {
+    alertMsg("Network Lost", "bg-red-600 text-white");
+    return false;
+  }
+}
 // swiperjs
 spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
   categories: [], newReleases: [], searchResults: []
 };
-
 // reload
 function home() {
   location.reload()
 }
-
 let allSongs = [];
 
 category_container.addEventListener("click", () => {
@@ -141,11 +198,11 @@ async function searchSongs(query) {
   );
 
   const data = await res.json();
-  // console.log(data);
+  console.log(data);
 
   return data.tracks.items;
 }
-//  searchSongs('maharana pratap')
+searchSongs('gokul sharma')
 // localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -162,8 +219,10 @@ async function getNewReleases() {
 
   const data = await res.json();
   const releaseData = data.albums.items;
-  // console.log(releaseData);
-  // ALWAYS RESET ARRAY
+  newReleaseArray(releaseData)
+  return releaseData;
+}
+function newReleaseArray(releaseData) {
   spotifyData.newReleases = [];
 
   releaseData.forEach(r => {
@@ -207,7 +266,7 @@ async function newReleasesUI() {
         <p class="text-gray-400 text-sm truncate">${item.artist}</p>
       </div>
     `;
-
+    check_network();
     show_song_container.append(div);
   });
 }
@@ -239,13 +298,13 @@ function renderGenres() {
 
   GENRES.forEach((g, i) => {
     const li = document.createElement("li");
-    li.className = "p-2 bg-neutral-900 hover:bg-neutral-700/95 rounded cursor-pointer capitalize flex gap-2 items-center justify-center sm:justify-start font-inter transition-all";
+    li.className = "p-2 bg-neutral-900 hover:bg-neutral-700/95 rounded cursor-pointer capitalize flex gap-2 items-center justify-center md:justify-start font-inter transition-all";
 
     li.innerHTML = `
     <span 
     class="inline-flex h-7 w-7 items-center justify-center rounded-full font-inter bg-neutral-700 text-xs font-bold text-white">
     ${i + 1}</span> 
-    <span class="hidden sm:flex">${g}</span>`
+    <span class="hidden md:flex">${g}</span>`
 
     li.onclick = async () => {
       const liText = li.querySelector(".hidden");
@@ -348,4 +407,36 @@ function renderTrackUI(tracks) {
 
     show_song_container.append(div);
   });
+}
+
+//login 
+async function recccom() {
+  const token = await getAccessToken();
+  const res = await fetch(`https://api.spotify.com/v1/me/shows?offset=1&limit=1`.replace(/\s+/g, ""), {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  if (!res.ok) console.log("res failed", res.status)
+  const data = await res.json();
+  // console.log(data);
+}
+// recccom()
+
+async function getArtistsDetails(id) {
+  const token = await getAccessToken();
+  const res = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
+    main: "GET",
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  const data = await res.json();
+  console.log(data);
+} getArtistsDetails('3mTK29Ki0vd5n7KQtJU0hL')
+
+async function artistsUI() {
+  const data = getArtistsDetails();
+}
+
+function getArtistsAblum() {
+  // https://api.spotify.com/v1/artists/3mTK29Ki0vd5n7KQtJU0hL/albums?limit=20
+  // id = 3mTK29Ki0vd5n7KQtJU0hL
 }
