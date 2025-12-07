@@ -16,8 +16,7 @@
   <!-- Tailwind output -->
   <link rel="stylesheet" href="src/output.css" />
   <link rel="stylesheet" href="src/style.css">
-  <!-- swpiperjs -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+
 
   <style>
     /* Smooth, clean text everywhere */
@@ -28,7 +27,7 @@
   </style>
 </head>
 
-<body class="bg-black h-screen overflow-y-auto border text-white font-inter">
+<body class="bg-black h-screen overflow-y-auto text-white font-inter">
 
   <!-- NAVBAR -->
   <nav class="flex items-center justify-between h-16 p-3 bg-black border-neutral-800">
@@ -71,18 +70,9 @@
   </nav>
 
   <!-- MAIN LAYOUT -->
-  <div id="main" class="flex w-full h-full overflow-y-auto">
-
-    <!-- alert -->
-    <!-- <div class="alert-container absolute top-2 translate-y-24 right-2 transition-all">
-      <div id="alert-box" class="px-4 p-2 flex items-center gap-4">
-        <span class="alert-span">Network Connection not available</span>
-        <span class="font-bold text-black">X</span>
-      </div>
-    </div> -->
-
+  <div id="main" class="flex w-full h-[calc(100vh-4rem)] overflow-y-auto">
     <!-- LEFT SIDEBAR -->
-    <aside class="bg-black w-16 h-full md:w-48 lg:w-52 transition-all duration-300">
+    <aside class="bg-black w-20 h-full md:w-48 lg:w-52 transition-all duration-300">
       <div class="p-4">
 
         <!-- Library -->
@@ -123,38 +113,38 @@
       </div>
     </aside>
 
-
     <!-- RIGHT BODY -->
-    <main class="flex-1 rounded-t-2xl h-full border overflow-y-auto scrollbar-hidden">
-
-      <div id="upper_div" class="z-10 bg-gradient-to-b from-neutral-800 via-neutral-900 to-neutral-950 sticky top-0">
-        <div class="ml-5">
-          <ul class="flex items-center gap-2 p-3">
-            <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">All</button></li>
-            <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Songs</button></li>
-            <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Podcasts</button></li>
-            <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</button></li>
-          </ul>
+    <main class="flex-1 rounded-t-2xl h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hidden">
+      <div class="bg-gradient-to-b from-neutral-700 via-neutral-800 to-neutral-950">
+        <div id="upper_div" class="z-10 sticky top-0 rounded-t-2xl">
+          <div class="ml-5">
+            <ul class="flex items-center gap-2 p-3 ">
+              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">All</button></li>
+              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Songs</button></li>
+              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Podcasts</button></li>
+              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</button></li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <section id="top_main" class="scrollbar overflow-y-auto max-h-[70vh] relative grid grid-cols-3">
-        <!-- Example card -->
-        
-        
-        <div class="flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56
+        <section id="top_main" class="scrollbar overflow-y-auto max-h-[70vh] relative flex flex-wrap gap-2 px-2 transition-all duration-500">
+
+          <!-- Example card -->
+
+          <!-- <div class="flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56
               bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition">
           <div class="relative w-full h-48 overflow-hidden rounded-lg group">
-            <img class="w-full h-full object-cover rounded-full" src="${item.image}" alt="">
+            <img class="w-full h-full object-cover rounded-full" 
+            src="${item.image}" alt="">
             <div class="absolute play-icon">
               <i class="fa-solid fa-play"></i>
             </div>
           </div>
           <div class="caption mt-3">
-            <h3 class="text-base font-semibold truncate">${item.name}</h3>
             <p class="text-gray-400 text-sm truncate">${item.artist}</p>
           </div>
-        </div>
-        
+        </div> -->
+      </div>
+
 
       </section>
 
@@ -177,21 +167,21 @@
         <div class="mb-4">
           <h3 class="show-song-container-h3 w-fit flex items-center text-2xl font-bold capitalize">New releases</h3>
         </div>
-        <!-- Horizontal Scroll Container (Swiper-ready) -->
         <div class="show-song-container flex gap-1 overflow-x-auto scrollbar-hidden py-4">
           <!-- CARD -->
         </div>
       </section>
     </main>
-    <aside>
+    <aside class="bg-white w-30 below-600:hidden md:w-40 lg:w-52">
+      <div>
 
+      </div>
     </aside>
   </div>
 
   <!-- SCRIPT -->
-  <script src="scripts/script.js"></script>
-  <!-- swpiperjs -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+  <script type="module" src="scripts/script.js"></script>
+  <script src="scripts/index.js"></script>
 
 </body>
 

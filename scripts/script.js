@@ -1,82 +1,23 @@
+import { getArtistsDetails, check_network } from './data.js';
+
 const song_list = document.querySelector('.song-list');
 let input_Search = document.getElementById('input_Search'),
-  input_Btn = document.getElementById('input_Btn'),
-  categoryContainerDiv = document.querySelector('.category_container div'),
+  input_Btn = document.getElementById('input_Btn');
+let top_main = document.getElementById('top_main');
+let categoryContainerDiv = document.querySelector('.category_container div'),
   category_div = document.getElementById('category_div'),
   category_container = document.querySelector('.category_container h3'),
-  title = document.querySelector('#main_body_title h1')
-show_song_container = document.querySelector('.show-song-container');
-show_song_container_h3 = document.querySelector('.show-song-container-h3');
-const loader = document.getElementById("loader")
-let main = document.querySelector('#main')
+  title = document.querySelector('#main_body_title h1'),
+  show_song_container = document.querySelector('.show-song-container'),
+  show_song_container_h3 = document.querySelector('.show-song-container-h3');
 
 
-function alertMsg(msg, cls = "bg-yellow-800 text-white") {
-  // CREATE CONTAINER
-  const wrapper = document.createElement("div");
-  wrapper.className =
-    "fixed top-4 right-4 z-[9999] transition-all duration-300 opacity-0 translate-y-4";
 
-  // CREATE ALERT BOX
-  const alertBox = document.createElement("div");
-  alertBox.className = `px-4 py-2 rounded-lg shadow-lg flex items-center justify-between gap-4 ${cls}`;
-  alertBox.innerHTML = `
-      <span class="capitalize">${msg}</span>
-      <button class="text-black font-bold hover:opacity-70">✕</button>
-  `;
-
-  wrapper.append(alertBox);
-  document.body.append(wrapper);
-
-  // 🔥 Show animation (fade-in + slide-in)
-  requestAnimationFrame(() => {
-    wrapper.classList.remove("opacity-0", "translate-y-4");
-    wrapper.classList.add("opacity-100", "translate-y-0");
-  });
-
-  // ❌ Close button
-  alertBox.querySelector("button").addEventListener("click", () => {
-    closeAlert(wrapper);
-  });
-
-  // ⏲ Auto-remove after 3 seconds
-  setTimeout(() => closeAlert(wrapper), 3000);
-}
-
-function closeAlert(wrapper) {
-  wrapper.classList.add("opacity-0", "translate-y-4");
-  wrapper.classList.remove("opacity-100", "translate-y-0");
-
-  setTimeout(() => wrapper.remove(), 300); // wait for animation
-}
-
-
-window.addEventListener("online", check_network);
-window.addEventListener("offline", check_network);
-
-async function check_network() {
-  try {
-    const res = await fetch("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css");
-
-    if (res.ok) {
-      alertMsg("Network Connected", "bg-green-600 text-white");
-      // location.reload()
-      return true;
-    } else console.log("newtrk lost");
-
-  } catch {
-    alertMsg("Network Lost", "bg-red-600 text-white");
-    return false;
-  }
-}
-// swiperjs
-spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
+let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
   categories: [], newReleases: [], searchResults: []
 };
-// reload
-function home() {
-  location.reload()
-}
+
+
 let allSongs = [];
 
 category_container.addEventListener("click", () => {
@@ -196,9 +137,10 @@ async function searchSongs(query) {
       }
     }
   );
-
   const data = await res.json();
-  console.log(data);
+
+  // console.log("for diffrent artistsUI",data);
+  // data.tracks.items.forEach(track=>{console.log(track.artists[0].id)})
 
   return data.tracks.items;
 }
@@ -404,37 +346,33 @@ function renderTrackUI(tracks) {
         <p class="text-gray-400 text-sm truncate">${track.artists.map(a => a.name).join(", ")}</p>
       </div>
     `;
-
-    show_song_container.append(div);
+    
+      show_song_container.append(div);
   });
 }
 
-//login 
-async function recccom() {
-  const token = await getAccessToken();
-  const res = await fetch(`https://api.spotify.com/v1/me/shows?offset=1&limit=1`.replace(/\s+/g, ""), {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` }
-  })
-  if (!res.ok) console.log("res failed", res.status)
-  const data = await res.json();
-  // console.log(data);
-}
-// recccom()
-
-async function getArtistsDetails(id) {
-  const token = await getAccessToken();
-  const res = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
-    main: "GET",
-    headers: { Authorization: `Bearer ${token}` }
-  })
-  const data = await res.json();
-  console.log(data);
-} getArtistsDetails('3mTK29Ki0vd5n7KQtJU0hL')
-
 async function artistsUI() {
-  const data = getArtistsDetails();
+  const artists = await getArtistsDetails();
+  // console.log(data);
+  artists.forEach(artist => {
+    const div = document.createElement("div");
+    div.className = 'flex-shrink-0 w-44 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition';
+    div.innerHTML =
+      `<div class="relative overflow-hidden rounded-lg group">
+        <img class="w-40 h-40 object-cover rounded-full" 
+        src="${artist.image}" alt="">
+        <div class="absolute play-icon">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+      <div class="caption mt-3">
+        <p class="text-gray-400 text-sm truncate">${artist.name}</p>
+      </div>`;
+      div.onclick = () => getArtistsAblum(artist.name)
+    top_main.append(div);
+  })
 }
+ artistsUI()
 
 function getArtistsAblum() {
   // https://api.spotify.com/v1/artists/3mTK29Ki0vd5n7KQtJU0hL/albums?limit=20
