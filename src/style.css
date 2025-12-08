@@ -11,3 +11,35 @@
   width: 100%;
  }
 }
+.red-gradient {
+  background: linear-gradient(
+    to bottom,
+    #991b1b,   /* red-800 */
+    #171717,   /* neutral-900 */
+    #0a0a0a    /* neutral-950 */
+  );
+}
+.blue-gradient {
+  background: linear-gradient(
+    to bottom,
+    #1e3a8a,   /* blue-800 */
+    #171717,   /* neutral-900 */
+    #0a0a0a    /* neutral-950 */
+  );
+}
+.orange-gradient {
+  background: linear-gradient(
+    to bottom,
+    #9a3412,   /* orange-800 */
+    #171717,   /* neutral-900 */
+    #0a0a0a    /* neutral-950 */
+  );
+}
+.slate-gradient {
+  background: linear-gradient(
+    to bottom,
+    #1e293b,   /* slate-800 */
+    #171717,   /* neutral-900 */
+    #0a0a0a    /* neutral-950 */
+  );
+}

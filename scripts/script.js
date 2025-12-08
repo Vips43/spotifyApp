@@ -1,15 +1,18 @@
-import { getArtistsDetails, check_network } from './data.js';
+import { getArtistsDetails, getArtistsAblum } from './data.js';
 
 const song_list = document.querySelector('.song-list');
 let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn');
-let top_main = document.getElementById('top_main');
+let top_main = document.getElementById('top_main'),
+  top_main_section_h3 = document.querySelector('#top_main section h3'),
+  top_main_section_div = document.querySelector('#top_main section div');
 let categoryContainerDiv = document.querySelector('.category_container div'),
   category_div = document.getElementById('category_div'),
   category_container = document.querySelector('.category_container h3'),
   title = document.querySelector('#main_body_title h1'),
   show_song_container = document.querySelector('.show-song-container'),
   show_song_container_h3 = document.querySelector('.show-song-container-h3');
+
 
 
 
@@ -139,8 +142,7 @@ async function searchSongs(query) {
   );
   const data = await res.json();
 
-  // console.log("for diffrent artistsUI",data);
-  // data.tracks.items.forEach(track=>{console.log(track.artists[0].id)})
+  // data.tracks.items.forEach(track=>{console.log(track.artists[0].id, track.popularity)})
 
   return data.tracks.items;
 }
@@ -208,7 +210,6 @@ async function newReleasesUI() {
         <p class="text-gray-400 text-sm truncate">${item.artist}</p>
       </div>
     `;
-    check_network();
     show_song_container.append(div);
   });
 }
@@ -346,14 +347,17 @@ function renderTrackUI(tracks) {
         <p class="text-gray-400 text-sm truncate">${track.artists.map(a => a.name).join(", ")}</p>
       </div>
     `;
-    
-      show_song_container.append(div);
+
+    show_song_container.append(div);
   });
 }
 
-async function artistsUI() {
+document.getElementById("artistBtn").addEventListener("click", async function artistsUI() {
+  top_main_section_h3.style.display = 'flex';
   const artists = await getArtistsDetails();
-  // console.log(data);
+  top_main_section_h3.style.display = 'none';
+
+  top_main_section_div.innerHTML = ''
   artists.forEach(artist => {
     const div = document.createElement("div");
     div.className = 'flex-shrink-0 w-44 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition';
@@ -368,13 +372,73 @@ async function artistsUI() {
       <div class="caption mt-3">
         <p class="text-gray-400 text-sm truncate">${artist.name}</p>
       </div>`;
-      div.onclick = () => getArtistsAblum(artist.name)
-    top_main.append(div);
+    div.onclick = () => getArtistsAblumUI(artist.id)
+    top_main_section_div.append(div);
   })
-}
- artistsUI()
+})
+// artistsUI()
 
-function getArtistsAblum() {
-  // https://api.spotify.com/v1/artists/3mTK29Ki0vd5n7KQtJU0hL/albums?limit=20
-  // id = 3mTK29Ki0vd5n7KQtJU0hL
+//radnome gradient 
+const cssGradients = [
+  "red-gradient",
+  "blue-gradient",
+  "orange-gradient",
+  "slate-gradient"
+];
+const getRandGradient = cssGradients[Math.floor(Math.random() * cssGradients.length)];
+
+async function getArtistsAblumUI(ids) {
+  const { artistsInfo, artistsTracks } = await getArtistsAblum(ids);
+  console.log(artistsInfo);
+  top_main.innerHTML = '';
+  const div = document.createElement("div");
+  div.className = `w-full ${getRandGradient} bg-neutral-950 text-white py-8 px-6 lg:px-12`;
+  div.innerHTML =
+    `<div class="flex items-center gap-6 lg:gap-10">
+          <div class="w-40 h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl">
+            <img src="${artistsInfo.image}" class="w-full h-full object-cover" />
+          </div>
+          <div class="space-y-3">
+            <h2 class="text-4xl lg:text-6xl font-black capitalize">${artistsInfo.name}</h2>
+            <p class="text-gray-300 text-lg lg:text-xl">
+              ${artistsInfo.followers} monthly listeners
+            </p>
+          </div>
+        </div>
+        <div class="mt-8 flex items-center gap-6">
+          <button class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition-all">
+            <i class="fa-solid fa-play text-black text-xl"></i>
+          </button>
+          <img src="${artistsInfo.image}"
+            class="w-12 h-14 rounded-md shadow border-2 border-neutral-700 object-cover hover:opacity-100 opacity-80">
+          <i class="fa-solid fa-shuffle text-2xl opacity-70 hover:opacity-100 cursor-pointer"></i>
+          <button class="px-4 py-1.5 border border-neutral-600 rounded-full text-sm hover:border-white transition">
+            Follow
+          </button>
+          <i class="fa-solid fa-ellipsis text-2xl opacity-70 hover:opacity-100 cursor-pointer"></i>
+        </div>
+        <div class="mt-10">
+          <h3 class="text-xl font-semibold mb-4">Popular</h3>
+
+          <ul class="space-y-2">
+            <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-900 cursor-pointer">
+              <span class="text-gray-400">1</span>
+
+              <div class="flex items-center gap-3">
+                <img src="images/teri-yaadeinglory-500-500.jpg" class="h-12 w-12 rounded" />
+                <div>
+                  <p class="font-semibold">Teri Yaadein</p>
+                  <p class="text-gray-400 text-sm">Gokul Sharma</p>
+                </div>
+              </div>
+
+              <span class="ml-auto text-gray-400">3:44</span>
+            </li>
+
+          </ul>
+        </div>`
+
+        top_main.append(div)
 }
+
+// getArtistsAblumUI()
