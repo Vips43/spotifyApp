@@ -40,12 +40,12 @@ export async function getArtistsDetails() {
   })
   const data = await res.json();
   let artistsInfo = data.artists.map(d => ({
-    id:d.id,
+    id: d.id,
     name: d.name,
     image: d.images[1]?.url || d.images[0]?.url || d.images[2].url,
   }))
-  console.log(artistsInfo);
-  
+  // console.log(artistsInfo);
+
   return artistsInfo;
 }
 getArtistsDetails()
@@ -76,6 +76,8 @@ export async function getArtistsAblum(id) {
       headers: { "Authorization": `Bearer ${token}` }
     }
   );
+  // console.log(tracks);
+
   const artists = await res2.json();
   let artistsInfo = {
     image: artists.images[0].url,
@@ -84,12 +86,13 @@ export async function getArtistsAblum(id) {
   }
   let artistsTracks = tracks.tracks.map(track => ({
     name: track.name,
+    image: track.album.images[2]?.url || track.album.images[1]?.url || track.album.images[0]?.url,
     song: track.external_urls.spotify,
     duration: formateDuration(track.duration_ms)
   }))
   return { artistsInfo, artistsTracks }
 }
-
+getArtistsAblum(`3xjuY3FqcHemteM5aOv1LA`)
 
 
 

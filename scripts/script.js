@@ -389,10 +389,12 @@ const getRandGradient = cssGradients[Math.floor(Math.random() * cssGradients.len
 
 async function getArtistsAblumUI(ids) {
   const { artistsInfo, artistsTracks } = await getArtistsAblum(ids);
-  console.log(artistsInfo);
+  // artistsTracks.forEach(t=>console.log(t))
+  console.log(artistsTracks[1]);
+  
   top_main.innerHTML = '';
   const div = document.createElement("div");
-  div.className = `w-full ${getRandGradient} bg-neutral-950 text-white py-8 px-6 lg:px-12`;
+  div.className = `w-full ${getRandGradient} relative bg-neutral-950 text-white py-8 px-6 lg:px-12`;
   div.innerHTML =
     `<div class="flex items-center gap-6 lg:gap-10">
           <div class="w-40 h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl">
@@ -405,7 +407,7 @@ async function getArtistsAblumUI(ids) {
             </p>
           </div>
         </div>
-        <div class="mt-8 flex items-center gap-6">
+        <div class="mt-8 sticky top-0 flex items-center gap-6">
           <button class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition-all">
             <i class="fa-solid fa-play text-black text-xl"></i>
           </button>
@@ -421,20 +423,21 @@ async function getArtistsAblumUI(ids) {
           <h3 class="text-xl font-semibold mb-4">Popular</h3>
 
           <ul class="space-y-2">
-            <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-900 cursor-pointer">
-              <span class="text-gray-400">1</span>
+          ${artistsTracks.map((track, i)=> 
+            
+            `<li class="flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-700 cursor-pointer">
+              <span class="text-gray-400">${i+1}</span>
 
               <div class="flex items-center gap-3">
-                <img src="images/teri-yaadeinglory-500-500.jpg" class="h-12 w-12 rounded" />
+                <img src="${track.image}" class="h-12 w-12 rounded" />
                 <div>
-                  <p class="font-semibold">Teri Yaadein</p>
-                  <p class="text-gray-400 text-sm">Gokul Sharma</p>
+                  <p class="font-semibold">${track.name}</p>
                 </div>
               </div>
 
-              <span class="ml-auto text-gray-400">3:44</span>
-            </li>
-
+              <span class="ml-auto text-gray-400">${track.duration}</span>
+            </li>`
+          ).join('')}
           </ul>
         </div>`
 
