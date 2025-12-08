@@ -1,3 +1,79 @@
+const New_releases = new Swiper('.New_releases', {
+  loop: false,
+  speed: 600,               // smoother slide animation
+  spaceBetween: 10,         // spacing between cards
+  grabCursor: true,         // cursor changes to grab on hover
+  centeredSlides: false,    // looks better for cards
+
+  slidesPerView: 'auto',         // default for mobile
+
+  // Responsive breakpoints
+  breakpoints: {
+    480: {
+      slidesPerView: 2.5,
+      spaceBetween: 1
+    },
+    640: {
+      slidesPerView: 2.5,
+      spaceBetween: 4
+    },
+    768: {
+      slidesPerView: 2.5,
+      spaceBetween: 3
+    },
+    1024: {
+      slidesPerView: 3,
+      spaceBetween: 2
+    },
+    1280: {
+      slidesPerView: 4.5,
+      spaceBetween: 1
+    }
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+
+  scrollbar: {
+    el: '.swiper-scrollbar',
+    draggable: true,
+  },
+});
+const artistSwiper = new Swiper('.artistSwiper', {
+  slidesPerView: 'auto',
+  spaceBetween: 10,
+  loop: false,
+  navigation: {
+    nextEl: '.artist-next',
+    prevEl: '.artist-prev',
+  },
+  breakpoints: {
+    320: { slidesPerView: 2 },
+    640: { slidesPerView: 3 },
+    1024: { slidesPerView: 4 },
+    1280: { slidesPerView: 6 }
+  }
+});
+const episode_swiper = new Swiper('.episode_swiper', {
+  slidesPerView: 'auto',
+  spaceBetween: 10,
+  centeredSlides: false,
+  loop: false,
+  navigation: {
+    nextEl: '.episode-next',
+    prevEl: '.episode-prev',
+  },
+  breakpoints: {
+    320: { slidesPerView: 2 },
+    640: { slidesPerView: 3 },
+    1024: { slidesPerView: 4 },
+    1280: { slidesPerView: 6 }
+  }
+});
+
+
+
 function home() {
   location.reload()
 }
@@ -60,3 +136,18 @@ async function check_network() {
     return false;
   }
 }
+
+
+const folderBtn = document.getElementById("folderBtn");
+const dropdown = document.getElementById("searchDropdown");
+
+folderBtn.addEventListener("click", () => {
+  dropdown.classList.toggle("hidden");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (!dropdown.contains(e.target) && !folderBtn.contains(e.target)) {
+    dropdown.classList.add("hidden");
+  }
+});

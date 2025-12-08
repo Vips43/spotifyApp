@@ -43,3 +43,50 @@
     #0a0a0a    /* neutral-950 */
   );
 }
+/* MICRO NAV BUTTONS */
+.swiper .swiper-button-next,
+.swiper .swiper-button-prev {
+  width: 18px !important;
+  height: 18px !important;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  transition: 0.25s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* MICRO ARROW ICONS */
+.swiper .swiper-button-next::after,
+.swiper .swiper-button-prev::after {
+  font-size: 6px !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  line-height: 0 !important;
+}
+
+/* Hover effect */
+.swiper .swiper-button-next:hover,
+.swiper .swiper-button-prev:hover {
+  background: rgba(0, 255, 95, 0.35);
+  transform: scale(1.2);
+}
+/* Fix slide width so swiper doesn't override it */
+.curtomswiper .swiper-slide {
+  width: 11rem !important;  /* w-44 */
+  max-width: 11rem !important;
+  flex-shrink: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #111;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  transition: background 0.3s;
+  overflow: hidden;
+}
+
+.curtomswiper .swiper-slide:hover {
+  background: #242424;
+}

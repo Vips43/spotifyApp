@@ -94,23 +94,67 @@ export async function getArtistsAblum(id) {
 }
 getArtistsAblum(`3xjuY3FqcHemteM5aOv1LA`)
 
+function formatDate(d){
+  const date = new Date(d);
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const day = date.getDate()
+  const month = monthNames[date.getMonth()]
+  return `${day} ${month}`;
+  
+}
+// formatDate('2025-11-22')
 
 
 
+export async function getEpisodes(q) {
+  const uri = `https://api.spotify.com/v1/search?q=${q}&type=episode&limit=10`
 
-
-
-export async function dummy() {
   const token = await getAccessToken();
   const res = await fetch(
-    `https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy`,
+    `${uri}`,
     {
       method: "GET",
       headers: { "Authorization": `Bearer ${token}` }
     }
   );
   const data = await res.json();
+  const episodesList = data.episodes.items.map(ep => ({
+    id: ep.id,
+    name: ep.name,
+    release: formatDate(ep.release_date),
+    image: ep.images[1].url,
+    duration: Math.floor(ep.duration_ms / 60000) + "min",
+    url: ep.external_urls.spotify
+  }))
   console.log(data);
-  return data.tracks.items;
+  
+  return { episodesList };
 }
-// dummy()
+//  getEpisodes('top')
+
+async function dummy(q) {
+  // const uri = `https://api.spotify.com/v1/recommendations`
+  const uri = `https://api.spotify.com/v1/search?q=${q}&type=episode&limit=10`
+  // const uri = `https://api.spotify.com/v1/artists/${q}`
+
+  const token = await getAccessToken();
+  const res = await fetch(
+    `${uri}`,
+    {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${token}` }
+    }
+  );
+  const data = await res.json();
+  const episodesList = data.episodes.items.map(ep => ({
+    id: ep.id,
+    name: ep.name,
+    release: ep.release_data,
+    image: ep.images[2].url,
+    duration: ep.duration_ms
+  }))
+
+  console.log(episodesList);
+  // return data;
+}
+// dummy('top')

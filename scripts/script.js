@@ -1,17 +1,20 @@
-import { getArtistsDetails, getArtistsAblum } from './data.js';
+import { getArtistsDetails, getArtistsAblum, getEpisodes } from './data.js';
 
-const song_list = document.querySelector('.song-list');
+const song_search = document.querySelector('#song-search');
 let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn');
+let title = document.querySelector('.title')
 let top_main = document.getElementById('top_main'),
   top_main_section_h3 = document.querySelector('#top_main section h3'),
-  top_main_section_div = document.querySelector('#top_main section div');
+  top_main_section_div = document.querySelector('#top_main_section_div');
 let categoryContainerDiv = document.querySelector('.category_container div'),
   category_div = document.getElementById('category_div'),
   category_container = document.querySelector('.category_container h3'),
-  title = document.querySelector('#main_body_title h1'),
   show_song_container = document.querySelector('.show-song-container'),
   show_song_container_h3 = document.querySelector('.show-song-container-h3');
+const episode_section = document.getElementById('episode_section'),
+  episode_section_h1 = document.getElementById('episode_section h1'),
+  episode_container = document.getElementById('episode_container')
 
 
 
@@ -53,62 +56,49 @@ document.addEventListener("DOMContentLoaded", () => {
   //   searchSongsUI(spotifyData.searchResults);
   //   title.innerHTML = "Last Search Results";
   // }
+  newReleasesUI()
 })
 
 function searchSongsUI(songArr) {
-
-  song_list.innerHTML = ''
+  song_search.innerHTML = ''
   songArr.forEach((song, i) => {
     let div = document.createElement("div")
     div.className =
-      "song-container flex-shrink-0 w-50 p-3 bg-neutral-900 rounded-xl hover:bg-neutral-800 transition grid gap-3 overflow-hidden";
-
+      "song-container w-44 sm:w-48 p-2 bg-neutral-900 rounded-xl hover:bg-neutral-800 transition grid gap-3 overflow-hidden";
     div.innerHTML = `
         <div class="relative w-44 h-44 overflow-hidden rounded-lg group">
           <img class=" h-full object-cover rounded-lg" src="${song.imgURL}" alt="">
-
           <!-- Play Icon -->
           <div 
             class="absolute play-icon">
             <i class="fa-solid fa-play"></i>
           </div>
         </div>
-
-        <a class="audio" href="${song.songSRC}"></a>
-
+        <audio class="audio" href="${song.songSRC}"></audio>
         <div class="caption">
           <h3 class="font-semibold truncate">${song.artistName}</h3>
           <p class="text-gray-400 text-sm truncate">${song.trackName}</p>
-        </div>
-`;
-
-
-    song_list.append(div);
+        </div>`;
+    song_search.append(div);
   })
-
 }
 
 input_Btn.addEventListener("click", async () => {
   let search = input_Search.value.trim()
   if (!search) return 0;
 
-  // SHOW LOADER & HIDE SONG LIST
-  // loader.classList.remove("hidden");
-  song_list.classList.add("hidden");
+  song_search.classList.add("hidden");
   title.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`;
 
   let data = await searchSongs(search);
-
-  // Hide loader when finished
-  // loader.classList.add("hidden");
-  song_list.classList.remove("hidden");
+  song_search.classList.remove("hidden");
 
   title.innerHTML = `Searched results for: &nbsp; <span class="capitalize font font-bold text-white"> ${search} </span>`
 
   let results = data.map(item => {
     // const track = item.data;
     return {
-      songSRC: item.href || '#',
+      songSRC: item.preview_url || "",
       trackName: item.name || "Unknown Track",
       imgURL: item.album.images[0].url || "fallback.jpg",
       artistName: item.artists[0].name || "Unknown Artist",
@@ -121,17 +111,8 @@ input_Btn.addEventListener("click", async () => {
   searchSongsUI(results)
 })
 
-
-// async function getToken() {
-//   const res = await fetch("http://localhost:5000/token");
-//   const data = await res.json();
-//   return data.access_token;
-// }
-
-
 async function searchSongs(query) {
-  const token = await getAccessToken(); // get fresh token
-
+  const token = await getAccessToken();
   const res = await fetch(
     `https://api.spotify.com/v1/search?q=${query}&type=track`,
     {
@@ -141,19 +122,12 @@ async function searchSongs(query) {
     }
   );
   const data = await res.json();
-
-  // data.tracks.items.forEach(track=>{console.log(track.artists[0].id, track.popularity)})
-
   return data.tracks.items;
 }
-searchSongs('gokul sharma')
-// localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
 
 document.addEventListener("DOMContentLoaded", async () => {
   renderGenres()
 })
-
-getNewReleases()
 async function getNewReleases() {
   const token = await getAccessToken();
 
@@ -168,7 +142,6 @@ async function getNewReleases() {
 }
 function newReleaseArray(releaseData) {
   spotifyData.newReleases = [];
-
   releaseData.forEach(r => {
     const artistsName = r.artists.map(a => a.name).join(', ');
     spotifyData.newReleases.push({
@@ -177,7 +150,6 @@ function newReleaseArray(releaseData) {
       artist: artistsName
     });
   });
-
   // SAVE IN LOCAL STORAGE
   localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
   return spotifyData.newReleases;
@@ -195,7 +167,7 @@ async function newReleasesUI() {
   data.forEach(item => {
     const div = document.createElement("div");
     div.className =
-      "song-card flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition";
+      "swiper-slide flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition";
 
     div.innerHTML = `
       <div class="relative w-full h-48 overflow-hidden rounded-lg group">
@@ -213,8 +185,6 @@ async function newReleasesUI() {
     show_song_container.append(div);
   });
 }
-
-newReleasesUI()
 
 
 const GENRES = [
@@ -267,7 +237,7 @@ function renderGenres() {
 
 function renderPlaylistsUI(playlists) {
   show_song_container.innerHTML = ``;
-  song_list.innerHTML = ``;
+  song_search.innerHTML = ``;
   title.innerHTML = ``;
 
   const wrapper = document.createElement("div");
@@ -360,21 +330,22 @@ document.getElementById("artistBtn").addEventListener("click", async function ar
   top_main_section_div.innerHTML = ''
   artists.forEach(artist => {
     const div = document.createElement("div");
-    div.className = 'flex-shrink-0 w-44 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition';
-    div.innerHTML =
-      `<div class="relative overflow-hidden rounded-lg group">
-        <img class="w-40 h-40 object-cover rounded-full" 
-        src="${artist.image}" alt="">
-        <div class="absolute play-icon">
-          <i class="fa-solid fa-play"></i>
-        </div>
+    div.className = "swiper-slide flex-shrink-0 w-44! flex flex-col justify-between items-center bg-neutral-900 rounded-xl py-3 hover:bg-neutral-800 transition";
+
+    div.innerHTML = `
+    <div class="relative overflow-hidden rounded-lg group">
+      <img class="w-40 h-40 object-cover rounded-full" src="${artist.image}" alt="">
+      <div class="absolute play-icon">
+        <i class="fa-solid fa-play"></i>
       </div>
-      <div class="caption mt-3">
-        <p class="text-gray-400 text-sm truncate">${artist.name}</p>
-      </div>`;
-    div.onclick = () => getArtistsAblumUI(artist.id)
+    </div>
+    <div class="caption mt-3">
+      <p class="text-gray-400 text-sm truncate">${artist.name}</p>
+    </div>`;
+    div.onclick = () => getArtistsAblumUI(artist.id);
     top_main_section_div.append(div);
-  })
+  });
+
 })
 // artistsUI()
 
@@ -391,7 +362,7 @@ async function getArtistsAblumUI(ids) {
   const { artistsInfo, artistsTracks } = await getArtistsAblum(ids);
   // artistsTracks.forEach(t=>console.log(t))
   console.log(artistsTracks[1]);
-  
+
   top_main.innerHTML = '';
   const div = document.createElement("div");
   div.className = `w-full ${getRandGradient} relative bg-neutral-950 text-white py-8 px-6 lg:px-12`;
@@ -423,10 +394,10 @@ async function getArtistsAblumUI(ids) {
           <h3 class="text-xl font-semibold mb-4">Popular</h3>
 
           <ul class="space-y-2">
-          ${artistsTracks.map((track, i)=> 
-            
-            `<li class="flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-700 cursor-pointer">
-              <span class="text-gray-400">${i+1}</span>
+          ${artistsTracks.map((track, i) =>
+
+      `<li class="flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-700 cursor-pointer">
+              <span class="text-gray-400">${i + 1}</span>
 
               <div class="flex items-center gap-3">
                 <img src="${track.image}" class="h-12 w-12 rounded" />
@@ -437,11 +408,38 @@ async function getArtistsAblumUI(ids) {
 
               <span class="ml-auto text-gray-400">${track.duration}</span>
             </li>`
-          ).join('')}
+    ).join('')}
           </ul>
         </div>`
 
-        top_main.append(div)
+  top_main.append(div)
 }
 
-// getArtistsAblumUI()
+async function episodeCardUI() {
+  const { episodesList } = await getEpisodes('random');
+
+  console.log(episodesList);
+
+
+  episodesList.forEach(ep => {
+    const swiperDiv = document.createElement('div');
+    swiperDiv.className = 'swiper-slide';
+    swiperDiv.innerHTML =
+      `<div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
+      <img class="w-full h-full object-cover" src="${ep.image}" alt="">
+      <div class="absolute play-icon">
+        <i class="fa-solid fa-play"></i>
+      </div>
+    </div>
+    <div class="caption mt-3 text-left">
+      <p class="text-gray-300 font-inter truncate w-40 flex items-center gap-1"><span class="text-2xl text-blue-700">•</span>
+          <a href="${ep.url}" target="_blank"><span class="text-[1.15rem] hover:underline">${ep.name}</span></a>
+      </p>
+      <p class="text-gray-500 text-xs truncate w-40">
+        <span>${ep.release}</span> • <span>${ep.duration}</span>
+      </p>
+    </div>`;
+    episode_container.append(swiperDiv);
+  })
+}
+episodeCardUI()
