@@ -1,11 +1,12 @@
-import { getArtistsDetails, getArtistsAblum, getEpisodes } from './data.js';
+import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases } from './data.js';
+
 
 const song_search = document.querySelector('#song-search');
 let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn');
 let title = document.querySelector('.title')
-let top_main = document.getElementById('top_main'),
-  top_main_section_h3 = document.querySelector('#top_main section h3'),
+let top_main = document.querySelector('top_main'),
+  top_main_section_h3 = document.querySelector('.top_main section h3'),
   top_main_section_div = document.querySelector('#top_main_section_div');
 let categoryContainerDiv = document.querySelector('.category_container div'),
   category_div = document.getElementById('category_div'),
@@ -15,12 +16,13 @@ let categoryContainerDiv = document.querySelector('.category_container div'),
 const episode_section = document.getElementById('episode_section'),
   episode_section_h1 = document.getElementById('episode_section h1'),
   episode_container = document.getElementById('episode_container')
+let episode = document.getElementById("episode");
 
 
 
 
 let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
-  categories: [], newReleases: [], searchResults: []
+  categories: [], newReleases: [], searchResults: [], episodesList: []
 };
 
 
@@ -32,31 +34,14 @@ category_container.addEventListener("click", () => {
 })
 
 
-const clientId = `ae099a85abfd490f942ad96cecc1e3fe`;
-const clientSecret = `08929370795044bb9726eccb1421c08c`;
-
-async function getAccessToken() {
-  const result = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Authorization":
-        "Basic " +
-        btoa(clientId + ":" + clientSecret).toString("base64"),
-    },
-    body: "grant_type=client_credentials",
-  });
-
-  const data = await result.json();
-  return data.access_token;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
   //   searchSongsUI(spotifyData.searchResults);
   //   title.innerHTML = "Last Search Results";
   // }
   newReleasesUI()
+  // episodeFetchLocalstorage();
+
 })
 
 function searchSongsUI(songArr) {
@@ -126,34 +111,37 @@ async function searchSongs(query) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  renderGenres()
+  // renderGenres()
 })
-async function getNewReleases() {
-  const token = await getAccessToken();
 
-  const res = await fetch(`https://api.spotify.com/v1/browse/new-releases`, {
-    headers: { "Authorization": `Bearer ${token}` }
-  });
+// async function getNewReleases() {
+//   if (spotifyData.newReleases && spotifyData.newReleases > 0) {
+//     console.log('fetched from localstorage');
+//     return spotifyData.newReleases;
 
-  const data = await res.json();
-  const releaseData = data.albums.items;
-  newReleaseArray(releaseData)
-  return releaseData;
-}
-function newReleaseArray(releaseData) {
-  spotifyData.newReleases = [];
-  releaseData.forEach(r => {
-    const artistsName = r.artists.map(a => a.name).join(', ');
-    spotifyData.newReleases.push({
-      image: r.images[0].url,
-      name: r.name,
-      artist: artistsName
-    });
-  });
-  // SAVE IN LOCAL STORAGE
-  localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
-  return spotifyData.newReleases;
-}
+//   } else {
+//     const token = await getAccessToken();
+//     const res = await fetch(`https://api.spotify.com/v1/browse/new-releases`, {
+//       headers: { "Authorization": `Bearer ${token}` }
+//     });
+//     const data = await res.json();
+//     const albums = data.albums.items;
+
+//     console.log('fetched from API');
+//     return newReleaseArray(albums)
+//   }
+// }
+// function newReleaseArray(releaseData) {
+//   spotifyData.newReleases = releaseData.map(r => ({
+//     image: r.images?.[0]?.url || "",
+//     name: r.name,
+//     artist: r.artists.map(a => a.name).join(", ")
+//   }));
+//   // SAVE IN LOCAL STORAGE
+//   console.log('saved new releases to localstorage');
+//   localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
+//   return spotifyData.newReleases;
+// }
 
 async function newReleasesUI() {
   let stored = JSON.parse(localStorage.getItem("spotifyData"));
@@ -162,15 +150,14 @@ async function newReleasesUI() {
     await getNewReleases();
     stored = JSON.parse(localStorage.getItem("spotifyData"));
   }
-  const data = stored.newReleases;   // now safe & guaranteed
+  const data = stored.newReleases;
   show_song_container.innerHTML = '';
   data.forEach(item => {
     const div = document.createElement("div");
-    div.className =
-      "swiper-slide flex-shrink-0 w-44 sm:w-48 md:w-52 lg:w-56 bg-neutral-900 rounded-xl p-3 hover:bg-neutral-800 transition";
+    div.className = "swiper-slide";
 
     div.innerHTML = `
-      <div class="relative w-full h-48 overflow-hidden rounded-lg group">
+      <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
         <img class="w-full h-full object-cover" src="${item.image}" alt="">
         <div
           class="absolute play-icon">
@@ -202,6 +189,7 @@ async function searchGenrePlaylists(genre) {
     }
   );
   const data = await res.json();
+
   return data;
 }
 // searchGenrePlaylists('pop')
@@ -241,12 +229,10 @@ function renderPlaylistsUI(playlists) {
   title.innerHTML = ``;
 
   const wrapper = document.createElement("div");
-  wrapper.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6";
+  wrapper.className = "grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2";
 
   playlists.forEach(pl => {
     if (pl) {
-      console.log(pl);
-
       const card = document.createElement("div");
       card.className = `
       bg-neutral-900 p-3 rounded-xl hover:bg-neutral-800 transition cursor-pointer
@@ -278,7 +264,6 @@ async function showPlaylistTracks(playlistId, name) {
   title.innerHTML = '';
 
   const token = await getAccessToken();
-  console.log(playlistId);
 
   const res = await fetch(
     `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=40`,
@@ -288,15 +273,15 @@ async function showPlaylistTracks(playlistId, name) {
   );
 
   const data = await res.json();
-  console.log("TRACKS:", data.items);
 
   renderTrackUI(data.items);
 
-  show_song_container_h3.innerHTML = `
-    <h2 class="text-2xl font-bold mb-4">${name}</h2>`;
 }
+
 function renderTrackUI(tracks) {
   show_song_container.innerHTML = ``;
+  show_song_container_h3.innerHTML = `
+  <h2 class="text-2xl font-bold mb-4">${name}</h2>`;
   tracks.forEach(t => {
     const track = t.track;
     if (!track && !track.album.images[0]?.url) return;
@@ -322,7 +307,7 @@ function renderTrackUI(tracks) {
   });
 }
 
-document.getElementById("artistBtn").addEventListener("click", async function artistsUI() {
+document.querySelector(".artistBtn").addEventListener("click", async function artistsUI() {
   top_main_section_h3.style.display = 'flex';
   const artists = await getArtistsDetails();
   top_main_section_h3.style.display = 'none';
@@ -330,10 +315,10 @@ document.getElementById("artistBtn").addEventListener("click", async function ar
   top_main_section_div.innerHTML = ''
   artists.forEach(artist => {
     const div = document.createElement("div");
-    div.className = "swiper-slide flex-shrink-0 w-44! flex flex-col justify-between items-center bg-neutral-900 rounded-xl py-3 hover:bg-neutral-800 transition";
+    div.className = "swiper-slide";
 
     div.innerHTML = `
-    <div class="relative overflow-hidden rounded-lg group">
+    <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
       <img class="w-40 h-40 object-cover rounded-full" src="${artist.image}" alt="">
       <div class="absolute play-icon">
         <i class="fa-solid fa-play"></i>
@@ -347,21 +332,24 @@ document.getElementById("artistBtn").addEventListener("click", async function ar
   });
 
 })
-// artistsUI()
+
+// async function getArtistsAblumLocalStorage() {
+
+// }
 
 //radnome gradient 
 const cssGradients = [
-  "red-gradient",
-  "blue-gradient",
-  "orange-gradient",
-  "slate-gradient"
+  "red-gradient", "blue-gradient",
+  "orange-gradient", "slate-gradient"
 ];
+const solidMap = {
+  "red-gradient": "red-solid", "blue-gradient": "blue-solid", "orange-gradient": "orange-solid", "slate-gradient": "slate-solid"
+};
 const getRandGradient = cssGradients[Math.floor(Math.random() * cssGradients.length)];
+const solidColor = solidMap[getRandGradient];
 
 async function getArtistsAblumUI(ids) {
   const { artistsInfo, artistsTracks } = await getArtistsAblum(ids);
-  // artistsTracks.forEach(t=>console.log(t))
-  console.log(artistsTracks[1]);
 
   top_main.innerHTML = '';
   const div = document.createElement("div");
@@ -378,7 +366,7 @@ async function getArtistsAblumUI(ids) {
             </p>
           </div>
         </div>
-        <div class="mt-8 sticky top-0 flex items-center gap-6">
+        <div class="mt-8 sticky ${solidColor} top-0 flex items-center p-3 gap-6">
           <button class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition-all">
             <i class="fa-solid fa-play text-black text-xl"></i>
           </button>
@@ -416,13 +404,11 @@ async function getArtistsAblumUI(ids) {
 }
 
 async function episodeCardUI() {
-  const { episodesList } = await getEpisodes('random');
-
-  console.log(episodesList);
-
+  const episodesList  = await getEpisodes('top')
 
   episodesList.forEach(ep => {
     const swiperDiv = document.createElement('div');
+    swiperDiv.dataset.id = ep.id;
     swiperDiv.className = 'swiper-slide';
     swiperDiv.innerHTML =
       `<div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
@@ -439,7 +425,146 @@ async function episodeCardUI() {
         <span>${ep.release}</span> • <span>${ep.duration}</span>
       </p>
     </div>`;
+
     episode_container.append(swiperDiv);
+    episode_container.addEventListener('click', async (e) => {
+      const slide = e.target.closest(".swiper-slide");
+      if (!slide) return
+
+      const id = slide.dataset.id;
+      episode_container.classList.add("hidden")
+      episode.classList.remove('hidden')
+      episodeDetailsUI(episodesList, id)
+    })
+
   })
 }
 episodeCardUI()
+// async function episodeFetchLocalstorage(id) {
+//   let stored = JSON.parse(localStorage.getItem("spotifyData")) || {};
+//   let episodesList = stored.episodesList || [];
+//   let episodeDetails = stored.episodeDetails || [];
+
+//   if (!episodesList.length) {
+//     console.log('Fetching from API...');
+//     const data = await getEpisodes("devotional")
+//     episodesList = data.episodesList;
+//   }
+//   if (!episodeDetails.length) {
+//     console.log('Fetching from API...');
+//     const data = await getEpisodesDetails(id)
+//     episodeDetails = data.episodeDetails;
+//     saveLocalStorage()
+//   }
+//   episodeCardUI(episodesList);
+//   episodeDetailsUI(episodeDetails, id);
+// }
+
+
+
+async function episodeDetailsUI(details, id) {
+
+  let episodeDetails = await getEpisodesDetails(id)
+  let data1 = details
+  let data = episodeDetails[0];
+  // episode.classList.replace("block", 'hidden')
+  episode.innerHTML = '';
+  const div = document.createElement("div");
+  div.innerHTML =
+    `<div class="bg-[url('${data.background}')] bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" data-id='${data.id}'>
+    <div class="space-y-3 bg-black/60 h-full flex flex-col justify-center ">
+      <h5 class="text-sm">
+        <span class="text-blue-500 text-2xl">•</span> New Podcast Episode
+      </h5>
+      <h3 class="text-2xl font-bold overflow-hidden clamp-3">${data.desc}
+      </h3>
+      <div class="flex items-center gap-3">
+        <img src="${data.thumb}" class="w-12 h-16 object-cover" />
+        <p class="flex flex-col"><span>${data.name}</span><span class="text-gray-500">${data.show.show_publisher}</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="mt-8 sticky top-0 z-20">
+    <div class="blue-gradient p-3 grid gap-3">
+      <div class="opacity-70 hover:opacity-100 cursor-pointer">
+        <i class="fa-regular fa-circle-play"></i>
+        <span>Video</span> • <span>${data.release}</span> • <span>${data.duration}</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <button
+          class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition">
+          <i class="fa-solid fa-play text-black text-xl"></i>
+        </button>
+        <audio src="${data.audio_prev}"></audio>
+
+        <div class="text-2xl flex gap-3">
+          <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
+          <i class="fa-solid fa-plus opacity-70 hover:opacity-100 cursor-pointer"></i>
+          <i class="fa-solid fa-shuffle opacity-70 hover:opacity-100 cursor-pointer"></i>
+        </div>
+
+        <button
+          class="px-4 py-1.5 border border-neutral-600 rounded-full text-sm hover:border-white transition">
+          Follow
+        </button>
+
+        <span class="text-sm opacity-70 hover:opacity-100 cursor-pointer">•••</span>
+      </div>
+    </div>
+  </div>
+  <div class="relative z-10">
+    <div class="sticky top-[95px] bg-neutral-950 pt-5">
+      <div class="flex gap-10 items-center border-b border-neutral-700 pb-2">
+        <h3 class="relative px-4 py-2 bottom_border">Description</h3>
+        <h3 class="relative px-4 py-2">Transcript</h3>
+      </div>
+    </div>
+    <div class="mt-4 pr-2">
+      <p class="text-gray-300 leading-relaxed"> ${data.desc} </p>
+    </div>
+  </div>
+  <div class="relative mt-10 bg-neutral-900">
+    <h3 class="sticky top-[110px] bg-neutral-900 text-xl font-semibold py-3 border-b border-neutral-700">More Episode like this</h3>
+
+    <ul class="space-y-2 w-full">
+    ${data1.map(d => (
+      `<li class="flex items-center gap-4 cursor-pointer border-b border-neutral-700" data-id='{d.id}'>
+        <div class="lihover p-4 flex-shrink-0 w-full min-w-0 rounded-lg">
+          <div class="flex items-center gap-3">
+            <img src="${d.image}" class="h-16 object-contain aspect-video rounded" />
+            <div class="overflow-hidden w-full min-w-0">
+              <h2 class="font-medium text-lg clamp-2 leading-tight">
+                <span class="text-blue-700"> • </span> ${d.desc} </h2>
+              <p class="text-neutral-400">
+                <i class="fa-regular fa-circle-down"></i> Video • ${d.name}
+              </p>
+            </div>
+          </div>
+          <div class="my-2 text-sm space-y-2">
+            <p class="clamp-2 text-gray-400 ">${d.desc}</p>
+            <p>${d.release} • ${d.duration}</p>
+          </div>
+          <div class="flex items-center gap-10 mt-5">
+            <i class="fa-solid fa-plus opacity-70 hover:opacity-100 cursor-pointer"></i>
+            <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
+            <i class="fa-solid fa-arrow-up-from-bracket opacity-70 hover:opacity-100 cursor-pointer"></i>
+            <span class="text-sm opacity-70 hover:opacity-100 cursor-pointer">• • •</span>
+            <button
+              class="w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
+              <i class="fa-solid fa-play text-black text-lg"></i>
+            </button>
+            <audio src="${d.audio_prev}"></audio>
+          </div>
+        </div>
+
+      </li>`
+    )).join('')}
+    </ul>
+
+  </div>`
+
+
+  episode.append(div)
+
+}

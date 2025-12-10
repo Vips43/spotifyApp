@@ -28,3 +28,6 @@
 .play-icon {
  @apply bottom-2 right-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-3 transition-all duration-300 bg-green-500 text-black h-9 w-9 grid place-items-center rounded-full shadow-lg cursor-pointer;
 }
+.bottom_border{
+    @apply before:absolute before:bottom-0 before:w-3 before:h-1 before:bg-blue-900 before:-translate-x-1/2 before:left-1/2;
+}

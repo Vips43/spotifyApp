@@ -9,11 +9,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="./libs/swiper-bundle.min.css">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <!-- <link rel="stylesheet" href="./css/all.min.css"> -->
 
   <link rel="icon" href="images/spotify-logo.png" type="image/png" />
   <!-- Tailwind output -->
@@ -93,7 +93,7 @@
   <!-- MAIN LAYOUT -->
   <div id="main" class="flex w-full h-[calc(100vh-4rem)] overflow-y-auto">
     <!-- LEFT SIDEBAR -->
-    <aside class="bg-black w-20 h-full md:w-48 lg:w-52 transition-all duration-300">
+    <aside class="bg-black hidden md:block sm:w-20 h-full md:w-48 lg:w-52 transition-all duration-300">
       <div class="p-4">
 
         <!-- Library -->
@@ -135,7 +135,7 @@
     <!-- RIGHT BODY -->
     <main class="flex-1 rounded-t-2xl h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hidden">
 
-      <section id="top_main" class="bg-gradient-to-b from-gray-700 via-neutral-900 to-neutral-950">
+      <section id="top_main" class="top_main bg-gradient-to-b from-gray-700 via-neutral-900 to-neutral-950">
 
         <div class="z-10 sticky top-0 rounded-t-2xl">
           <div class="ml-5">
@@ -143,15 +143,18 @@
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">All</button></li>
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Songs</button></li>
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Podcasts</button></li>
-              <li><button id="artistBtn"
-                  class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</button></li>
+              <li><button id="#artist"
+                  class="artistBtn p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</button></li>
             </ul>
           </div>
         </div>
-        <section class="page scrollbar overflow-auto relative px-2 transition-all duration-500">
+        <section id='episode' class="bg-neutral-950 text-white py-8 px-6 lg:px-12 w-full hidden">
+        </section>
+
+        <section id="artist" class="page scrollbar overflow-auto relative px-2 transition-all duration-500">
           <h3 class="w-fit hidden mx-16">Loading <span class="typewriter-animation">. . .</span></h3>
           <!-- Example card -->
-          <div class="swiper artistSwiper py-4">
+          <div class="swiper curtomswiper artistSwiper py-4">
             <div class="swiper-wrapper" id="top_main_section_div">
               <!-- JS will inject artists here -->
             </div>
@@ -169,7 +172,8 @@
           <h1 class="text-lg sm:text-2xl font-bold title p-1 flex items-center max-h-7 w-fit">Trending songs </h1>
         </div>
         <!-- SONG GRID -->
-        <div id="song-search" class=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-6 overflow-auto">
+        <div id="song-search"
+          class=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-6 overflow-auto">
           <!-- JS Will Inject Songs Here -->
         </div>
       </section>
@@ -195,23 +199,6 @@
         <div class="swiper curtomswiper episode_swiper py-4">
           <div class="swiper-wrapper" id="episode_container">
 
-            <!-- <div class="swiper-slide">
-              <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
-                <img class="w-full h-full object-cover" src="images/teri-yaadeinglory-500-500.jpg" alt="">
-                <div class="absolute play-icon">
-                  <i class="fa-solid fa-play"></i>
-                </div>
-              </div>
-              <div class="caption mt-3 text-left">
-                <p class="text-gray-300 font-inter truncate w-40 flex items-center gap-1"><span class="text-2xl text-blue-700">•</span>
-                    <a href="${ep.url}" target="_blank"><span class="text-[1.15rem] hover:underline">Episode name</span></a>
-                </p>
-                <p class="text-gray-500 text-xs truncate w-40">
-                  <span>5 Dec</span> • <span>27 min</span>
-                </p>
-              </div>
-            </div> -->
-
           </div>
 
           <!-- navigation arrows -->
@@ -222,7 +209,7 @@
       </section>
 
     </main>
-    <aside class="bg-white w-30 below-600:hidden md:w-40 lg:w-80">
+    <aside class="bg-white hidden sm:w-30 md:w-40 lg:w-80">
       <div>
 
       </div>
@@ -230,6 +217,7 @@
   </div>
 
   <!-- SCRIPT -->
+  <script src="./libs/swiper-bundle.min.js"></script>
   <script type="module" src="scripts/script.js"></script>
   <script src="scripts/index.js"></script>
 

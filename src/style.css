@@ -12,81 +12,115 @@
  }
 }
 .red-gradient {
-  background: linear-gradient(
-    to bottom,
-    #991b1b,   /* red-800 */
-    #171717,   /* neutral-900 */
-    #0a0a0a    /* neutral-950 */
-  );
+ background: linear-gradient(
+  to bottom,
+  #991b1b,
+  /* red-800 */ #171717,
+  /* neutral-900 */ #0a0a0a /* neutral-950 */
+ );
 }
 .blue-gradient {
-  background: linear-gradient(
-    to bottom,
-    #1e3a8a,   /* blue-800 */
-    #171717,   /* neutral-900 */
-    #0a0a0a    /* neutral-950 */
-  );
+ background: linear-gradient(
+  to bottom,
+  #1e3a8a,
+  /* blue-800 */ #1c1f35,
+  /* neutral-900 */ #0a0a0a /* neutral-950 */
+ );
 }
 .orange-gradient {
-  background: linear-gradient(
-    to bottom,
-    #9a3412,   /* orange-800 */
-    #171717,   /* neutral-900 */
-    #0a0a0a    /* neutral-950 */
-  );
+ background: linear-gradient(
+  to bottom,
+  #9a3412,
+  /* orange-800 */ #171717,
+  /* neutral-900 */ #0a0a0a /* neutral-950 */
+ );
 }
 .slate-gradient {
-  background: linear-gradient(
-    to bottom,
-    #1e293b,   /* slate-800 */
-    #171717,   /* neutral-900 */
-    #0a0a0a    /* neutral-950 */
-  );
+ background: linear-gradient(
+  to bottom,
+  #1e293b,
+  /* slate-800 */ #171717,
+  /* neutral-900 */ #0a0a0a /* neutral-950 */
+ );
+}
+.red-solid {
+ background-color: #991b1b; /* or your gradient's main color */
+}
+
+.blue-solid {
+ background-color: #1e3a8a;
+}
+
+.orange-solid {
+ background-color: #9a3412;
+}
+
+.slate-solid {
+ background-color: #1e293b;
 }
 /* MICRO NAV BUTTONS */
 .swiper .swiper-button-next,
 .swiper .swiper-button-prev {
-  width: 18px !important;
-  height: 18px !important;
-  background: rgba(255, 255, 255, 0.10);
-  border-radius: 50%;
-  backdrop-filter: blur(4px);
-  transition: 0.25s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ width: 18px !important;
+ height: 18px !important;
+ background: rgba(255, 255, 255, 0.1);
+ border-radius: 50%;
+ backdrop-filter: blur(4px);
+ transition: 0.25s ease-in-out;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 
 /* MICRO ARROW ICONS */
 .swiper .swiper-button-next::after,
 .swiper .swiper-button-prev::after {
-  font-size: 6px !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  line-height: 0 !important;
+ font-size: 6px !important;
+ color: #ffffff !important;
+ font-weight: 700 !important;
+ line-height: 0 !important;
 }
 
 /* Hover effect */
 .swiper .swiper-button-next:hover,
 .swiper .swiper-button-prev:hover {
-  background: rgba(0, 255, 95, 0.35);
-  transform: scale(1.2);
+ background: rgba(0, 255, 95, 0.35);
+ transform: scale(1.2);
 }
 /* Fix slide width so swiper doesn't override it */
 .curtomswiper .swiper-slide {
-  width: 11rem !important;  /* w-44 */
-  max-width: 11rem !important;
-  flex-shrink: 0 !important;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #111;
-  padding: 0.5rem;
-  border-radius: 0.75rem;
-  transition: background 0.3s;
-  overflow: hidden;
+ width: 11rem !important; /* w-44 */
+ max-width: 11rem !important;
+ flex-shrink: 0 !important;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ background: #111;
+ padding: 0.5rem;
+ border-radius: 0.75rem;
+ transition: background 0.3s;
+ overflow: hidden;
 }
 
 .curtomswiper .swiper-slide:hover {
-  background: #242424;
+ background: #242424;
+}
+.clamp-3 {
+ display: -webkit-box;
+ -webkit-box-orient: vertical;
+ -webkit-line-clamp: 3;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+
+.clamp-2 {
+ display: -webkit-box;
+ -webkit-box-orient: vertical;
+ -webkit-line-clamp: 2;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+.lihover:hover {
+ background: #1f1f1f8e;
+ transition: all 0.2s ease-in-out;
 }
