@@ -604,6 +604,26 @@ video {
   top: 95px;
 }
 
+.top-\[\]{
+  top: ;
+}
+
+.top-\[40px\]{
+  top: 40px;
+}
+
+.top-\[45px\]{
+  top: 45px;
+}
+
+.top-\[104px\]{
+  top: 104px;
+}
+
+.top-\[124px\]{
+  top: 124px;
+}
+
 .z-10{
   z-index: 10;
 }

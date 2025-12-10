@@ -4,8 +4,8 @@ const New_releases = new Swiper('.New_releases', {
   centeredSlides: false,
   loop: false,
   navigation: {
-    nextEl: '.episode-next',
-    prevEl: '.episode-prev',
+    nextEl: '.releases-next',
+    prevEl: '.releases-prev',
   },
   breakpoints: {
     320: { slidesPerView: 2 },

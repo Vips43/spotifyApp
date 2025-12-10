@@ -208,11 +208,11 @@ export async function getEpisodes(q) {
 
 
 export async function getEpisodesDetails(id) {
-  if (spotifyData.episodeDetails && spotifyData.episodeDetails.length > 0) {
-    const episodeDetails = spotifyData.episodeDetails;
-    console.log('loaded from localStorage');
-    return episodeDetails;
-  }
+  // if (spotifyData.episodeDetails && spotifyData.episodeDetails.length > 0) {
+  //   const episodeDetails = spotifyData.episodeDetails;
+  //   console.log('loaded from localStorage');
+  //   return episodeDetails;
+  // }
   const uri = `https://api.spotify.com/v1/episodes?ids=${id}`
   const token = await getAccessToken();
   const res = await fetch(`${uri}`,
@@ -242,8 +242,9 @@ export async function getEpisodesDetails(id) {
       show_publisher: ep.show.publisher,
     }
   }))
-  spotifyData.episodeDetails = episodeDetails;
-  saveLocalStorage('episodeDetails')
+  // spotifyData.episodeDetails = episodeDetails;
+  // spotifyData.data = data
+  // saveLocalStorage('episodeDetails')
   console.log('me chala');
 
   return episodeDetails;

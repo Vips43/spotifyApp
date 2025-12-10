@@ -5,16 +5,16 @@ const song_search = document.getElementById('song-search');
 let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn');
 let title = document.querySelector('.title')
-let top_main = document.querySelector('top_main')
+let top_main = document.querySelector('#top_main')
 let artist_h3 = document.querySelector('#artist h3'),
 
-  top_main_section_h3 = document.querySelector('.top_main section h3'),
+  top_main_section_h3 = document.querySelector('#top_main section h3'),
   artist_container = document.getElementById('artist_container');
 let categoryContainerDiv = document.querySelector('.category_container div'),
   category_div = document.getElementById('category_div'),
   category_container = document.querySelector('.category_container h3'),
-  show_song_container = document.querySelector('.show-song-container'),
-  show_song_container_h3 = document.querySelector('.show-song-container-h3');
+  new_release_container = document.querySelector('.new-release-container'),
+  new_release_h3 = document.querySelector('.new-release-h3');
 const episode_section = document.getElementById('episode_section'),
   episode_section_h1 = document.getElementById('episode_section h1'),
   episode_container = document.getElementById('episode_container')
@@ -153,7 +153,7 @@ async function newReleasesUI() {
     stored = JSON.parse(localStorage.getItem("spotifyData"));
   }
   const data = stored.newReleases;
-  show_song_container.innerHTML = '';
+  new_release_container.innerHTML = '';
   data.forEach(item => {
     const div = document.createElement("div");
     div.className = "swiper-slide";
@@ -171,7 +171,7 @@ async function newReleasesUI() {
         <p class="text-gray-400 text-sm truncate">${item.artist}</p>
       </div>
     `;
-    show_song_container.append(div);
+    new_release_container.append(div);
   });
   console.log('me chala');
 
@@ -325,7 +325,7 @@ document.querySelector(".artistBtn").addEventListener("click", async function ar
 
     div.innerHTML = `
     <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
-      <img class="w-40 h-40 object-cover rounded-full" src="${artist.image}" alt="">
+      <img class="w-full h-full object-cover rounded-full" src="${artist.image}" alt="">
       <div class="absolute play-icon">
         <i class="fa-solid fa-play"></i>
       </div>
@@ -415,11 +415,14 @@ async function episodeCardUI() {
   const episodesList = await getEpisodes('top')
 
   episodesList.forEach(ep => {
+    
     const swiperDiv = document.createElement('div');
     swiperDiv.dataset.id = ep.id;
     swiperDiv.className = 'swiper-slide';
     swiperDiv.innerHTML =
-      `<div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
+
+      `<a href='#episode'>
+      <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
       <img class="w-full h-full object-cover" src="${ep.image}" alt="">
       <div class="absolute play-icon">
         <i class="fa-solid fa-play"></i>
@@ -432,16 +435,13 @@ async function episodeCardUI() {
       <p class="text-gray-500 text-xs truncate w-40">
         <span>${ep.release}</span> • <span>${ep.duration}</span>
       </p>
-    </div>`;
-
+    </div></a>`;
     episode_container.append(swiperDiv);
     episode_container.addEventListener('click', async (e) => {
       const slide = e.target.closest(".swiper-slide");
       if (!slide) return
 
       const id = slide.dataset.id;
-      episode_container.classList.add("hidden")
-      episode.classList.remove('hidden')
       episodeDetailsUI(episodesList, id)
     })
 
@@ -523,7 +523,7 @@ async function episodeDetailsUI(details, id) {
     </div>
   </div>
   <div class="relative z-10">
-    <div class="sticky top-[95px] bg-neutral-950 pt-5">
+    <div class="sticky top-0 bg-neutral-950 pt-5">
       <div class="flex gap-10 items-center border-b border-neutral-700 pb-2">
         <h3 class="relative px-4 py-2 bottom_border">Description</h3>
         <h3 class="relative px-4 py-2">Transcript</h3>
@@ -534,7 +534,7 @@ async function episodeDetailsUI(details, id) {
     </div>
   </div>
   <div class="relative mt-10 bg-neutral-900">
-    <h3 class="sticky top-[110px] bg-neutral-900 text-xl font-semibold py-3 border-b border-neutral-700">More Episode like this</h3>
+    <h3 class="sticky top-[124px] bg-neutral-900 text-xl font-semibold py-3 border-b border-neutral-700">More Episode like this</h3>
 
     <ul class="space-y-2 w-full">
     ${data1.map(d => (

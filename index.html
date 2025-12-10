@@ -44,18 +44,20 @@
     </div>
 
     <!-- SEARCH BAR -->
-    <div class="relative flex items-center justify-between bg-neutral-800/95 hover:bg-neutral-600 rounded-2xl flex-1 mx-4 text-gray-400/90 hover:text-white transition-all duration-500 delay-500">
-    <div class="flex items-center justify-between overflow-hidden w-full rounded-2xl">
- 
-        <a href="#search" id="input_Btn" class="px-2.5 py-2 rounded-full rounded-l-2xl hover:bg-neutral-800"><i class="fa-solid fa-search"></i></a>
-      
-      <input id="input_Search" type="text" class="w-full bg-transparent outline-none text-white px-2 py-2"
-      placeholder="What do you want to play?" />
-      
-      <button id="folderBtn" class="px-3">
-        <i class="fa-solid fa-folder"></i>
-      </button>
-    </div>
+    <div
+      class="relative flex items-center justify-between bg-neutral-800/95 hover:bg-neutral-600 rounded-2xl flex-1 mx-4 text-gray-400/90 hover:text-white transition-all duration-500 delay-500">
+      <div class="flex items-center justify-between overflow-hidden w-full rounded-2xl">
+
+        <a href="#search" id="input_Btn" class="px-2.5 py-2 rounded-full rounded-l-2xl hover:bg-neutral-800"><i
+            class="fa-solid fa-search"></i></a>
+
+        <input id="input_Search" type="text" class="w-full bg-transparent outline-none text-white px-2 py-2"
+          placeholder="What do you want to play?" />
+
+        <button id="folderBtn" class="px-3">
+          <i class="fa-solid fa-folder"></i>
+        </button>
+      </div>
 
       <!-- DROPDOWN -->
       <div id="searchDropdown" class="absolute z-20 hidden top-12 right-2 p-2 bg-black border border-neutral-700 rounded-lg 
@@ -142,18 +144,18 @@
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">All</button></li>
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Songs</button></li>
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Podcasts</button></li>
-              <li> <a href="#artist" class="artistBtn p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</a></li>
+              <li> <a href="#artist"
+                  class="artistBtn p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</a></li>
             </ul>
           </div>
         </div>
-        <section id='episode' class="bg-neutral-950 text-white py-8 px-6 lg:px-12 w-full hidden route">
-        </section>
-
+        
+        <!-- artist section  -->
         <section id="artist"
           class="scrollbar overflow-auto mt-5 relative px-2 transition-all duration-500 hidden route">
           <h3 class="w-fit hidden mx-16">Loading <span class="typewriter-animation">. . .</span></h3>
           <!-- Example card -->
-          <div class="swiper curtomswiper artistSwiper py-4">
+          <div class="swiper customswiper artistSwiper py-4">
             <div class="swiper-wrapper" id="artist_container">
               <!-- <div class="swiper-slide">
                 JS will inject artists here 
@@ -165,6 +167,9 @@
         </section>
       </section>
 
+      <!-- episodes -->
+      <section id='episode' class="bg-neutral-950 text-white py-8 px-6 lg:px-12 w-full hidden route">
+        </section>
 
       <!-- song search -->
       <section id="search" class="py-3 hidden route">
@@ -182,21 +187,20 @@
       <section class="w-full my-10 px-2">
         <!-- Section Heading -->
         <div class="mb-4">
-          <h3 class="show-song-container-h3 w-fit flex items-center text-2xl font-bold capitalize">New releases</h3>
+          <h3 class="new-release-h3 w-fit flex items-center text-2xl font-bold capitalize">New releases</h3>
         </div>
         <div class="swiper New_releases">
-          <div class="swiper-wrapper show-song-container">
+          <div class="swiper-wrapper customswiper new-release-container">
           </div>
-          <div class="swiper-button-prev custom-nav"></div>
-          <div class="swiper-button-next custom-nav"></div>
-          <div class="swiper-scrollbar"></div>
+          <div class="swiper-button-prev releases-prev"></div>
+          <div class="swiper-button-next releases-next"></div>
         </div>
       </section>
       <!-- Episode section  -->
       <section id="episode_section" class="w-full my-10 px-2 font-inter">
         <h1 class="font-semibold text-2xl">Episodes you might like</h1>
 
-        <div class="swiper curtomswiper episode_swiper py-4">
+        <div class="swiper customswiper episode_swiper py-4">
           <div class="swiper-wrapper" id="episode_container">
 
           </div>
