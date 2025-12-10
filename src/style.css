@@ -124,3 +124,9 @@
  background: #1f1f1f8e;
  transition: all 0.2s ease-in-out;
 }
+/* .route{
+    display: none;
+}
+.route.active{
+    display: block;
+} */

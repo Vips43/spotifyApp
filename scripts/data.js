@@ -5,13 +5,13 @@ let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
   getEpisodesDetails: [],
 }
 
-function removelocal(){
+function removelocal() {
   console.log(spotifyData)
-  
+
   delete spotifyData.newReleases
   saveLocalStorage('fromr emove')
   console.log(spotifyData)
-  
+
 }
 // removelocal()
 
@@ -97,6 +97,11 @@ function newReleaseArray(releaseData) {
 }
 
 export async function getArtistsDetails() {
+  if (spotifyData.artistsInfo && spotifyData.artistsInfo.length > 0) {
+    const artistsInfo = spotifyData.artistsInfo;
+    console.log('loaded artistsInfo from localStorage');
+    return artistsInfo;
+  }
   const artistsID =
     ["3xjuY3FqcHemteM5aOv1LA", '3ci7qlWeEB4GT6y12tbTNO', '0Zg44YDPe3fBfHoxTA0qpD', '3ZFpN9rFHLxElJpqyABkMt', '73qNxW8UoTSftWynAEiYxA', "2NoJ7NuNs9nyj8Thoh1kbu", "7FmygnepJt3fhiZQDmoC0P", "7uIbLdzzSEqnX0Pkrb56cR", "4PULA4EFzYTrxYvOVlwpiQ"];
   const token = await getAccessToken();
@@ -112,7 +117,9 @@ export async function getArtistsDetails() {
     name: d.name,
     image: d.images[1]?.url || d.images[0]?.url || d.images[2].url,
   }))
-
+  console.log('me chala');
+  spotifyData.artistsInfo = artistsInfo
+  saveLocalStorage("artistsInfo")
   return artistsInfo;
 }
 // getArtistsDetails()
@@ -150,6 +157,7 @@ export async function getArtistsAblum(id) {
   spotifyData.artistsInfo = artistsInfo
   spotifyData.artistsTracks = artistsTracks;
   saveLocalStorage('artistsInfo')
+  console.log('me chala');
 
   return { artistsInfo, artistsTracks }
 }
@@ -192,9 +200,9 @@ export async function getEpisodes(q) {
     ext_url: ep.external_urls.spotify
   }))
   spotifyData.episodesList = episodesList;
-  console.log("saving episodesList -->", spotifyData);
+  console.log('me chala');
   saveLocalStorage('episodesList');
-  return episodesList ;
+  return episodesList;
 }
 // getEpisodes('horror')
 
@@ -235,8 +243,8 @@ export async function getEpisodesDetails(id) {
     }
   }))
   spotifyData.episodeDetails = episodeDetails;
-  
   saveLocalStorage('episodeDetails')
+  console.log('me chala');
 
   return episodeDetails;
 
@@ -283,7 +291,7 @@ function clearLocalstorage() {
   setInterval(() => {
     localStorage.removeItem("spotifyData")
   }, 10000);
-} 
+}
 
 
 function getLocalStorage(data) {

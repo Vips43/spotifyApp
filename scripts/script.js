@@ -1,13 +1,15 @@
 import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases } from './data.js';
 
 
-const song_search = document.querySelector('#song-search');
+const song_search = document.getElementById('song-search');
 let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn');
 let title = document.querySelector('.title')
-let top_main = document.querySelector('top_main'),
+let top_main = document.querySelector('top_main')
+let artist_h3 = document.querySelector('#artist h3'),
+
   top_main_section_h3 = document.querySelector('.top_main section h3'),
-  top_main_section_div = document.querySelector('#top_main_section_div');
+  artist_container = document.getElementById('artist_container');
 let categoryContainerDiv = document.querySelector('.category_container div'),
   category_div = document.getElementById('category_div'),
   category_container = document.querySelector('.category_container h3'),
@@ -17,6 +19,7 @@ const episode_section = document.getElementById('episode_section'),
   episode_section_h1 = document.getElementById('episode_section h1'),
   episode_container = document.getElementById('episode_container')
 let episode = document.getElementById("episode");
+
 
 
 
@@ -35,10 +38,7 @@ category_container.addEventListener("click", () => {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
-  //   searchSongsUI(spotifyData.searchResults);
-  //   title.innerHTML = "Last Search Results";
-  // }
+  
   newReleasesUI()
   // episodeFetchLocalstorage();
 
@@ -107,6 +107,8 @@ async function searchSongs(query) {
     }
   );
   const data = await res.json();
+  console.log('me chala');
+
   return data.tracks.items;
 }
 
@@ -171,6 +173,8 @@ async function newReleasesUI() {
     `;
     show_song_container.append(div);
   });
+  console.log('me chala');
+
 }
 
 
@@ -189,7 +193,7 @@ async function searchGenrePlaylists(genre) {
     }
   );
   const data = await res.json();
-
+  console.log('me chala');
   return data;
 }
 // searchGenrePlaylists('pop')
@@ -257,6 +261,7 @@ function renderPlaylistsUI(playlists) {
   });
 
   show_song_container.append(wrapper);
+  console.log('me chala');
 }
 
 async function showPlaylistTracks(playlistId, name) {
@@ -275,7 +280,7 @@ async function showPlaylistTracks(playlistId, name) {
   const data = await res.json();
 
   renderTrackUI(data.items);
-
+  console.log('me chala');
 }
 
 function renderTrackUI(tracks) {
@@ -304,15 +309,16 @@ function renderTrackUI(tracks) {
     `;
 
     show_song_container.append(div);
+    console.log('me chala');
   });
 }
 
 document.querySelector(".artistBtn").addEventListener("click", async function artistsUI() {
-  top_main_section_h3.style.display = 'flex';
+  artist_h3.style.display = 'flex';
   const artists = await getArtistsDetails();
-  top_main_section_h3.style.display = 'none';
+  artist_h3.style.display = 'none';
 
-  top_main_section_div.innerHTML = ''
+  artist_container.innerHTML = ''
   artists.forEach(artist => {
     const div = document.createElement("div");
     div.className = "swiper-slide";
@@ -328,8 +334,9 @@ document.querySelector(".artistBtn").addEventListener("click", async function ar
       <p class="text-gray-400 text-sm truncate">${artist.name}</p>
     </div>`;
     div.onclick = () => getArtistsAblumUI(artist.id);
-    top_main_section_div.append(div);
+    artist_container.append(div);
   });
+  console.log('me chala');
 
 })
 
@@ -401,10 +408,11 @@ async function getArtistsAblumUI(ids) {
         </div>`
 
   top_main.append(div)
+  console.log('me chala');
 }
 
 async function episodeCardUI() {
-  const episodesList  = await getEpisodes('top')
+  const episodesList = await getEpisodes('top')
 
   episodesList.forEach(ep => {
     const swiperDiv = document.createElement('div');
@@ -438,6 +446,7 @@ async function episodeCardUI() {
     })
 
   })
+  console.log('me chala');
 }
 episodeCardUI()
 // async function episodeFetchLocalstorage(id) {
@@ -566,5 +575,6 @@ async function episodeDetailsUI(details, id) {
 
 
   episode.append(div)
+  console.log('me chala');
 
 }

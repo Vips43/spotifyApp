@@ -125,3 +125,23 @@ document.addEventListener("click", (e) => {
     dropdown.classList.add("hidden");
   }
 });
+
+
+function router() {
+  let hash = window.location.hash.substring(1);
+  console.log(hash);
+  
+  // if(!hash) hash = "home";
+  
+  document.querySelectorAll('.route').forEach(sec => {
+    sec.classList.add("hidden");
+    console.log("added");
+  });
+  const page = document.getElementById(hash);
+  console.log("removed");
+  if (hash) page.classList.remove('hidden')
+}
+
+window.addEventListener("load", router);
+window.addEventListener("hashchange", router);
+
