@@ -2,13 +2,13 @@
 let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 {
   categories: [], newReleases: [], searchResults: [],
-  getEpisodesDetails: [],
+  getEpisodesDetails: [], trandings: []
 }
 
 function removelocal() {
   console.log(spotifyData)
 
-  delete spotifyData.newReleases
+  delete spotifyData.trandings
   saveLocalStorage('fromr emove')
   console.log(spotifyData)
 
@@ -16,8 +16,8 @@ function removelocal() {
 // removelocal()
 
 
-let cachedToken = null;
-let tokenExpiry = 0;
+let cachedToken = localStorage.getItem("spotify_token") || null;
+let tokenExpiry = Number(localStorage.getItem("spotify_token_expiry")) || 0;
 
 const clientId = `ae099a85abfd490f942ad96cecc1e3fe`;
 const clientSecret = `08929370795044bb9726eccb1421c08c`;
@@ -40,6 +40,8 @@ export async function getAccessToken() {
 
   cachedToken = data.access_token;
   tokenExpiry = now + data.expires_in * 1000;
+  localStorage.setItem("spotify_token", cachedToken);
+  localStorage.setItem("spotify_token_expiry", tokenExpiry);
 
   return cachedToken;
 }
@@ -246,21 +248,44 @@ export async function getEpisodesDetails(id) {
   // spotifyData.data = data
   // saveLocalStorage('episodeDetails')
   console.log('me chala');
-
   return episodeDetails;
-
 }
-// getEpisodesDetails('0DpCkbMA303oWdbc0Ntzto')
+
+export async function trandingPlaylist() {
+  if (spotifyData.trandings && spotifyData.trandings.length > 0) {
+    console.log('fetching from localstorage');
+    return spotifyData.trandings
+  }
+  const query = 'siddhu moosewala'
+  const token = await getAccessToken();
+  const uri = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=50`
+  const option = { method: "GET", headers: { "Authorization": `Bearer ${token}` } }
+  const res = await fetch(uri, option);
+  const data = await res.json();
+  console.log(data);
+  const playlists = data.playlists.items.filter(list => {
+    return list?.name && list?.owner && !list.description;
+  })
+  const trandings = playlists.map(list => ({
+    name: list.name,
+    user_name: list.owner.display_name,
+    user_id: list.owner.id,
+    user_href: list.owner.external_urls.spotify,
+    image: list.images[0].url,
+    desc: list.description,
+    external_urls: list.external_urls.spotify,
+  }))
+  spotifyData.trandings = trandings
+  saveLocalStorage('trandings')
+  return spotifyData.trandings;
+}
+// trandingPlaylist()
 
 
+async function dummy(query, type = 'playlist') {
 
-async function dummy(id) {
-  // const uri = `https://api.spotify.com/v1/recommendations`
-  // const uri = `https://api.spotify.com/v1/search?q=${q}&type=playlist&limit=20`
-  // const uri = `https://api.spotify.com/v1/artists/${q}`
-  // const uri = `https://api.spotify.com/v1/users/313fhpntx2vseg3v5yeqr7qzuala`
-  // const uri = `https://api.spotify.com/v1/recommendations`
-  const uri = `https://api.spotify.com/v1/episodes/${id}?market=IN`
+  // const uri = `https://api.spotify.com/v1/episodes/${id}?market=IN`
+  const uri = `https://api.spotify.com/v1/search?q=${query}&type=${type}`
 
   const token = await getAccessToken();
   const res = await fetch(
@@ -277,11 +302,12 @@ async function dummy(id) {
   }
   const data = await res.json();
 
-
   console.log(data);
   // return data;
+  spotifyData.playlist = data
+  saveLocalStorage('playlist')
 }
-// dummy('0DpCkbMA303oWdbc0Ntzto')
+// dummy('tranding')
 
 
 export function saveLocalStorage(key) {

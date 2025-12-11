@@ -3,6 +3,13 @@ const New_releases = new Swiper('.New_releases', {
   spaceBetween: 10,
   centeredSlides: false,
   loop: false,
+  direction: 'horizontal',
+  slidesOffsetAfter: 0,
+  on: {
+    reachEnd: function () {
+      this.snapGrid = [...this.slidesGrid];
+    },
+  },
   navigation: {
     nextEl: '.releases-next',
     prevEl: '.releases-prev',
@@ -18,6 +25,22 @@ const artistSwiper = new Swiper('.artistSwiper', {
   slidesPerView: 'auto',
   spaceBetween: 10,
   loop: false,
+  navigation: {
+    nextEl: '.artist-next',
+    prevEl: '.artist-prev',
+  },
+  breakpoints: {
+    320: { slidesPerView: 2 },
+    640: { slidesPerView: 3 },
+    1024: { slidesPerView: 4 },
+    1280: { slidesPerView: 6 }
+  }
+});
+const tranding = new Swiper('.tranding', {
+  slidesPerView: 'auto',
+  spaceBetween: 12,
+  loop: false,
+  centeredSlides: false,
   navigation: {
     nextEl: '.artist-next',
     prevEl: '.artist-prev',
@@ -130,9 +153,9 @@ document.addEventListener("click", (e) => {
 function router() {
   let hash = window.location.hash.substring(1);
   console.log(hash);
-  
+
   // if(!hash) hash = "home";
-  
+
   document.querySelectorAll('.route').forEach(sec => {
     sec.classList.add("hidden");
     console.log("added");

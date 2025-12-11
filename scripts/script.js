@@ -1,9 +1,10 @@
-import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases } from './data.js';
+import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist } from './data.js';
 
 
 const song_search = document.getElementById('song-search');
 let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn');
+let searchDropdownLI = document.querySelectorAll('#searchDropdown ul li')
 let title = document.querySelector('.title')
 let top_main = document.querySelector('#top_main')
 let artist_h3 = document.querySelector('#artist h3'),
@@ -19,6 +20,7 @@ const episode_section = document.getElementById('episode_section'),
   episode_section_h1 = document.getElementById('episode_section h1'),
   episode_container = document.getElementById('episode_container')
 let episode = document.getElementById("episode");
+const tranding_container = document.getElementById("tranding_container");
 
 
 
@@ -38,7 +40,7 @@ category_container.addEventListener("click", () => {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  
+
   newReleasesUI()
   // episodeFetchLocalstorage();
 
@@ -71,15 +73,18 @@ function searchSongsUI(songArr) {
 input_Btn.addEventListener("click", async () => {
   let search = input_Search.value.trim()
   if (!search) return 0;
-
+  let litext = '';
+  searchDropdownLI.forEach(li => {
+    li.addEventListener("click", (e) => {
+      litext = e.target.textContent;
+      console.log(litext)
+    })
+  })
   song_search.classList.add("hidden");
   title.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`;
-
   let data = await searchSongs(search);
   song_search.classList.remove("hidden");
-
   title.innerHTML = `Searched results for: &nbsp; <span class="capitalize font font-bold text-white"> ${search} </span>`
-
   let results = data.map(item => {
     // const track = item.data;
     return {
@@ -89,17 +94,16 @@ input_Btn.addEventListener("click", async () => {
       artistName: item.artists[0].name || "Unknown Artist",
     }
   })
-
   spotifyData.searchResults = results;
   localStorage.setItem("spotifyData", JSON.stringify(spotifyData))
 
   searchSongsUI(results)
 })
 
-async function searchSongs(query) {
+async function searchSongs(query, type = 'track') {
   const token = await getAccessToken();
   const res = await fetch(
-    `https://api.spotify.com/v1/search?q=${query}&type=track`,
+    `https://api.spotify.com/v1/search?q=${query}&type=${type}`,
     {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -107,7 +111,7 @@ async function searchSongs(query) {
     }
   );
   const data = await res.json();
-  console.log('me chala');
+  console.log('me chala', type, data);
 
   return data.tracks.items;
 }
@@ -115,35 +119,6 @@ async function searchSongs(query) {
 document.addEventListener("DOMContentLoaded", async () => {
   // renderGenres()
 })
-
-// async function getNewReleases() {
-//   if (spotifyData.newReleases && spotifyData.newReleases > 0) {
-//     console.log('fetched from localstorage');
-//     return spotifyData.newReleases;
-
-//   } else {
-//     const token = await getAccessToken();
-//     const res = await fetch(`https://api.spotify.com/v1/browse/new-releases`, {
-//       headers: { "Authorization": `Bearer ${token}` }
-//     });
-//     const data = await res.json();
-//     const albums = data.albums.items;
-
-//     console.log('fetched from API');
-//     return newReleaseArray(albums)
-//   }
-// }
-// function newReleaseArray(releaseData) {
-//   spotifyData.newReleases = releaseData.map(r => ({
-//     image: r.images?.[0]?.url || "",
-//     name: r.name,
-//     artist: r.artists.map(a => a.name).join(", ")
-//   }));
-//   // SAVE IN LOCAL STORAGE
-//   console.log('saved new releases to localstorage');
-//   localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
-//   return spotifyData.newReleases;
-// }
 
 async function newReleasesUI() {
   let stored = JSON.parse(localStorage.getItem("spotifyData"));
@@ -161,12 +136,11 @@ async function newReleasesUI() {
     div.innerHTML = `
       <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
         <img class="w-full h-full object-cover" src="${item.image}" alt="">
-        <div
-          class="absolute play-icon">
+        <div class="absolute play-icon">
           <i class="fa-solid fa-play"></i>
         </div>
       </div>
-      <div class="caption mt-3">
+      <div class="caption self-start text-left! mt-3">
         <h3 class="text-base font-semibold truncate">${item.name}</h3>
         <p class="text-gray-400 text-sm truncate">${item.artist}</p>
       </div>
@@ -322,10 +296,10 @@ document.querySelector(".artistBtn").addEventListener("click", async function ar
   artists.forEach(artist => {
     const div = document.createElement("div");
     div.className = "swiper-slide";
-
+    div.setAttribute("lazy", 'true')
     div.innerHTML = `
     <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
-      <img class="w-full h-full object-cover rounded-full" src="${artist.image}" alt="">
+      <img loading='lazy' class="w-full h-full object-cover rounded-full" src="${artist.image}" alt="">
       <div class="absolute play-icon">
         <i class="fa-solid fa-play"></i>
       </div>
@@ -413,9 +387,7 @@ async function getArtistsAblumUI(ids) {
 
 async function episodeCardUI() {
   const episodesList = await getEpisodes('top')
-
   episodesList.forEach(ep => {
-    
     const swiperDiv = document.createElement('div');
     swiperDiv.dataset.id = ep.id;
     swiperDiv.className = 'swiper-slide';
@@ -449,27 +421,6 @@ async function episodeCardUI() {
   console.log('me chala');
 }
 episodeCardUI()
-// async function episodeFetchLocalstorage(id) {
-//   let stored = JSON.parse(localStorage.getItem("spotifyData")) || {};
-//   let episodesList = stored.episodesList || [];
-//   let episodeDetails = stored.episodeDetails || [];
-
-//   if (!episodesList.length) {
-//     console.log('Fetching from API...');
-//     const data = await getEpisodes("devotional")
-//     episodesList = data.episodesList;
-//   }
-//   if (!episodeDetails.length) {
-//     console.log('Fetching from API...');
-//     const data = await getEpisodesDetails(id)
-//     episodeDetails = data.episodeDetails;
-//     saveLocalStorage()
-//   }
-//   episodeCardUI(episodesList);
-//   episodeDetailsUI(episodeDetails, id);
-// }
-
-
 
 async function episodeDetailsUI(details, id) {
 
@@ -481,7 +432,7 @@ async function episodeDetailsUI(details, id) {
   const div = document.createElement("div");
   div.innerHTML =
     `<div class="bg-[url('${data.background}')] bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" data-id='${data.id}'>
-    <div class="space-y-3 bg-black/60 h-full flex flex-col justify-center ">
+    <div class="space-y-3 bg-black/30 h-full flex flex-col justify-center ">
       <h5 class="text-sm">
         <span class="text-blue-500 text-2xl">•</span> New Podcast Episode
       </h5>
@@ -570,11 +521,32 @@ async function episodeDetailsUI(details, id) {
       </li>`
     )).join('')}
     </ul>
-
   </div>`
-
-
   episode.append(div)
   console.log('me chala');
-
 }
+
+async function trandingSongsUI() {
+  const data = await trandingPlaylist();
+  console.log(data);
+  data.forEach(d => {
+    const div = document.createElement("div")
+    div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";
+    div.setAttribute('loading', "lazy");
+    div.innerHTML =
+  `<div class="hover:bg-neutral-700/35 w-44 p-2 h-full rounded-lg overflow-hidden">
+    <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
+    <img class="w-full h-full object-cover" src="${d.image}" alt="">
+    <div class="absolute play-icon">
+      <i class="fa-solid fa-play"></i>
+    </div>
+    </div>
+    <div class="caption self-start mt-3">
+    <h3 class="text-base font-semibold truncate">${d.name}</h3>
+    <p class="text-gray-400 text-sm truncate">${d.user_name}</p>
+    </div>
+  </div>`;
+    tranding_container.append(div)
+  })
+}
+ trandingSongsUI()

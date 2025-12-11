@@ -88,10 +88,11 @@
  transform: scale(1.2);
 }
 /* Fix slide width so swiper doesn't override it */
+
 .customswiper .swiper-slide {
  width: 11rem !important; /* w-44 */
  max-width: 11rem !important;
- flex-shrink: 0 !important;
+ /* flex-shrink: 0 !important; */
  display: flex;
  flex-direction: column;
  align-items: center;
@@ -124,9 +125,3 @@
  background: #1f1f1f8e;
  transition: all 0.2s ease-in-out;
 }
-/* .route{
-    display: none;
-}
-.route.active{
-    display: block;
-} */

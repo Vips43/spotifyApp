@@ -2,228 +2,257 @@
 <html lang="en" class="h-full">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spotify-App</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Spotify-App</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./libs/swiper-bundle.min.css">
+ <link rel="stylesheet" href="./libs/swiper-bundle.min.css">
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
-  <!-- <link rel="stylesheet" href="./css/all.min.css"> -->
+ <!-- Font Awesome -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+ <!-- <link rel="stylesheet" href="./css/all.min.css"> -->
 
-  <link rel="icon" href="images/spotify-logo.png" type="image/png" />
-  <!-- Tailwind output -->
-  <link rel="stylesheet" href="src/output.css" />
-  <link rel="stylesheet" href="src/style.css">
+ <link rel="icon" href="images/spotify-logo.png" type="image/png" />
+ <!-- Tailwind output -->
+ <link rel="stylesheet" href="src/output.css" />
+ <link rel="stylesheet" href="src/style.css">
 
 
-  <style>
-    /* Smooth, clean text everywhere */
-    body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-  </style>
+ <style>
+  /* Smooth, clean text everywhere */
+  body {
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+  }
+ </style>
 </head>
 
 <body class="bg-black h-screen overflow-y-auto text-white font-inter">
 
-  <!-- NAVBAR -->
-  <nav class="flex items-center justify-between h-16 p-3 bg-black border-neutral-800">
-    <!-- LEFT -->
-    <div class="flex items-center gap-4">
-      <img src="images/spotify-logo.png" class="w-10 h-10 rounded-full bg-white" />
+ <!-- NAVBAR -->
+ <nav class="flex items-center justify-between h-16 p-3 bg-black border-neutral-800">
+  <!-- LEFT -->
+  <div class="flex items-center gap-4">
+   <img src="images/spotify-logo.png" class="w-10 h-10 rounded-full bg-white" />
 
-      <button onclick="home()" class="w-10 h-10 flex items-center justify-center bg-neutral-700 rounded-full">
-        <i class="fa-solid fa-house text-white"></i>
-      </button>
-    </div>
-
-    <!-- SEARCH BAR -->
-    <div
-      class="relative flex items-center justify-between bg-neutral-800/95 hover:bg-neutral-600 rounded-2xl flex-1 mx-4 text-gray-400/90 hover:text-white transition-all duration-500 delay-500">
-      <div class="flex items-center justify-between overflow-hidden w-full rounded-2xl">
-
-        <a href="#search" id="input_Btn" class="px-2.5 py-2 rounded-full rounded-l-2xl hover:bg-neutral-800"><i
-            class="fa-solid fa-search"></i></a>
-
-        <input id="input_Search" type="text" class="w-full bg-transparent outline-none text-white px-2 py-2"
-          placeholder="What do you want to play?" />
-
-        <button id="folderBtn" class="px-3">
-          <i class="fa-solid fa-folder"></i>
-        </button>
-      </div>
-
-      <!-- DROPDOWN -->
-      <div id="searchDropdown" class="absolute z-20 hidden top-12 right-2 p-2 bg-black border border-neutral-700 rounded-lg 
-              max-h-36 w-36 shadow-xl transition-all duration-300">
-        <ul class="grid gap-1 text-sm">
-          <li class="bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded">Show</li>
-          <li class="bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded">Playlists</li>
-          <li class="bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded">Album</li>
-          <li class="bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded">Artist</li>
-          <li class="bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded">Track</li>
-          <li class="bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded">Audiobook</li>
-          <li class="bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded">Episode</li>
-        </ul>
-      </div>
-    </div>
-
-
-    <!-- MENU RIGHT -->
-    <div class="hidden lg:flex items-center gap-4">
-      <span class="cursor-pointer">Premium</span>
-      <span class="cursor-pointer">Support</span>
-      <span class="cursor-pointer">Download</span>
-    </div>
-
-    <div class="flex items-center gap-4 ml-4">
-      <span class="cursor-pointer hidden md:flex items-center gap-2">
-        <i class="fa-solid fa-circle-arrow-down"></i> Install App
-      </span>
-      <span class="cursor-pointer">Sign Up</span>
-      <span class="cursor-pointer bg-white text-black px-4 py-2 rounded-full">Log in</span>
-    </div>
-  </nav>
-
-  <!-- MAIN LAYOUT -->
-  <div id="main" class="flex w-full h-[calc(100vh-4rem)] overflow-y-auto">
-    <!-- LEFT SIDEBAR -->
-    <aside class="bg-black hidden md:block sm:w-20 h-full md:w-48 lg:w-52 transition-all duration-300">
-      <div class="p-4">
-
-        <!-- Library -->
-        <div class="flex items-center gap-2 mb-4 cursor-pointer">
-          <!-- Icon always visible -->
-          <i class="fa-solid fa-folder-closed text-xl"></i>
-
-          <!-- Text only on md+ -->
-          <h3 class="hidden md:block text-lg font-semibold">Your Library</h3>
-        </div>
-
-        <!-- CATEGORY DROPDOWN -->
-        <div class="space-y-2 category_container">
-
-          <!-- Header -->
-          <h3
-            class="flex items-center justify-center md:justify-between gap-2 bg-neutral-700 px-3 py-2 rounded cursor-pointer">
-            <!-- Text only on md+ -->
-            <span class="hidden md:block sm:text-sm">Song Genre</span>
-            <!-- Arrow only on md+ -->
-            <div class="transition">
-              <i class="fa-solid fa-angle-down transition-all"></i>
-            </div>
-          </h3>
-
-          <!-- Category List -->
-          <div id="category_div"
-            class="opacity-0 max-h-0 overflow-y-auto w-fit md:w-full scrollbar transition-all duration-300 ease-in-out">
-
-            <ul id="category" class="space-y-2 grid max-h-full  bg-neutral-800 rounded p-0.5 md:p-2 scrollbar">
-
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </aside>
-
-    <!-- RIGHT BODY -->
-    <main class="flex-1 rounded-t-2xl h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hidden">
-
-      <section id="top_main" class="top_main bg-gradient-to-b from-gray-700 via-neutral-900 to-neutral-950">
-
-        <div class="z-10 sticky top-0 bg-neutral-500 rounded-t-2xl">
-          <div class="ml-5">
-            <ul class="flex items-center gap-2 p-3 text-sm">
-              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">All</button></li>
-              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Songs</button></li>
-              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Podcasts</button></li>
-              <li> <a href="#artist"
-                  class="artistBtn p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <!-- artist section  -->
-        <section id="artist"
-          class="scrollbar overflow-auto mt-5 relative px-2 transition-all duration-500 hidden route">
-          <h3 class="w-fit hidden mx-16">Loading <span class="typewriter-animation">. . .</span></h3>
-          <!-- Example card -->
-          <div class="swiper customswiper artistSwiper py-4">
-            <div class="swiper-wrapper" id="artist_container">
-              <!-- <div class="swiper-slide">
-                JS will inject artists here 
-              </div> -->
-            </div>
-            <div class="swiper-button-prev artist-prev"></div>
-            <div class="swiper-button-next artist-next"></div>
-          </div>
-        </section>
-      </section>
-
-      <!-- episodes -->
-      <section id='episode' class="bg-neutral-950 text-white py-8 px-6 lg:px-12 w-full hidden route">
-        </section>
-
-      <!-- song search -->
-      <section id="search" class="py-3 hidden route">
-        <div class="mb-4">
-          <h1 class="text-lg sm:text-2xl font-bold title p-1 flex items-center max-h-7 w-fit">Trending songs </h1>
-        </div>
-        <!-- SONG GRID -->
-        <div id="song-search"
-          class=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-6 overflow-auto">
-          <!-- JS Will Inject Songs Here -->
-        </div>
-      </section>
-
-      <!-- SHOWS SECTION Genre -->
-      <section class="w-full my-10 px-2">
-        <!-- Section Heading -->
-        <div class="mb-4">
-          <h3 class="new-release-h3 w-fit flex items-center text-2xl font-bold capitalize">New releases</h3>
-        </div>
-        <div class="swiper New_releases">
-          <div class="swiper-wrapper customswiper new-release-container">
-          </div>
-          <div class="swiper-button-prev releases-prev"></div>
-          <div class="swiper-button-next releases-next"></div>
-        </div>
-      </section>
-      <!-- Episode section  -->
-      <section id="episode_section" class="w-full my-10 px-2 font-inter">
-        <h1 class="font-semibold text-2xl">Episodes you might like</h1>
-
-        <div class="swiper customswiper episode_swiper py-4">
-          <div class="swiper-wrapper" id="episode_container">
-
-          </div>
-
-          <!-- navigation arrows -->
-          <div class="swiper-button-prev episode-prev"></div>
-          <div class="swiper-button-next episode-next"></div>
-        </div>
-
-      </section>
-
-    </main>
-    <aside class="bg-white hidden sm:w-30 md:w-40 lg:w-80">
-      <div>
-
-      </div>
-    </aside>
+   <button onclick="home()" class="w-10 h-10 flex items-center justify-center bg-neutral-700 rounded-full">
+    <i class="fa-solid fa-house text-white"></i>
+   </button>
   </div>
 
-  <!-- SCRIPT -->
-  <script src="./libs/swiper-bundle.min.js"></script>
-  <script type="module" src="scripts/script.js"></script>
-  <script src="scripts/index.js"></script>
+  <!-- SEARCH BAR -->
+  <div
+   class="relative flex items-center justify-between bg-neutral-800/95 hover:bg-neutral-600 rounded-2xl flex-1 mx-4 text-gray-400/90 hover:text-white transition-all duration-500 delay-500">
+   <div class="flex items-center justify-between overflow-hidden w-full rounded-2xl">
+
+    <a href="#search" id="input_Btn" class="px-2.5 py-2 rounded-full rounded-l-2xl hover:bg-neutral-800"><i
+      class="fa-solid fa-search"></i></a>
+
+    <input id="input_Search" type="text" class="w-full bg-transparent outline-none text-white px-2 py-2"
+     placeholder="What do you want to play?" />
+
+    <button id="folderBtn" class="px-3">
+     <i class="fa-solid fa-folder"></i>
+    </button>
+   </div>
+
+   <!-- DROPDOWN -->
+   <div id="searchDropdown"
+    class="absolute z-20 hidden top-12 right-2 p-2 bg-black border border-neutral-700 rounded-lg w-36 shadow-xl transition-all duration-300">
+    <ul class="grid gap-1 text-sm">
+     <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Show</li>
+     <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Playlists</li>
+     <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Album</li>
+     <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Artist</li>
+     <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Track</li>
+     <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Audiobook</li>
+     <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Episode</li>
+    </ul>
+   </div>
+  </div>
+
+
+  <!-- MENU RIGHT -->
+  <div class="hidden lg:flex items-center gap-4">
+   <span class="cursor-pointer">Premium</span>
+   <span class="cursor-pointer">Support</span>
+   <span class="cursor-pointer">Download</span>
+  </div>
+
+  <div class="flex items-center gap-4 ml-4">
+   <span class="cursor-pointer hidden md:flex items-center gap-2">
+    <i class="fa-solid fa-circle-arrow-down"></i> Install App
+   </span>
+   <span class="cursor-pointer">Sign Up</span>
+   <span class="cursor-pointer bg-white text-black px-4 py-2 rounded-full">Log in</span>
+  </div>
+ </nav>
+
+ <!-- MAIN LAYOUT -->
+ <div id="main" class="flex w-full h-[calc(100vh-4rem)] overflow-y-auto">
+  <!-- LEFT SIDEBAR -->
+  <aside class="bg-black hidden md:block sm:w-20 h-full md:w-48 lg:w-52 transition-all duration-300">
+   <div class="p-4">
+
+    <!-- Library -->
+    <div class="flex items-center gap-2 mb-4 cursor-pointer">
+     <!-- Icon always visible -->
+     <i class="fa-solid fa-folder-closed text-xl"></i>
+
+     <!-- Text only on md+ -->
+     <h3 class="hidden md:block text-lg font-semibold">Your Library</h3>
+    </div>
+
+    <!-- CATEGORY DROPDOWN -->
+    <div class="space-y-2 category_container">
+
+     <!-- Header -->
+     <h3
+      class="flex items-center justify-center md:justify-between gap-2 bg-neutral-700 px-3 py-2 rounded cursor-pointer">
+      <!-- Text only on md+ -->
+      <span class="hidden md:block sm:text-sm">Song Genre</span>
+      <!-- Arrow only on md+ -->
+      <div class="transition">
+       <i class="fa-solid fa-angle-down transition-all"></i>
+      </div>
+     </h3>
+
+     <!-- Category List -->
+     <div id="category_div"
+      class="opacity-0 max-h-0 overflow-y-auto w-fit md:w-full scrollbar transition-all duration-300 ease-in-out">
+
+      <ul id="category" class="space-y-2 grid max-h-full  bg-neutral-800 rounded p-0.5 md:p-2 scrollbar">
+
+      </ul>
+     </div>
+    </div>
+
+   </div>
+  </aside>
+
+  <!-- RIGHT BODY -->
+  <main class="flex-1 rounded-t-2xl h-[calc(100vh-4rem)] overflow-y-auto scrollbar-hidden">
+
+   <section id="top_main" class="top_main bg-gradient-to-b from-gray-700 via-neutral-900 to-neutral-950">
+
+    <div class="z-10 sticky top-0 bg-neutral-500 rounded-t-2xl">
+     <div class="ml-5">
+      <ul class="flex items-center gap-2 p-3 text-sm">
+       <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">All</button></li>
+       <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Songs</button></li>
+       <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Podcasts</button></li>
+       <li> <a href="#artist" class="artistBtn p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Artist</a></li>
+      </ul>
+     </div>
+    </div>
+
+    <!-- artist section  -->
+    <section id="artist" class="scrollbar overflow-auto mt-5 relative px-2 transition-all duration-500 hidden route">
+     <h3 class="w-fit hidden mx-16">Loading <span class="typewriter-animation">. . .</span></h3>
+     <!-- Example card -->
+     <div class="swiper customswiper artistSwiper py-4">
+      <div class="swiper-wrapper" id="artist_container">
+       <!-- <div class="swiper-slide">
+                JS will inject artists here 
+              </div> -->
+      </div>
+      <div class="swiper-button-prev artist-prev"></div>
+      <div class="swiper-button-next artist-next"></div>
+     </div>
+    </section>
+   </section>
+
+   <!-- Trending songs section  -->
+   <section id='tranding' class="bg-neutral-950 text-white py-2 px-2 lg:px-12 w-full">
+    <div class="text-2xl font-bold">
+     <h3>Tranding songs</h3>
+    </div>
+    <div class="p-2">
+
+     <div class="swiper w-full tranding">
+      <div id="tranding_container" class="swiper-wrapper customswiper">
+
+       <!-- <div loading="lazy" class="swiper-slide !w-fit flex-shrink-0">
+        <div class="hover:bg-neutral-700/35 w-44 p-2 rounded-lg overflow-hidden">
+         <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
+          <img class="w-full h-full object-cover" src="images/Sanware-Hansraj-Raghuwanshi-500-500.jpg" alt="">
+          <div class="absolute play-icon">
+           <i class="fa-solid fa-play"></i>
+          </div>
+         </div>
+         <div class="caption mt-3">
+          <h3 class="text-base font-semibold truncate">frf rgirg hh eree wee rtr </h3>
+          <p class="text-gray-400 text-sm truncate">${item.artist}</p>
+         </div>
+        </div>
+       </div> -->
+
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+     </div>
+
+    </div>
+   </section>
+
+   <!-- episodes -->
+   <section id='episode' class="bg-neutral-950 text-white py-8 px-6 lg:px-12 w-full hidden route">
+   </section>
+
+   <!-- song search -->
+   <section id="search" class="py-3 hidden route">
+    <div class="mb-4">
+     <h1 class="text-lg sm:text-2xl font-bold title p-1 flex items-center max-h-7 w-fit"> </h1>
+    </div>
+    <!-- SONG GRID -->
+    <div id="song-search" class=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-6 overflow-auto">
+     <!-- JS Will Inject Songs Here -->
+    </div>
+   </section>
+
+   <!-- SHOWS SECTION Genre -->
+   <section class="w-full px-2">
+    <!-- Section Heading -->
+    <div class="mb-4">
+     <h3 class="new-release-h3 w-fit flex items-center text-2xl font-bold capitalize">New releases</h3>
+    </div>
+    <div class="swiper New_releases">
+     <div class="swiper-wrapper customswiper new-release-container"></div>
+     <div class="swiper-button-prev releases-prev"></div>
+     <div class="swiper-button-next releases-next"></div>
+    </div>
+   </section>
+   <!-- Episode section  -->
+   <section id="episode_section" class="w-full my-10 px-2 font-inter">
+    <h1 class="font-semibold text-2xl">Episodes you might like</h1>
+
+    <div class="swiper customswiper episode_swiper py-4">
+     <div class="swiper-wrapper" id="episode_container">
+
+     </div>
+
+     <!-- navigation arrows -->
+     <div class="swiper-button-prev episode-prev"></div>
+     <div class="swiper-button-next episode-next"></div>
+    </div>
+
+   </section>
+
+  </main>
+  <aside class="bg-white hidden sm:w-30 md:w-40 lg:w-80">
+   <div>
+
+   </div>
+  </aside>
+ </div>
+
+ <!-- SCRIPT -->
+ <script src="./libs/swiper-bundle.min.js"></script>
+ <script type="module" src="scripts/script.js"></script>
+ <script src="scripts/index.js"></script>
 
 </body>
 
