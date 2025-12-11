@@ -2,16 +2,12 @@
 let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 {
   categories: [], newReleases: [], searchResults: [],
-  getEpisodesDetails: [], trandings: []
+  getEpisodesDetails: [], trandings: [], shows: [], showsEpisode: []
 }
 
 function removelocal() {
-  console.log(spotifyData)
-
-  delete spotifyData.trandings
-  saveLocalStorage('fromr emove')
-  console.log(spotifyData)
-
+  delete spotifyData.showsEpisode
+  saveLocalStorage('showsEpisode')
 }
 // removelocal()
 
@@ -76,7 +72,7 @@ export async function getNewReleases() {
 
   } else {
     const token = await getAccessToken();
-    const res = await fetch(`https://api.spotify.com/v1/browse/new-releases`, {
+    const res = await fetch(`https://api.spotify.com/v1/browse/new-releases?limit=10`, {
       headers: { "Authorization": `Bearer ${token}` }
     });
     const data = await res.json();
@@ -175,7 +171,7 @@ function formatDate(d) {
 export async function getEpisodes(q) {
   if (spotifyData.episodesList && spotifyData.episodesList.length > 0) {
     const episodesList = spotifyData.episodesList;
-    console.log('loaded from localStorage');
+    console.log('episodesList loaded from localStorage');
     return episodesList;
   }
   const uri = `https://api.spotify.com/v1/search?q=${q}&type=episode&limit=15`
@@ -253,7 +249,7 @@ export async function getEpisodesDetails(id) {
 
 export async function trandingPlaylist() {
   if (spotifyData.trandings && spotifyData.trandings.length > 0) {
-    console.log('fetching from localstorage');
+    console.log('trandingPlaylist loaded from localstorage');
     return spotifyData.trandings
   }
   const query = 'siddhu moosewala'
@@ -279,13 +275,41 @@ export async function trandingPlaylist() {
   saveLocalStorage('trandings')
   return spotifyData.trandings;
 }
-// trandingPlaylist()
+async function getShows(query) {
+  if (spotifyData.shows && spotifyData.shows.length > 0) {
+    console.log('trandingPlaylist loaded from localstorage');
+    const shows = spotifyData.shows
+    return shows;
+  }
+  const token = await getAccessToken()
+  const uri = `https://api.spotify.com/v1/search?q=${query}&type=show&limit=10`;
+  const option = { method: "GET", headers: { "Authorization": `Bearer ${token}` } }
+  const res = await fetch(uri, option);
+  const data = await res.json();
+  const shows = data.shows.items;  
+  return getShowArray(shows)
+}
+const getShowArray = (showsObj) => {
+  const shows = showsObj.map(show => ({
+    id: show.id,
+    name: show.name,
+    publisher: show.publisher,
+    total_Episodes: show.total_episodes,
+    lang: show.language,
+    desc: show.html_description,
+    image: show.images[0]?.url || show.images[1]?.url || show.images[2]?.url,
+    type: show.type
+  }))
+  spotifyData.shows = shows;
+  saveLocalStorage('shows')
+  return shows;
+}
 
 
-async function dummy(query, type = 'playlist') {
+async function dummy(id, type = 'playlist') {
 
   // const uri = `https://api.spotify.com/v1/episodes/${id}?market=IN`
-  const uri = `https://api.spotify.com/v1/search?q=${query}&type=${type}`
+  const uri = `https://api.spotify.com/v1/shows/${id}/episodes`
 
   const token = await getAccessToken();
   const res = await fetch(
@@ -303,11 +327,11 @@ async function dummy(query, type = 'playlist') {
   const data = await res.json();
 
   console.log(data);
-  // return data;
-  spotifyData.playlist = data
-  saveLocalStorage('playlist')
+  spotifyData.showsEpisode = data
+  saveLocalStorage('showsEpisode')
+  return data;
 }
-// dummy('tranding')
+// dummy('2SJiLdv5LdxN2y2TKzJcdn')
 
 
 export function saveLocalStorage(key) {

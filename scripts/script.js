@@ -452,11 +452,11 @@ async function episodeDetailsUI(details, id) {
       </div>
 
       <div class="flex items-center gap-6">
-        <button
+        <button onclick="audioBtn(this)"
           class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition">
           <i class="fa-solid fa-play text-black text-xl"></i>
         </button>
-        <audio src="${data.audio_prev}"></audio>
+        <audio data-src="${data.audio_prev}" src=""></audio>
 
         <div class="text-2xl flex gap-3">
           <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
@@ -485,7 +485,7 @@ async function episodeDetailsUI(details, id) {
     </div>
   </div>
   <div class="relative mt-10 bg-neutral-900">
-    <h3 class="sticky top-[124px] bg-neutral-900 text-xl font-semibold py-3 border-b border-neutral-700">More Episode like this</h3>
+    <h3 class="sticky top-[115px] z-10 bg-neutral-900 text-xl font-semibold py-3 border-b border-neutral-700">More Episode like this</h3>
 
     <ul class="space-y-2 w-full">
     ${data1.map(d => (
@@ -510,11 +510,11 @@ async function episodeDetailsUI(details, id) {
             <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
             <i class="fa-solid fa-arrow-up-from-bracket opacity-70 hover:opacity-100 cursor-pointer"></i>
             <span class="text-sm opacity-70 hover:opacity-100 cursor-pointer">• • •</span>
-            <button
+            <button onclick="audioBtn(this)"
               class="w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
               <i class="fa-solid fa-play text-black text-lg"></i>
             </button>
-            <audio src="${d.audio_prev}"></audio>
+            <audio data-src="${data.audio_prev}" src=""></audio>
           </div>
         </div>
 
@@ -528,7 +528,6 @@ async function episodeDetailsUI(details, id) {
 
 async function trandingSongsUI() {
   const data = await trandingPlaylist();
-  console.log(data);
   data.forEach(d => {
     const div = document.createElement("div")
     div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";

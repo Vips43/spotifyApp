@@ -4,22 +4,10 @@ const New_releases = new Swiper('.New_releases', {
   centeredSlides: false,
   loop: false,
   direction: 'horizontal',
-  slidesOffsetAfter: 0,
-  on: {
-    reachEnd: function () {
-      this.snapGrid = [...this.slidesGrid];
-    },
-  },
   navigation: {
     nextEl: '.releases-next',
     prevEl: '.releases-prev',
   },
-  breakpoints: {
-    320: { slidesPerView: 2 },
-    640: { slidesPerView: 3 },
-    1024: { slidesPerView: 4 },
-    1280: { slidesPerView: 6 }
-  }
 });
 const artistSwiper = new Swiper('.artistSwiper', {
   slidesPerView: 'auto',
@@ -29,12 +17,6 @@ const artistSwiper = new Swiper('.artistSwiper', {
     nextEl: '.artist-next',
     prevEl: '.artist-prev',
   },
-  breakpoints: {
-    320: { slidesPerView: 2 },
-    640: { slidesPerView: 3 },
-    1024: { slidesPerView: 4 },
-    1280: { slidesPerView: 6 }
-  }
 });
 const tranding = new Swiper('.tranding', {
   slidesPerView: 'auto',
@@ -42,15 +24,9 @@ const tranding = new Swiper('.tranding', {
   loop: false,
   centeredSlides: false,
   navigation: {
-    nextEl: '.artist-next',
-    prevEl: '.artist-prev',
+    nextEl: '.tranding-next',
+    prevEl: '.tranding-prev',
   },
-  breakpoints: {
-    320: { slidesPerView: 2 },
-    640: { slidesPerView: 3 },
-    1024: { slidesPerView: 4 },
-    1280: { slidesPerView: 6 }
-  }
 });
 const episode_swiper = new Swiper('.episode_swiper', {
   slidesPerView: 'auto',
@@ -61,12 +37,6 @@ const episode_swiper = new Swiper('.episode_swiper', {
     nextEl: '.episode-next',
     prevEl: '.episode-prev',
   },
-  breakpoints: {
-    320: { slidesPerView: 2 },
-    640: { slidesPerView: 3 },
-    1024: { slidesPerView: 4 },
-    1280: { slidesPerView: 6 }
-  }
 });
 
 
@@ -152,16 +122,13 @@ document.addEventListener("click", (e) => {
 
 function router() {
   let hash = window.location.hash.substring(1);
-  console.log(hash);
 
   // if(!hash) hash = "home";
 
   document.querySelectorAll('.route').forEach(sec => {
     sec.classList.add("hidden");
-    console.log("added");
   });
   const page = document.getElementById(hash);
-  console.log("removed");
   if (hash) page.classList.remove('hidden')
 }
 

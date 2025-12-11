@@ -30,7 +30,7 @@
  </style>
 </head>
 
-<body class="bg-black h-screen overflow-y-auto text-white font-inter">
+<body class="bg-black h-screen overflow-y-auto text-white font-inter select-none">
 
  <!-- NAVBAR -->
  <nav class="flex items-center justify-between h-16 p-3 bg-black border-neutral-800">
@@ -165,6 +165,10 @@
     </section>
    </section>
 
+   <!-- episodes -->
+   <section id='episode' class="bg-neutral-950 text-white py-8 px-6 lg:px-12 w-full hidden route">
+   </section>
+
    <!-- Trending songs section  -->
    <section id='tranding' class="bg-neutral-950 text-white py-2 px-2 lg:px-12 w-full">
     <div class="text-2xl font-bold">
@@ -191,15 +195,11 @@
        </div> -->
 
       </div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev tranding-prev"></div>
+      <div class="swiper-button-next tranding-next"></div>
      </div>
 
     </div>
-   </section>
-
-   <!-- episodes -->
-   <section id='episode' class="bg-neutral-950 text-white py-8 px-6 lg:px-12 w-full hidden route">
    </section>
 
    <!-- song search -->
