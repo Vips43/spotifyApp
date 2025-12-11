@@ -40,7 +40,11 @@ category_container.addEventListener("click", () => {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-
+  if(spotifyData.searchResults&&spotifyData.searchResults.length>0){
+    const saved = spotifyData.searchResults
+    console.log('search results loaded from localstorage')
+    return searchSongsUI(saved)
+  }
   newReleasesUI()
   // episodeFetchLocalstorage();
 
@@ -51,10 +55,10 @@ function searchSongsUI(songArr) {
   songArr.forEach((song, i) => {
     let div = document.createElement("div")
     div.className =
-      "song-container w-44 sm:w-48 p-2 bg-neutral-900 rounded-xl hover:bg-neutral-800 transition grid gap-3 overflow-hidden";
+      "song-container w-44  p-2 bg-neutral-900 rounded-xl hover:bg-neutral-800 flex flex-col overflow-hidden";
     div.innerHTML = `
-        <div class="relative w-44 h-44 overflow-hidden rounded-lg group">
-          <img class=" h-full object-cover rounded-lg" src="${song.imgURL}" alt="">
+        <div class="relative w-full overflow-hidden rounded-lg group">
+          <img class="object-contain rounded-lg" src="${song.imgURL}" alt="">
           <!-- Play Icon -->
           <div 
             class="absolute play-icon">
