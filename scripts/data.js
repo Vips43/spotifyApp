@@ -6,7 +6,8 @@ let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 }
 
 function removelocal() {
-  delete spotifyData.trandings
+  delete spotifyData.artistsInfo
+  delete spotifyData.artistsTracks
   saveLocalStorage('trandings')
 }
 // removelocal()
@@ -159,6 +160,7 @@ export async function getArtistsAblum(id) {
   }
   let artistsTracks = tracks.tracks.map(track => ({
     name: track.name,
+    artist_name: track.artists.map(a => (a.name)),
     image: track.album.images[2]?.url || track.album.images[1]?.url || track.album.images[0]?.url,
     song: track.external_urls.spotify,
     duration: formateDuration(track.duration_ms)
@@ -166,7 +168,7 @@ export async function getArtistsAblum(id) {
   spotifyData.artistsInfo = artistsInfo
   spotifyData.artistsTracks = artistsTracks;
   saveLocalStorage('artistsInfo')
-  console.log('me chala');
+  console.log(tracks);
   return { artistsInfo, artistsTracks }
 }
 

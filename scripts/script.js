@@ -329,7 +329,7 @@ async function getArtistsAblumUI(ids) {
   div.className = `w-full ${getRandGradient} relative bg-neutral-950 text-white py-8 px-6 lg:px-12`;
   div.innerHTML =
     `<div class="flex items-center gap-6 lg:gap-10">
-          <div class="w-40 h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl">
+          <div class="w-40 h-40 lg:w-48 lg:h-48 rounded-lg overflow-hidden shadow-xl">
             <img src="${artistsInfo.image}" class="w-full h-full object-cover" />
           </div>
           <div class="space-y-3">
@@ -339,7 +339,7 @@ async function getArtistsAblumUI(ids) {
             </p>
           </div>
         </div>
-        <div class="mt-8 sticky ${solidColor} top-0 flex items-center p-3 gap-6">
+        <div class="mt-8 sticky ${solidColor} backdrop-blur-md top-0 flex items-center p-3 gap-6">
           <button class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition-all">
             <i class="fa-solid fa-play text-black text-xl"></i>
           </button>
@@ -364,6 +364,7 @@ async function getArtistsAblumUI(ids) {
                 <img src="${track.image}" class="h-12 w-12 rounded" />
                 <div>
                   <p class="font-semibold">${track.name}</p>
+                  <p class='text-gray-600 text-sm flex items-center'>${track.artist_name.map(artist=> `<span>${artist}</span>`).join(', ')}</p>
                 </div>
               </div>
 
