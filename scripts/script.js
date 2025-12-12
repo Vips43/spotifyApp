@@ -1,4 +1,4 @@
-import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist } from './data.js';
+import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows } from './data.js';
 
 
 const song_search = document.getElementById('song-search');
@@ -21,33 +21,33 @@ const episode_section = document.getElementById('episode_section'),
   episode_container = document.getElementById('episode_container')
 let episode = document.getElementById("episode");
 const tranding_container = document.getElementById("tranding_container");
+const shows_container = document.querySelector(".shows-container");
+const shows_h3 = document.getElementById("shows_h3")
 
 
 
 
-
+// localStorage and local object
 let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) || {
   categories: [], newReleases: [], searchResults: [], episodesList: []
 };
-
-
-let allSongs = [];
 
 category_container.addEventListener("click", () => {
   category_div.classList.toggle('toggle_category')
   category_container.querySelector(".fa-angle-down").classList.toggle("rotate-180")
 })
-
-
+// load on document loaded
 document.addEventListener("DOMContentLoaded", async () => {
-  if(spotifyData.searchResults&&spotifyData.searchResults.length>0){
+  if (spotifyData.searchResults && spotifyData.searchResults.length > 0) {
     const saved = spotifyData.searchResults
     console.log('search results loaded from localstorage')
     return searchSongsUI(saved)
   }
-  newReleasesUI()
-  // episodeFetchLocalstorage();
+})
+document.addEventListener("DOMContentLoaded", () => {
+  // renderGenres()
 
+  newReleasesUI()
 })
 
 function searchSongsUI(songArr) {
@@ -65,7 +65,7 @@ function searchSongsUI(songArr) {
             <i class="fa-solid fa-play"></i>
           </div>
         </div>
-        <audio class="audio" href="${song.songSRC}"></audio>
+        <audio class="audio" data-href='${song.songSRC}' href=""></audio>
         <div class="caption">
           <h3 class="font-semibold truncate">${song.artistName}</h3>
           <p class="text-gray-400 text-sm truncate">${song.trackName}</p>
@@ -92,9 +92,10 @@ input_Btn.addEventListener("click", async () => {
   let results = data.map(item => {
     // const track = item.data;
     return {
+      id: item.id,
       songSRC: item.preview_url || "",
       trackName: item.name || "Unknown Track",
-      imgURL: item.album.images[0].url || "fallback.jpg",
+      image: item.album.images[0].url || "fallback.jpg",
       artistName: item.artists[0].name || "Unknown Artist",
     }
   })
@@ -120,20 +121,12 @@ async function searchSongs(query, type = 'track') {
   return data.tracks.items;
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // renderGenres()
-})
-
 async function newReleasesUI() {
-  let stored = JSON.parse(localStorage.getItem("spotifyData"));
-  // If spotifyData missing or newReleases missing or empty → fetch fresh
-  if (!stored || !stored.newReleases || stored.newReleases.length === 0) {
-    await getNewReleases();
-    stored = JSON.parse(localStorage.getItem("spotifyData"));
-  }
-  const data = stored.newReleases;
+  const releases = await getNewReleases();
+  console.log(releases);
+
   new_release_container.innerHTML = '';
-  data.forEach(item => {
+  releases.forEach(item => {
     const div = document.createElement("div");
     div.className = "swiper-slide";
 
@@ -147,19 +140,15 @@ async function newReleasesUI() {
       <div class="caption self-start text-left! mt-3">
         <h3 class="text-base font-semibold truncate">${item.name}</h3>
         <p class="text-gray-400 text-sm truncate">${item.artist}</p>
-      </div>
-    `;
+      </div>`;
     new_release_container.append(div);
   });
   console.log('me chala');
-
 }
 
 
 const GENRES = [
-  "pop", "hiphop", "dance", "chill", "party",
-  "romance", "workout", "indie", "bollywood",
-  "punjabi", "rock", "sad", "happy", "focus",
+  "pop", "hiphop", "dance", "chill", "party", "romance", "workout", "indie", "bollywood", "punjabi", "rock", "sad", "happy", "focus",
 ];
 async function searchGenrePlaylists(genre) {
   const token = await getAccessToken();
@@ -292,9 +281,9 @@ function renderTrackUI(tracks) {
 }
 
 document.querySelector(".artistBtn").addEventListener("click", async function artistsUI() {
-  artist_h3.style.display = 'flex';
+  artist_h3.style.display = 'block';
   const artists = await getArtistsDetails();
-  artist_h3.style.display = 'none';
+  artist_h3.innerHTML = `Top Artists`
 
   artist_container.innerHTML = ''
   artists.forEach(artist => {
@@ -315,7 +304,6 @@ document.querySelector(".artistBtn").addEventListener("click", async function ar
     artist_container.append(div);
   });
   console.log('me chala');
-
 })
 
 // async function getArtistsAblumLocalStorage() {
@@ -435,8 +423,8 @@ async function episodeDetailsUI(details, id) {
   episode.innerHTML = '';
   const div = document.createElement("div");
   div.innerHTML =
-    `<div class="bg-[url('${data.background}')] bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" data-id='${data.id}'>
-    <div class="space-y-3 bg-black/30 h-full flex flex-col justify-center ">
+    `<div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" style="background-image: url('${data.background}');" data-id='${data.id}'>
+    <div class="space-y-3 bg-black/65 h-full flex flex-col justify-center ">
       <h5 class="text-sm">
         <span class="text-blue-500 text-2xl">•</span> New Podcast Episode
       </h5>
@@ -448,8 +436,8 @@ async function episodeDetailsUI(details, id) {
       </div>
     </div>
   </div>
-  <div class="mt-8 sticky top-0 z-20">
-    <div class="blue-gradient p-3 grid gap-3">
+  <div class="sticky top-0 z-20">
+    <div class="${getRandGradient} p-3 grid gap-3">
       <div class="opacity-70 hover:opacity-100 cursor-pointer">
         <i class="fa-regular fa-circle-play"></i>
         <span>Video</span> • <span>${data.release}</span> • <span>${data.duration}</span>
@@ -537,7 +525,7 @@ async function trandingSongsUI() {
     div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";
     div.setAttribute('loading', "lazy");
     div.innerHTML =
-  `<div class="hover:bg-neutral-700/35 w-44 p-2 h-full rounded-lg overflow-hidden">
+      `<div class="hover:bg-neutral-700/35 w-44 p-2 h-full rounded-lg overflow-hidden">
     <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
     <img class="w-full h-full object-cover" src="${d.image}" alt="">
     <div class="absolute play-icon">
@@ -552,4 +540,29 @@ async function trandingSongsUI() {
     tranding_container.append(div)
   })
 }
- trandingSongsUI()
+trandingSongsUI()
+document.querySelector('.showsBtn').addEventListener("click", async () => {
+  shows_h3.style.display = 'block'
+  const data = await getShows('top')
+  shows_h3.innerHTML = 'Top Shows'
+  shows_container.innerHTML = '';
+  data.forEach(d => {
+    const div = document.createElement("div")
+    div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";
+    div.setAttribute('loading', "lazy");
+    div.innerHTML =
+      `<div class="hover:bg-neutral-700/35 w-44 p-2 h-full rounded-lg overflow-hidden">
+    <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
+    <img class="w-full h-full object-cover" src="${d.image}" alt="">
+    <div class="absolute play-icon">
+      <i class="fa-solid fa-play"></i>
+    </div>
+    </div>
+    <div class="caption self-start mt-3">
+    <h3 class="text-base font-semibold truncate">${d.name}</h3>
+    <p class="text-gray-400 text-sm truncate">${d.publisher}</p>
+    </div>
+  </div>`;
+    shows_container.append(div)
+  })
+})

@@ -65,15 +65,19 @@
 /* MICRO NAV BUTTONS */
 .swiper .swiper-button-next,
 .swiper .swiper-button-prev {
- width: 18px !important;
- height: 18px !important;
- background: rgba(255, 255, 255, 0.1);
+ width: 2rem !important;
+ height: 2rem !important;
+ background: rgb(37, 37, 37);
  border-radius: 50%;
  backdrop-filter: blur(4px);
  transition: 0.25s ease-in-out;
  display: flex;
  align-items: center;
  justify-content: center;
+ .swiper-navigation-icon{
+    width: 15px;
+    height: 15px;
+ }
 }
 
 /* MICRO ARROW ICONS */
@@ -81,16 +85,14 @@
 .swiper .swiper-button-prev::after {
  font-size: 6px !important;
  color: #9c2626 !important;
- font-weight: 700 !important;
  line-height: 0 !important;
 }
+.swiper .swiper-button-next:active,
+.swiper .swiper-button-prev:active{
+    transform: scale(.80);
+} 
 
-/* Hover effect */
-.swiper .swiper-button-next:hover,
-.swiper .swiper-button-prev:hover {
- background: rgba(0, 255, 95, 0.35);
- transform: scale(1.2);
-}
+
 /* Fix slide width so swiper doesn't override it */
 
 .customswiper .swiper-slide {

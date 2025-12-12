@@ -2,15 +2,18 @@
 let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 {
   categories: [], newReleases: [], searchResults: [],
-  getEpisodesDetails: [], trandings: [], shows: [], showsEpisode: []
+  episodeDetails: [], trandings: [], shows: [], showsEpisode: []
 }
 
 function removelocal() {
-  delete spotifyData.showsEpisode
-  saveLocalStorage('showsEpisode')
+  delete spotifyData.trandings
+  saveLocalStorage('trandings')
 }
 // removelocal()
 
+/* =========================================================
+   SPOTIFY AUTH TOKEN
+========================================================= */
 
 let cachedToken = localStorage.getItem("spotify_token") || null;
 let tokenExpiry = Number(localStorage.getItem("spotify_token_expiry")) || 0;
@@ -42,6 +45,10 @@ export async function getAccessToken() {
   return cachedToken;
 }
 
+
+/* =========================================================
+   SAFE FETCH HANDLER (Retries on Rate Limit) *if required*
+========================================================= */
 async function safeFetch(url, options) {
   let res = await fetch(url, options);
   if (res.status === 429) {
@@ -53,6 +60,10 @@ async function safeFetch(url, options) {
   return res;
 }
 
+
+/* =========================================================
+   SEARCH SONGS
+========================================================= */
 export async function searchSongs(query) {
   const token = await getAccessToken();
   const res = await fetch(
@@ -65,11 +76,13 @@ export async function searchSongs(query) {
   return data.tracks.items;
 }
 
+/* =========================================================
+   NEW RELEASES
+========================================================= */
 export async function getNewReleases() {
-  if (spotifyData.newReleases && spotifyData.newReleases > 0) {
-    console.log('fetched from localstorage');
+  if (spotifyData.newReleases && spotifyData.newReleases.length > 0) {
+    console.log('Loaded  getNewReleases from localstorage');
     return spotifyData.newReleases;
-
   } else {
     const token = await getAccessToken();
     const res = await fetch(`https://api.spotify.com/v1/browse/new-releases?limit=10`, {
@@ -77,22 +90,22 @@ export async function getNewReleases() {
     });
     const data = await res.json();
     const albums = data.albums.items;
-
-    console.log('fetched from API');
-    return newReleaseArray(albums)
+    console.log('fetched getNewReleases from API');
+    spotifyData.newReleases = albums.map(r => ({
+      image: r.images?.[0]?.url || "",
+      name: r.name,
+      artist: r.artists.map(a => a.name).join(", ")
+    }));
+    // SAVE IN LOCAL STORAGE
+    localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
+    console.log('saved new releases to localstorage');
+    return spotifyData.newReleases;
   }
 }
-function newReleaseArray(releaseData) {
-  spotifyData.newReleases = releaseData.map(r => ({
-    image: r.images?.[0]?.url || "",
-    name: r.name,
-    artist: r.artists.map(a => a.name).join(", ")
-  }));
-  // SAVE IN LOCAL STORAGE
-  console.log('saved new releases to localstorage');
-  localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
-  return spotifyData.newReleases;
-}
+
+/* =========================================================
+   ARTIST DETAILS (MULTI ARTIST FETCH)
+========================================================= */
 
 export async function getArtistsDetails() {
   if (spotifyData.artistsInfo && spotifyData.artistsInfo.length > 0) {
@@ -120,11 +133,10 @@ export async function getArtistsDetails() {
   saveLocalStorage("artistsInfo")
   return artistsInfo;
 }
-// getArtistsDetails()
 
-
-
-
+/* =========================================================
+   ARTIST ALBUM + TOP TRACKS
+========================================================= */
 function formateDuration(ms) {
   const minutes = Math.floor(ms / 60000);
   const seconds = Math.floor((ms % 60000) / 1000).toString().padStart(2, '0');
@@ -151,12 +163,10 @@ export async function getArtistsAblum(id) {
     song: track.external_urls.spotify,
     duration: formateDuration(track.duration_ms)
   }))
-
   spotifyData.artistsInfo = artistsInfo
   spotifyData.artistsTracks = artistsTracks;
   saveLocalStorage('artistsInfo')
   console.log('me chala');
-
   return { artistsInfo, artistsTracks }
 }
 
@@ -168,6 +178,10 @@ function formatDate(d) {
   return `${day} ${month}`;
 }
 
+
+/* =========================================================
+   EPISODES LIST
+========================================================= */
 export async function getEpisodes(q) {
   if (spotifyData.episodesList && spotifyData.episodesList.length > 0) {
     const episodesList = spotifyData.episodesList;
@@ -202,15 +216,18 @@ export async function getEpisodes(q) {
   saveLocalStorage('episodesList');
   return episodesList;
 }
-// getEpisodes('horror')
 
+
+/* =========================================================
+   EPISODE DETAILS
+========================================================= */
 
 export async function getEpisodesDetails(id) {
-  // if (spotifyData.episodeDetails && spotifyData.episodeDetails.length > 0) {
-  //   const episodeDetails = spotifyData.episodeDetails;
-  //   console.log('loaded from localStorage');
-  //   return episodeDetails;
-  // }
+  if (spotifyData.episodeDetails && spotifyData.episodeDetails.length > 0) {
+    const episodeDetails = spotifyData.episodeDetails;
+    console.log('loaded from localStorage');
+    return episodeDetails;
+  }
   const uri = `https://api.spotify.com/v1/episodes?ids=${id}`
   const token = await getAccessToken();
   const res = await fetch(`${uri}`,
@@ -226,7 +243,7 @@ export async function getEpisodesDetails(id) {
     name: ep.name,
     desc: ep.html_description,
     audio_prev: ep.audio_preview_url || '',
-    background: ep.images[0]?.url || ep.images[1].url,
+    background: ep.images[0].url,
     image: ep.images[1]?.url || ep.images[0]?.url || ep.images[2]?.url || '',
     thumb: ep.images[2]?.url || ep.images[1]?.url || '',
     release: formatDate(ep.release_date),
@@ -240,19 +257,21 @@ export async function getEpisodesDetails(id) {
       show_publisher: ep.show.publisher,
     }
   }))
-  // spotifyData.episodeDetails = episodeDetails;
-  // spotifyData.data = data
-  // saveLocalStorage('episodeDetails')
-  console.log('me chala');
+  spotifyData.episodeDetails = episodeDetails;
+  spotifyData.data = data
+  saveLocalStorage('episodeDetails')
   return episodeDetails;
 }
 
+/* =========================================================
+   TRENDING PLAYLISTS
+========================================================= */
 export async function trandingPlaylist() {
   if (spotifyData.trandings && spotifyData.trandings.length > 0) {
     console.log('trandingPlaylist loaded from localstorage');
     return spotifyData.trandings
   }
-  const query = 'siddhu moosewala'
+  const query = 'tranding songs'
   const token = await getAccessToken();
   const uri = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=50`
   const option = { method: "GET", headers: { "Authorization": `Bearer ${token}` } }
@@ -275,7 +294,11 @@ export async function trandingPlaylist() {
   saveLocalStorage('trandings')
   return spotifyData.trandings;
 }
-async function getShows(query) {
+
+/* =========================================================
+   SHOWS
+========================================================= */
+export async function getShows(query) {
   if (spotifyData.shows && spotifyData.shows.length > 0) {
     console.log('trandingPlaylist loaded from localstorage');
     const shows = spotifyData.shows
@@ -286,7 +309,7 @@ async function getShows(query) {
   const option = { method: "GET", headers: { "Authorization": `Bearer ${token}` } }
   const res = await fetch(uri, option);
   const data = await res.json();
-  const shows = data.shows.items;  
+  const shows = data.shows.items;
   return getShowArray(shows)
 }
 const getShowArray = (showsObj) => {
@@ -307,8 +330,6 @@ const getShowArray = (showsObj) => {
 
 
 async function dummy(id, type = 'playlist') {
-
-  // const uri = `https://api.spotify.com/v1/episodes/${id}?market=IN`
   const uri = `https://api.spotify.com/v1/shows/${id}/episodes`
 
   const token = await getAccessToken();
@@ -331,24 +352,12 @@ async function dummy(id, type = 'playlist') {
   saveLocalStorage('showsEpisode')
   return data;
 }
-// dummy('2SJiLdv5LdxN2y2TKzJcdn')
 
-
+/* =========================================================
+   LOCALSTORAGE: SAVE 
+========================================================= */
 export function saveLocalStorage(key) {
   console.log(`Saving ${key}:`, spotifyData[key]);
   localStorage.setItem("spotifyData", JSON.stringify(spotifyData));
 }
-function clearLocalstorage() {
-  setInterval(() => {
-    localStorage.removeItem("spotifyData")
-  }, 10000);
-}
 
-
-function getLocalStorage(data) {
-  if (spotifyData.data && spotifyData.data > 0) {
-    const data = spotifyData.data;
-    console.log('loaded from localStorage');
-    return data;
-  }
-}

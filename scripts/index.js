@@ -38,6 +38,16 @@ const episode_swiper = new Swiper('.episode_swiper', {
     prevEl: '.episode-prev',
   },
 });
+const shows_swiper = new Swiper('.shows', {
+  slidesPerView: 'auto',
+  spaceBetween: 10,
+  centeredSlides: false,
+  loop: false,
+  navigation: {
+    nextEl: '.shows-next',
+    prevEl: '.shows-prev',
+  },
+});
 
 
 
@@ -118,20 +128,4 @@ document.addEventListener("click", (e) => {
     dropdown.classList.add("hidden");
   }
 });
-
-
-function router() {
-  let hash = window.location.hash.substring(1);
-
-  // if(!hash) hash = "home";
-
-  document.querySelectorAll('.route').forEach(sec => {
-    sec.classList.add("hidden");
-  });
-  const page = document.getElementById(hash);
-  if (hash) page.classList.remove('hidden')
-}
-
-window.addEventListener("load", router);
-window.addEventListener("hashchange", router);
 
