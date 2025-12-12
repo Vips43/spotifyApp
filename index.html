@@ -140,17 +140,17 @@
 
         <div class="z-10 sticky top-0 bg-neutral-500 rounded-t-2xl">
           <div class="ml-5">
-            <ul class="flex items-center gap-2 p-3 text-sm">
+            <ul id="top_main_ul" class="flex items-center gap-2 p-3 text-sm">
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">All</button></li>
               <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Songs</button></li>
-              <li><a href="#shows" class="showsBtn p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Shows</a>
+              <li><button class="p-1 px-3 bg-neutral-700 rounded-2xl hover:bg-neutral-800">Shows</button>
               </li>
-              <li><a href="#artist" class="artistBtn rounded-2xl bg-neutral-700 p-1 px-3 hover:bg-neutral-800">Artist</a></li>
+              <li><button class="rounded-2xl bg-neutral-700 p-1 px-3 hover:bg-neutral-800">Artist</button></li>
             </ul>
           </div>
         </div>
         <!-- shows sectiopn  -->
-        <section id="shows" class="scrollbar overflow-auto mt-5 relative px-2 transition-all duration-500 hidden route ">
+        <section id="shows_section" class="scrollbar overflow-auto mt-5 relative px-2 transition-all duration-500 hidden">
           <!-- Section Heading -->
           <div class="mb-4 ">
             <h3 id="shows_h3" class="w-fit text-2xl font-bold hidden">Loading <span class="typewriter-animation">. . .</span></h3>
@@ -162,7 +162,7 @@
           </div>
         </section>
         <!-- artist section  -->
-        <section id="artist" class="scrollbar overflow-auto mt-5 relative px-2 transition-all duration-500 route hidden">
+        <section id="artist_section" class="scrollbar overflow-auto mt-5 relative px-2 transition-all duration-500 hidden">
           <h3 class="w-fit text-2xl font-bold hidden">Loading <span class="typewriter-animation">. . .</span></h3>
           <!-- Example card -->
           <div class="swiper customswiper artistSwiper py-4">
@@ -176,8 +176,6 @@
           </div>
         </section>
       </section>
-
-
 
       <!-- song search -->
       <section id="search" class="py-3 transition-all duration-300 route hidden">
@@ -203,22 +201,6 @@
 
           <div class="swiper w-full tranding">
             <div id="tranding_container" class="swiper-wrapper customswiper">
-
-              <!-- <div loading="lazy" class="swiper-slide !w-fit flex-shrink-0">
-        <div class="hover:bg-neutral-700/35 w-44 p-2 rounded-lg overflow-hidden">
-         <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
-          <img class="w-full h-full object-cover" src="images/Sanware-Hansraj-Raghuwanshi-500-500.jpg" alt="">
-          <div class="absolute play-icon">
-           <i class="fa-solid fa-play"></i>
-          </div>
-         </div>
-         <div class="caption mt-3">
-          <h3 class="text-base font-semibold truncate">frf rgirg hh eree wee rtr </h3>
-          <p class="text-gray-400 text-sm truncate">${item.artist}</p>
-         </div>
-        </div>
-       </div> -->
-
             </div>
             <div class="swiper-button-prev tranding-prev"></div>
             <div class="swiper-button-next tranding-next"></div>

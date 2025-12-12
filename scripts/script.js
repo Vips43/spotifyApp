@@ -7,7 +7,8 @@ let input_Search = document.getElementById('input_Search'),
 let searchDropdownLI = document.querySelectorAll('#searchDropdown ul li')
 let title = document.querySelector('.title')
 let top_main = document.querySelector('#top_main')
-let artist_h3 = document.querySelector('#artist h3'),
+let artist_h3 = document.querySelector('#artist_section h3'),
+  artist_section = document.getElementById('artist_section'),
 
   top_main_section_h3 = document.querySelector('#top_main section h3'),
   artist_container = document.getElementById('artist_container');
@@ -21,8 +22,10 @@ const episode_section = document.getElementById('episode_section'),
   episode_container = document.getElementById('episode_container')
 let episode = document.getElementById("episode");
 const tranding_container = document.getElementById("tranding_container");
-const shows_container = document.querySelector(".shows-container");
+const shows_container = document.querySelector(".shows-container"),
+  shows = document.getElementById("shows_section")
 const shows_h3 = document.getElementById("shows_h3")
+const top_main_ul = document.getElementById("top_main_ul")
 
 
 
@@ -48,6 +51,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // renderGenres()
 
   newReleasesUI()
+  trandingSongsUI()
+  const topMainCardIds = [artist_section, shows_section]
+  top_main_ul.addEventListener("click", (e) => {
+    top_main_ul.querySelectorAll("li button").forEach(btn => {
+      btn.className = 'rounded-2xl bg-neutral-700 p-1 px-3 hover:bg-neutral-800 hover:text-white'
+    })
+    topMainCardIds.forEach(id => {
+      if (!id.classList.contains('hidden'))
+        id.classList.add('hidden')
+    })
+    const target = e.target.textContent.toLowerCase();
+    if (target === 'shows') {
+      e.target.classList.add("bg-white", "text-black")
+      shows_section.classList.remove('hidden')
+      showUI()
+    }
+    if (target === 'artist') {
+      e.target.classList.add("bg-white", "text-black")
+      artist_section.classList.remove('hidden')
+      artistsUI()
+    } else return;
+  })
 })
 
 function searchSongsUI(songArr) {
@@ -280,11 +305,10 @@ function renderTrackUI(tracks) {
   });
 }
 
-document.querySelector(".artistBtn").addEventListener("click", async function artistsUI() {
+async function artistsUI() {
   artist_h3.style.display = 'block';
   const artists = await getArtistsDetails();
   artist_h3.innerHTML = `Top Artists`
-
   artist_container.innerHTML = ''
   artists.forEach(artist => {
     const div = document.createElement("div");
@@ -303,12 +327,8 @@ document.querySelector(".artistBtn").addEventListener("click", async function ar
     div.onclick = () => getArtistsAblumUI(artist.id);
     artist_container.append(div);
   });
-  console.log('me chala');
-})
-
-// async function getArtistsAblumLocalStorage() {
-
-// }
+  console.log('artistsUI chala');
+}
 
 //radnome gradient 
 const cssGradients = [
@@ -340,16 +360,16 @@ async function getArtistsAblumUI(ids) {
           </div>
         </div>
         <div class="mt-8 sticky ${solidColor} backdrop-blur-md top-0 flex items-center p-3 gap-6">
-          <button class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition-all">
+          <button class="w-12 h-12 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition-all">
             <i class="fa-solid fa-play text-black text-xl"></i>
           </button>
           <img src="${artistsInfo.image}"
-            class="w-12 h-14 rounded-md shadow border-2 border-neutral-700 object-cover hover:opacity-100 opacity-80">
-          <i class="fa-solid fa-shuffle text-2xl opacity-70 hover:opacity-100 cursor-pointer"></i>
-          <button class="px-4 py-1.5 border border-neutral-600 rounded-full text-sm hover:border-white transition">
+            class="w-10 h-12 rounded-md shadow border-2 border-neutral-700 object-cover hover:opacity-100 opacity-80">
+          <i class="fa-solid fa-shuffle text-xl opacity-70 hover:opacity-100 cursor-pointer"></i>
+          <button class="px-2.5 py-1 border border-neutral-600 rounded-full text-sm hover:border-white transition">
             Follow
           </button>
-          <i class="fa-solid fa-ellipsis text-2xl opacity-70 hover:opacity-100 cursor-pointer"></i>
+          <i class="fa-solid fa-ellipsis text-xl opacity-70 hover:opacity-100 cursor-pointer"></i>
         </div>
         <div class="mt-10">
           <h3 class="text-xl font-semibold mb-4">Popular</h3>
@@ -364,7 +384,7 @@ async function getArtistsAblumUI(ids) {
                 <img src="${track.image}" class="h-12 w-12 rounded" />
                 <div>
                   <p class="font-semibold">${track.name}</p>
-                  <p class='text-gray-600 text-sm flex items-center'>${track.artist_name.map(artist=> `<span>${artist}</span>`).join(', ')}</p>
+                  <p class='text-gray-600 text-sm flex items-center'>${track.artist_name.map(artist => `<span>${artist}</span>`).join(', ')}</p>
                 </div>
               </div>
 
@@ -416,7 +436,6 @@ async function episodeCardUI() {
 episodeCardUI()
 
 async function episodeDetailsUI(details, id) {
-
   let episodeDetails = await getEpisodesDetails(id)
   let data1 = details
   let data = episodeDetails[0];
@@ -541,8 +560,7 @@ async function trandingSongsUI() {
     tranding_container.append(div)
   })
 }
-trandingSongsUI()
-document.querySelector('.showsBtn').addEventListener("click", async () => {
+async function showUI() {
   shows_h3.style.display = 'block'
   const data = await getShows('top')
   shows_h3.innerHTML = 'Top Shows'
@@ -566,4 +584,4 @@ document.querySelector('.showsBtn').addEventListener("click", async () => {
   </div>`;
     shows_container.append(div)
   })
-})
+}
