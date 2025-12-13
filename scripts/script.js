@@ -402,7 +402,7 @@ async function getArtistsAblumUI(ids) {
 }
 
 async function episodeCardUI() {
-  const episodesList = await getEpisodes('tranding')
+  const episodesList = await getEpisodes('top')
   episodesList.forEach(ep => {
     const swiperDiv = document.createElement('div');
     swiperDiv.dataset.id = ep.id;
@@ -465,7 +465,6 @@ async function episodeDetailsUI(details, id) {
         <button class="audioBtn w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition">
           <i class="fa-solid fa-play text-black text-xl"></i>
         </button>
-        <audio data-src="${data.audio_prev}" src=""></audio>
 
         <div class="text-2xl flex gap-3">
           <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
@@ -523,7 +522,6 @@ async function episodeDetailsUI(details, id) {
               class="w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
               <i class="fa-solid fa-play text-black text-lg"></i>
             </button>
-            <audio data-src="${data.audio_prev}" src=""></audio>
           </div>
         </div>
 
@@ -532,7 +530,7 @@ async function episodeDetailsUI(details, id) {
     </ul>
   </div>`
   episode.append(div)
-  audioBtnWork()
+  audioBtnWork(data.audio_prev)
   console.log('me chala');
 }
 
