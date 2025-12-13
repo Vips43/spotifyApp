@@ -4,11 +4,16 @@ function router() {
 
   // if(!hash) hash = "home";
 
-  document.querySelectorAll('.route').forEach(sec => {
-    sec.classList.add("hidden");
-  });
   const page = document.getElementById(hash);
-  if (page) page.classList.remove('hidden')
+  if (page) {
+    document.querySelectorAll('.route').forEach(sec => {
+      if (!sec.classList.contains("hidden")) {
+        // sec.classList.add("hidden");
+      }
+    });
+
+    // page.classList.remove('hidden')
+  }
 }
 
 window.addEventListener("load", router);

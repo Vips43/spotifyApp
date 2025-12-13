@@ -1,6 +1,5 @@
 import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows } from './data.js';
 
-
 const song_search = document.getElementById('song-search');
 let input_Search = document.getElementById('input_Search'),
   input_Btn = document.getElementById('input_Btn');
@@ -9,7 +8,6 @@ let title = document.querySelector('.title')
 let top_main = document.querySelector('#top_main')
 let artist_h3 = document.querySelector('#artist_section h3'),
   artist_section = document.getElementById('artist_section'),
-
   top_main_section_h3 = document.querySelector('#top_main section h3'),
   artist_container = document.getElementById('artist_container');
 let categoryContainerDiv = document.querySelector('.category_container div'),
@@ -20,7 +18,7 @@ let categoryContainerDiv = document.querySelector('.category_container div'),
 const episode_section = document.getElementById('episode_section'),
   episode_section_h1 = document.getElementById('episode_section h1'),
   episode_container = document.getElementById('episode_container')
-let episode = document.getElementById("episode");
+let all_container = document.getElementById("all_container");
 const tranding_container = document.getElementById("tranding_container");
 const shows_container = document.querySelector(".shows-container"),
   shows = document.getElementById("shows_section")
@@ -49,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 })
 document.addEventListener("DOMContentLoaded", () => {
   // renderGenres()
-
+  episodeCardUI()
   newReleasesUI()
   trandingSongsUI()
   const topMainCardIds = [artist_section, shows_section]
@@ -83,7 +81,7 @@ function searchSongsUI(songArr) {
       "song-container w-44  p-2 bg-neutral-900 rounded-xl hover:bg-neutral-800 flex flex-col overflow-hidden";
     div.innerHTML = `
         <div class="relative w-full overflow-hidden rounded-lg group">
-          <img class="object-contain rounded-lg" src="${song.imgURL}" alt="">
+          <img class="object-contain rounded-lg" src="${song.image}" alt="">
           <!-- Play Icon -->
           <div 
             class="absolute play-icon">
@@ -97,9 +95,20 @@ function searchSongsUI(songArr) {
         </div>`;
     song_search.append(div);
   })
+  document.getElementById("search").querySelector("button").
+    onclick = (e) => {
+      history.go(-1)
+      document.getElementById("search").classList.add("hidden")
+      document.querySelectorAll(".search").forEach(s => s.classList.remove("hidden"))
+      all_container.classList.add('hidden')
+    }
+
+
 }
 
 input_Btn.addEventListener("click", async () => {
+  document.getElementById("search").classList.remove("hidden")
+  document.querySelectorAll(".search").forEach(s => s.classList.add("hidden"))
   let search = input_Search.value.trim()
   if (!search) return 0;
   let litext = '';
@@ -256,7 +265,7 @@ function renderPlaylistsUI(playlists) {
   console.log('me chala');
 }
 
-async function showPlaylistTracks(playlistId, name) {
+async function showPlaylistTracks(playlistId, nam) {
   show_song_container_h3.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`;
   title.innerHTML = '';
 
@@ -278,7 +287,7 @@ async function showPlaylistTracks(playlistId, name) {
 function renderTrackUI(tracks) {
   show_song_container.innerHTML = ``;
   show_song_container_h3.innerHTML = `
-  <h2 class="text-2xl font-bold mb-4">${name}</h2>`;
+  <h2 class="text-2xl font-bold mb-4">${nam}</h2>`;
   tracks.forEach(t => {
     const track = t.track;
     if (!track && !track.album.images[0]?.url) return;
@@ -330,7 +339,7 @@ async function artistsUI() {
   console.log('artistsUI chala');
 }
 
-//radnome gradient 
+//random gradient 
 const cssGradients = [
   "red-gradient", "blue-gradient",
   "orange-gradient", "slate-gradient"
@@ -393,19 +402,17 @@ async function getArtistsAblumUI(ids) {
     ).join('')}
           </ul>
         </div>`
-
   top_main.append(div)
   console.log('me chala');
 }
 
 async function episodeCardUI() {
-  const episodesList = await getEpisodes('top')
+  const episodesList = await getEpisodes('tranding')
   episodesList.forEach(ep => {
     const swiperDiv = document.createElement('div');
     swiperDiv.dataset.id = ep.id;
     swiperDiv.className = 'swiper-slide';
     swiperDiv.innerHTML =
-
       `<a href='#episode'>
       <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
       <img class="w-full h-full object-cover" src="${ep.image}" alt="">
@@ -428,19 +435,20 @@ async function episodeCardUI() {
 
       const id = slide.dataset.id;
       episodeDetailsUI(episodesList, id)
+      all_container.classList.remove('hidden')
+      if (all_container) {
+        all_container.scrollIntoView({ behavior: "smooth" });
+      }
     })
-
   })
   console.log('me chala');
 }
-episodeCardUI()
 
 async function episodeDetailsUI(details, id) {
   let episodeDetails = await getEpisodesDetails(id)
   let data1 = details
   let data = episodeDetails[0];
-  // episode.classList.replace("block", 'hidden')
-  episode.innerHTML = '';
+  all_container.innerHTML = '';
   const div = document.createElement("div");
   div.innerHTML =
     `<div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" style="background-image: url('${data.background}');" data-id='${data.id}'>
@@ -534,7 +542,7 @@ async function episodeDetailsUI(details, id) {
     )).join('')}
     </ul>
   </div>`
-  episode.append(div)
+  all_container.append(div)
   console.log('me chala');
 }
 
@@ -545,7 +553,7 @@ async function trandingSongsUI() {
     div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";
     div.setAttribute('loading', "lazy");
     div.innerHTML =
-      `<div class="hover:bg-neutral-700/35 w-44 p-2 h-full rounded-lg overflow-hidden">
+      `<div class="w-44 p-2 h-full rounded-lg overflow-hidden">
     <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
     <img class="w-full h-full object-cover" src="${d.image}" alt="">
     <div class="absolute play-icon">

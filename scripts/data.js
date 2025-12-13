@@ -6,9 +6,7 @@ let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 }
 
 function removelocal() {
-  delete spotifyData.artistsInfo
-  delete spotifyData.artistsTracks
-  saveLocalStorage('trandings')
+  localStorage.clear();
 }
 // removelocal()
 
