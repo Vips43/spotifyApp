@@ -2,13 +2,14 @@
 let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 {
   categories: [], newReleases: [], searchResults: [],
-  episodeDetails: [], trandings: [], shows: [], showsEpisode: []
+  episodeDetails: [], trandings: [], shows: [], showEpisode: [], data: [], showDetail: []
 }
 
 function removelocal() {
-  localStorage.clear();
+  delete spotifyData.data
+  localStorage.removeItem('spotifyData')
 }
-removelocal()
+// removelocal()
 
 /* =========================================================
    SPOTIFY AUTH TOKEN
@@ -257,9 +258,9 @@ export async function getEpisodesDetails(id) {
       show_publisher: ep.show.publisher,
     }
   }))
-  spotifyData.episodeDetails = episodeDetails;
-  spotifyData.data = data
-  saveLocalStorage('episodeDetails')
+  // spotifyData.episodeDetails = episodeDetails;
+  // spotifyData.data = data
+  // saveLocalStorage('episodeDetails')
   return episodeDetails;
 }
 
@@ -312,6 +313,7 @@ export async function getShows(query) {
   const shows = data.shows.items;
   return getShowArray(shows)
 }
+
 const getShowArray = (showsObj) => {
   const shows = showsObj.map(show => ({
     id: show.id,
@@ -324,12 +326,70 @@ const getShowArray = (showsObj) => {
     type: show.type
   }))
   spotifyData.shows = shows;
-  saveLocalStorage('shows')
+  saveLocalStorage('data')
   return shows;
 }
 
 
-async function dummy(id, type = 'playlist') {
+
+
+const songs = { showEpisode: [] }
+
+export async function showsEpisode(id) {
+  const token = await getAccessToken();
+
+  const uri1 = `https://api.spotify.com/v1/shows?ids=${id}`
+  const res1 = await fetch(
+    `${uri1}`,
+    {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${token}` }
+    }
+  );
+  const data1 = await res1.json();
+
+  spotifyData.showDetail = {
+    id: data1.shows[0].id,
+    name: data1.shows[0].name,
+    thumb: data1.shows[0].images[1]?.url || data1.shows[0].images[2]?.url,
+    background: data1.shows[0].images[0]?.url || data1.shows[0].images[1]?.url || data1.shows[0].images[2]?.url,
+    desc: data1.shows[0].html_description,
+    type: data1.shows[0].type,
+    publisher: data1.shows[0].publisher
+  }
+  const uri = `https://api.spotify.com/v1/shows/${id}/episodes`
+  const res = await fetch(
+    `${uri}`,
+    {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${token}` }
+    }
+  );
+  const data = await res.json();
+  // data.
+  console.log(data);
+  const hasData = data.items.filter(d => (d !== null))
+
+  songs.showEpisode = hasData.map(i => ({
+    id: i.id,
+    name: i.name,
+    release: formatDate(i.release_date),
+    thumb: i.images[2]?.url || i.images[1]?.url || i.images[0].url,
+    lang: i.language,
+    audio_prev: i.audio_preview_url,
+    desc: i.html_description,
+    duration: formateDuration(i.duration_ms),
+    type: i.type,
+    next: data.next,
+    previous: data.previous,
+  }))
+  const showEpisode = songs.showEpisode
+  const showDetail = spotifyData.showDetail
+  return { showEpisode, showDetail };
+}
+// showsEpisode('3BYquoHI7qXmfyjOp0Hgm8')
+
+async function dummy(id) {
   const uri = `https://api.spotify.com/v1/shows/${id}/episodes`
 
   const token = await getAccessToken();
@@ -348,8 +408,6 @@ async function dummy(id, type = 'playlist') {
   const data = await res.json();
 
   console.log(data);
-  spotifyData.showsEpisode = data
-  saveLocalStorage('showsEpisode')
   return data;
 }
 

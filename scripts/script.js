@@ -1,4 +1,4 @@
-import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows } from './data.js';
+import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows, showsEpisode } from './data.js';
 import { audioBtnWork } from './working.js';
 
 const song_search = document.getElementById('song-search');
@@ -22,7 +22,7 @@ const episode_section = document.getElementById('episode_section'),
 let episode = document.querySelector("#episode");
 const tranding_container = document.getElementById("tranding_container");
 const shows_container = document.querySelector(".shows-container"),
-  shows = document.getElementById("shows_section")
+  shows = document.getElementById("shows")
 const shows_h3 = document.getElementById("shows_h3")
 const top_main_ul = document.getElementById("top_main_ul")
 
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (target === 'shows') {
       e.target.classList.add("bg-white", "text-black")
       shows_section.classList.remove('hidden')
-      showUI()
+      showsUI()
     }
     if (target === 'artist') {
       e.target.classList.add("bg-white", "text-black")
@@ -440,8 +440,9 @@ async function episodeDetailsUI(details, id) {
   let data = episodeDetails[0];
   episode.innerHTML = '';
   const div = document.createElement("div");
+  div.dataset.id = data.id
   div.innerHTML =
-    `<div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" style="background-image: url('${data.background}');" data-id='${data.id}'>
+    `<div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" style="background-image: url('${data.background}');">
     <div class="space-y-3 bg-black/65 h-full flex flex-col justify-center ">
       <h5 class="text-sm">
         <span class="text-blue-500 text-2xl">•</span> New Podcast Episode
@@ -556,28 +557,113 @@ async function trandingSongsUI() {
     tranding_container.append(div)
   })
 }
-async function showUI() {
+async function showsUI() {
   shows_h3.style.display = 'block'
   const data = await getShows('top')
   shows_h3.innerHTML = 'Top Shows'
   shows_container.innerHTML = '';
   data.forEach(d => {
     const div = document.createElement("div")
+    div.dataset.id = d.id;
     div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";
     div.setAttribute('loading', "lazy");
     div.innerHTML =
-      `<div class= w-44 p-2 h-full rounded-lg overflow-hidden">
-    <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
-    <img class="w-full h-full object-cover" src="${d.image}" alt="">
-    <div class="absolute play-icon">
-      <i class="fa-solid fa-play"></i>
-    </div>
-    </div>
-    <div class="caption self-start mt-3">
-    <h3 class="text-base font-semibold truncate">${d.name}</h3>
-    <p class="text-gray-400 text-sm truncate">${d.publisher}</p>
-    </div>
-  </div>`;
+      `<a href="#shows"><div class= w-44 p-2 h-full rounded-lg overflow-hidden">
+        <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
+        <img class="w-full h-full object-cover" src="${d.image}" alt="">
+        <div class="absolute play-icon">
+          <i class="fa-solid fa-play"></i>
+        </div>
+        </div>
+        <div class="caption self-start mt-3">
+        <h3 class="text-base font-semibold truncate">${d.name}</h3>
+        <p class="text-gray-400 text-sm truncate">${d.publisher}</p>
+        </div>
+      </div></a>`;
     shows_container.append(div)
+    div.addEventListener('click',()=>{
+      const id = div.dataset.id
+      console.log('clicked', id);
+      showsEpisodeUI(id)
+    })
   })
 }
+async function showsEpisodeUI(id) {
+  const { showEpisode, showDetail } = await showsEpisode(id)
+  const div = document.createElement("div");
+
+  div.innerHTML =
+    `<div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top"
+    style="background-image: url('${showDetail.background}');" data-id='${showDetail.id}'>
+    <div class="space-y-3 bg-black/65 h-full flex flex-col justify-center">
+      <h5 class="text-sm">
+        <span class="text-blue-500 text-2xl">•</span> ${showDetail.type}
+      </h5>
+      <h3 class="text-2xl font-bold overflow-hidden clamp-3">${showDetail.desc}
+      </h3>
+      <div class="flex items-center gap-3">
+        <img src="${showDetail.thumb}" class="w-28 h-32 rounded-lg object-cover" />
+        <p class="flex flex-col"><span>${showDetail.name}</span><span
+            class="text-gray-500">${showDetail.publisher}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="relative z-10">
+    <div class="sticky top-0 bg-neutral-950 pt-5">
+      <div class="flex gap-10 items-center border-b border-neutral-700 pb-2">
+        <h3 class="relative px-4 py-2 bottom_border">Description</h3>
+        <h3 class="relative px-4 py-2">Transcript</h3>
+      </div>
+    </div>
+    <div class="mt-4 pr-2">
+      <p class="text-gray-300 leading-relaxed"> ${showDetail.desc} </p>
+    </div>
+  </div>
+  <div class="relative mt-10 bg-neutral-900">
+    <h3 class="sticky top-0 z-10 bg-neutral-900 text-xl font-semibold py-3 border-b border-neutral-700">
+      More Episode like this</h3>
+
+    <ul class="space-y-2 w-full">
+    ${showEpisode.length == 0 ? `<h3 class='text-gray-500'>No episode available</h3>` :
+      showEpisode.map(d => (
+        `<li class="flex items-center gap-4 cursor-pointer border-b border-neutral-700" data-id='${d.id}'>
+        <div class="lihover p-4 flex-shrink-0 w-full min-w-0 rounded-lg">
+          <div class="flex items-center gap-3">
+            <img src="${d.thumb}"
+              class="h-16 object-contain aspect-video rounded" />
+            <div class="overflow-hidden w-full min-w-0">
+              <h2 class="font-medium text-lg clamp-2 leading-tight">
+                <span class="text-blue-700"> • </span> ${d.desc}
+              </h2>
+              <p class="text-neutral-400">
+                <i class="fa-regular fa-circle-down"></i> Video • ${d.name}
+              </p>
+            </div>
+          </div>
+          <div class="my-2 text-sm space-y-2">
+          <div class='clamp-2'>
+            <p class=" text-gray-400 ">${d.desc}</p>
+          </div>
+            <p>${d.release} • ${d.duration}</p>
+          </div>
+          <div class="flex items-center gap-10 mt-5">
+            <i class="fa-solid fa-plus opacity-70 hover:opacity-100 cursor-pointer"></i>
+            <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
+            <i class="fa-solid fa-arrow-up-from-bracket opacity-70 hover:opacity-100 cursor-pointer"></i>
+            <span class="text-sm opacity-70 hover:opacity-100 cursor-pointer">• • •</span>
+            <button
+              class="w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
+              <i class="fa-solid fa-play text-black text-lg"></i>
+            </button>
+          </div>
+        </div>
+
+      </li>`
+      )).join('')}
+    </ul>
+  </div>`;
+  shows.append(div)
+}
+// showsEpisodeUI()
