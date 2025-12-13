@@ -1,4 +1,5 @@
 import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows } from './data.js';
+import { audioBtnWork } from './working.js';
 
 const song_search = document.getElementById('song-search');
 let input_Search = document.getElementById('input_Search'),
@@ -18,7 +19,7 @@ let categoryContainerDiv = document.querySelector('.category_container div'),
 const episode_section = document.getElementById('episode_section'),
   episode_section_h1 = document.getElementById('episode_section h1'),
   episode_container = document.getElementById('episode_container')
-let all_container = document.getElementById("all_container");
+let episode = document.querySelector("#episode");
 const tranding_container = document.getElementById("tranding_container");
 const shows_container = document.querySelector(".shows-container"),
   shows = document.getElementById("shows_section")
@@ -95,29 +96,23 @@ function searchSongsUI(songArr) {
         </div>`;
     song_search.append(div);
   })
-  document.getElementById("search").querySelector("button").
-    onclick = (e) => {
-      history.go(-1)
-      document.getElementById("search").classList.add("hidden")
-      document.querySelectorAll(".search").forEach(s => s.classList.remove("hidden"))
-      all_container.classList.add('hidden')
-    }
+  // document.getElementById("search").querySelector("button").
+  //   onclick = () => {
+  //     history.go(-1)
+  //     document.getElementById("search").classList.add("hidden")
+  //     document.querySelectorAll(".search").forEach(s => s.classList.remove("hidden"))
+  //     all_container.classList.add('hidden')
+  //   }
 
 
 }
 
 input_Btn.addEventListener("click", async () => {
-  document.getElementById("search").classList.remove("hidden")
-  document.querySelectorAll(".search").forEach(s => s.classList.add("hidden"))
+  // document.getElementById("search").classList.remove("hidden")
+  // document.querySelectorAll(".search").forEach(s => s.classList.add("hidden"))
   let search = input_Search.value.trim()
   if (!search) return 0;
-  let litext = '';
-  searchDropdownLI.forEach(li => {
-    li.addEventListener("click", (e) => {
-      litext = e.target.textContent;
-      console.log(litext)
-    })
-  })
+
   song_search.classList.add("hidden");
   title.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`;
   let data = await searchSongs(search);
@@ -135,8 +130,8 @@ input_Btn.addEventListener("click", async () => {
   })
   spotifyData.searchResults = results;
   localStorage.setItem("spotifyData", JSON.stringify(spotifyData))
-
   searchSongsUI(results)
+  input_Search.value = ''
 })
 
 async function searchSongs(query, type = 'track') {
@@ -432,13 +427,8 @@ async function episodeCardUI() {
     episode_container.addEventListener('click', async (e) => {
       const slide = e.target.closest(".swiper-slide");
       if (!slide) return
-
       const id = slide.dataset.id;
       episodeDetailsUI(episodesList, id)
-      all_container.classList.remove('hidden')
-      if (all_container) {
-        all_container.scrollIntoView({ behavior: "smooth" });
-      }
     })
   })
   console.log('me chala');
@@ -448,7 +438,7 @@ async function episodeDetailsUI(details, id) {
   let episodeDetails = await getEpisodesDetails(id)
   let data1 = details
   let data = episodeDetails[0];
-  all_container.innerHTML = '';
+  episode.innerHTML = '';
   const div = document.createElement("div");
   div.innerHTML =
     `<div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top" style="background-image: url('${data.background}');" data-id='${data.id}'>
@@ -471,9 +461,8 @@ async function episodeDetailsUI(details, id) {
         <span>Video</span> • <span>${data.release}</span> • <span>${data.duration}</span>
       </div>
 
-      <div class="flex items-center gap-6">
-        <button onclick="audioBtn(this)"
-          class="w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition">
+      <div class="audioDiv flex items-center gap-6">
+        <button class="audioBtn w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition">
           <i class="fa-solid fa-play text-black text-xl"></i>
         </button>
         <audio data-src="${data.audio_prev}" src=""></audio>
@@ -542,7 +531,8 @@ async function episodeDetailsUI(details, id) {
     )).join('')}
     </ul>
   </div>`
-  all_container.append(div)
+  episode.append(div)
+  audioBtnWork()
   console.log('me chala');
 }
 
@@ -556,7 +546,7 @@ async function trandingSongsUI() {
       `<div class="w-44 p-2 h-full rounded-lg overflow-hidden">
     <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
     <img class="w-full h-full object-cover" src="${d.image}" alt="">
-    <div class="absolute play-icon">
+    <div onclick="audioBtn(this)" class="absolute play-icon">
       <i class="fa-solid fa-play"></i>
     </div>
     </div>
@@ -578,7 +568,7 @@ async function showUI() {
     div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";
     div.setAttribute('loading', "lazy");
     div.innerHTML =
-      `<div class="hover:bg-neutral-700/35 w-44 p-2 h-full rounded-lg overflow-hidden">
+      `<div class= w-44 p-2 h-full rounded-lg overflow-hidden">
     <div class="relative rounded-lg overflow-hidden group w-40 h-40 mx-auto">
     <img class="w-full h-full object-cover" src="${d.image}" alt="">
     <div class="absolute play-icon">

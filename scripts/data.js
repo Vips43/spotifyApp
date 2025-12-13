@@ -8,7 +8,7 @@ let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 function removelocal() {
   localStorage.clear();
 }
-// removelocal()
+removelocal()
 
 /* =========================================================
    SPOTIFY AUTH TOKEN
