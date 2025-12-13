@@ -587,7 +587,7 @@ async function showsUI() {
       showsEpisodeUI(id)
     })
   })
-}
+}  
 async function showsEpisodeUI(id) {
   const { showEpisode, showDetail } = await showsEpisode(id)
   const div = document.createElement("div");
