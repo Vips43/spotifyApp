@@ -2,6 +2,8 @@ const globalAudio = new Audio();
 
 export function audioBtnWork(audioSrc) {
     const btn = document.querySelector(".audioBtn");
+    console.log(btn);
+    
     const icon = btn.querySelector("i");
     btn.onclick = () => {
         if (globalAudio.src !== audioSrc) {
@@ -17,8 +19,7 @@ export function audioBtnWork(audioSrc) {
         }
     }
 }
-
 globalAudio.onloadedmetadata=()=>{
     console.log(globalAudio.duration);
-    
 }
+

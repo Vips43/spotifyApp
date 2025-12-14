@@ -70,13 +70,14 @@
  background: rgb(37, 37, 37);
  border-radius: 50%;
  backdrop-filter: blur(4px);
- transition: 0.25s ease-in-out;
+ transition: 0.1s ease-in-out;
  display: flex;
  align-items: center;
  justify-content: center;
  .swiper-navigation-icon{
     width: 15px;
     height: 15px;
+    color: white;
  }
 }
 
@@ -116,6 +117,13 @@
  display: -webkit-box;
  -webkit-box-orient: vertical;
  -webkit-line-clamp: 3;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+.clamp-5 {
+ display: -webkit-box;
+ -webkit-box-orient: vertical;
+ -webkit-line-clamp: 5;
  overflow: hidden;
  text-overflow: ellipsis;
 }

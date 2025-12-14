@@ -149,11 +149,12 @@
 
       <!--full episodes -->
       <section id='all_container' class="all_container bg-neutral-950 text-white lg:px-12 w-full">
-        <div id="episode" class="bg-neutral-950 text-white px-5 lg:px-12 w-full route hidden"></div>
+        <div id="episode" class="bg-neutral-950 text-white px-5 lg:px-12 w-full route "></div>
+
+        <div id="artist" class="bg-neutral-950 text-white px-5 lg:px-12 w-full route "></div>
 
         <!-- for shows  -->
-        <div id="shows" class="bg-neutral-950 text-white px-5 lg:px-12 w-full route">
-
+        <div id="shows" class="bg-neutral-950 text-white px-5 lg:px-12 w-full route ">
           <!-- <div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top"
             style="background-image: url('/images/teri-yaadeinglory-500-500.jpg');" data-id='${data.id}'>
             <div class="space-y-3 bg-black/65 h-full flex flex-col justify-center">
@@ -248,7 +249,6 @@
               </li>
             </ul>
           </div> -->
-
         </div>
       </section>
 
@@ -294,7 +294,16 @@
             <div class="swiper-button-next artist-next"></div>
           </div>
         </section>
+        <!-- Genre section  -->
+        <section id="genre" class="py-3 transition-all duration-300 route hidden">
+          <div id="genre_h3"></div>
+          <div class="flex flex-wrap gap-2 justify-center items-center overflow-auto">
+            <!-- JS Will Inject Songs Here -->
+          </div>
+        </section>
       </section>
+      <!-- top main clodes -->
+
 
 
       <!-- Trending songs section  -->
@@ -313,8 +322,6 @@
 
         </div>
       </section>
-
-
       <!-- new-release SECTION Genre -->
       <section class="w-full px-2 search">
         <!-- Section Heading -->

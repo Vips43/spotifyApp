@@ -6,10 +6,12 @@ let spotifyData = JSON.parse(localStorage.getItem("spotifyData")) ||
 }
 
 function removelocal() {
-  delete spotifyData.data
-  localStorage.removeItem('spotifyData')
+  delete spotifyData.shows
+  // localStorage.removeItem('spotifyData')
 }
-// removelocal()
+removelocal()
+
+
 
 /* =========================================================
    SPOTIFY AUTH TOKEN
@@ -148,6 +150,7 @@ export async function getArtistsAblum(id) {
   const res = await fetch(`https://api.spotify.com/v1/artists/${id}/top-tracks`,
     { method: "GET", headers: { "Authorization": `Bearer ${token}` } });
   const tracks = await res.json();
+
   const res2 = await fetch(
     `https://api.spotify.com/v1/artists/${id}`,
     { method: "GET", headers: { "Authorization": `Bearer ${token}` } });
@@ -161,13 +164,13 @@ export async function getArtistsAblum(id) {
     name: track.name,
     artist_name: track.artists.map(a => (a.name)),
     image: track.album.images[2]?.url || track.album.images[1]?.url || track.album.images[0]?.url,
-    song: track.external_urls.spotify,
+    audio_prev: track.external_urls.spotify,
     duration: formateDuration(track.duration_ms)
   }))
   spotifyData.artistsInfo = artistsInfo
   spotifyData.artistsTracks = artistsTracks;
   saveLocalStorage('artistsInfo')
-  console.log(tracks);
+  console.log(artists);
   return { artistsInfo, artistsTracks }
 }
 
@@ -367,7 +370,6 @@ export async function showsEpisode(id) {
   );
   const data = await res.json();
   // data.
-  console.log(data);
   const hasData = data.items.filter(d => (d !== null))
 
   songs.showEpisode = hasData.map(i => ({

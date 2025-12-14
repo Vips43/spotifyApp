@@ -34,7 +34,7 @@ function router() {
 
   // hide all pages
   document.querySelectorAll('.route').forEach(sec => {
-    sec.classList.add("hidden");
+    sec.classList.add("hidden"); 
   });
 
   // show active page
@@ -45,5 +45,5 @@ function router() {
   }
 }
 
-// window.addEventListener("load", router);
+window.addEventListener("load", router);
 window.addEventListener("hashchange", router);
