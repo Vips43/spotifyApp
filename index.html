@@ -28,6 +28,8 @@
       -moz-osx-font-smoothing: grayscale;
     }
   </style>
+
+
 </head>
 
 <body class="bg-black h-screen overflow-y-auto text-white font-inter select-none">
@@ -36,7 +38,7 @@
   <nav class="flex items-center justify-between h-16 p-3 bg-black border-neutral-800">
     <!-- LEFT -->
     <div class="flex items-center gap-4">
-      <img src="images/spotify-logo.png" class="w-10 h-10 rounded-full bg-white" />
+      <img src="images/spotify-logo.png" id="hellobtn" class="w-10 h-10 rounded-full bg-white" />
 
       <button onclick="home()" class="w-10 h-10 flex items-center justify-center bg-neutral-700 rounded-full">
         <i class="fa-solid fa-house text-white"></i>
@@ -61,7 +63,7 @@
 
       <!-- DROPDOWN -->
       <div id="searchDropdown"
-        class="absolute z-20 hidden top-12 right-2 p-2 bg-black border border-neutral-700 rounded-lg w-36 shadow-xl transition-all duration-300">
+        class="absolute z-50 hidden top-12 right-2 p-2 bg-black border border-neutral-700 rounded-lg w-36 shadow-xl transition-all duration-300">
         <ul class="grid gap-1 text-sm">
           <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Show</li>
           <li class="bg-neutral-900 hover:cursor-pointer hover:bg-neutral-800 px-2 py-1 rounded">Playlists</li>
@@ -360,8 +362,8 @@
 
   <!-- SCRIPT -->
   <script src="./libs/swiper-bundle.min.js"></script>
+  <script type="module" src="scripts/index.js"></script>
   <script type="module" src="scripts/script.js"></script>
-  <script src="scripts/index.js"></script>
   <script src="scripts/router.js" defer></script>
 
 </body>

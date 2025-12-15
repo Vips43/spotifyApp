@@ -1,3 +1,6 @@
+import { getShows } from "./data.js";
+import { getValue } from "./global.js";
+
 const New_releases = new Swiper('.New_releases', {
   slidesPerView: 'auto',
   spaceBetween: 10,
@@ -51,9 +54,7 @@ const shows_swiper = new Swiper('.shows', {
 
 
 
-function home() {
-  location.reload()
-}
+
 
 function alertMsg(msg, cls = "bg-yellow-800 text-white") {
   // CREATE CONTAINER
@@ -117,15 +118,48 @@ async function check_network() {
 
 const folderBtn = document.getElementById("folderBtn");
 const dropdown = document.getElementById("searchDropdown");
+const input_Btn = document.getElementById("input_Btn");
+const input_Search = document.getElementById("input_Search");
+const searchState = {
+  query: "",
+  type: ""
+};
 
+
+
+let isTrue = true;
 folderBtn.addEventListener("click", () => {
-  dropdown.classList.toggle("hidden");
+  if (input_Search.value !== '') {
+    if (!isTrue) {
+      dropdown.classList.add("hidden");
+      isTrue = true;
+    } else {
+      dropdown.classList.remove("hidden");
+      isTrue = false;
+    }
+    dropdown.querySelectorAll("li").forEach(li => {
+      li.addEventListener("click", (e) => {
+        const inputValue = input_Search.value.trim();
+        const dropdownValue = e.target.textContent.toLowerCase();
+        dropdown.classList.add("hidden")
+        isTrue = true
+        getValue(inputValue, dropdownValue);
+        switch (dropdownValue) {
+          case 'show':
+            console.log("its show time-->", inputValue);
+            break;
+          default:
+            console.log('i am default');
+        }
+      })
+    })
+  }
+  else {
+    return alert("please type in input then choose type")
+  }
 });
-
-// Close dropdown when clicking outside
 document.addEventListener("click", (e) => {
   if (!dropdown.contains(e.target) && !folderBtn.contains(e.target)) {
     dropdown.classList.add("hidden");
   }
 });
-

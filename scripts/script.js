@@ -1,4 +1,5 @@
 import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows, showsEpisode } from './data.js';
+import { passValue } from './global.js';
 import { audioBtnWork } from './working.js';
 
 const genre = document.getElementById('genre');
@@ -66,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const topMainCardIds = [artist_section, shows_section]
   top_main_ul.addEventListener("click", (e) => {
     top_main_ul.querySelectorAll("li button").forEach(btn => {
-      btn.className = 'rounded-2xl bg-neutral-700 p-1 px-3 hover:bg-neutral-800 hover:text-white'
+      btn.className = 'rounded-2xl bg-neutral-700 p-1 hover:text-white hover:bg-neutral-800 px-3'
     })
     topMainCardIds.forEach(id => {
       if (!id.classList.contains('hidden'))
@@ -76,8 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (target === 'shows') {
       if (input_Search.value)
         e.target.classList.add("bg-white", "text-black")
-      shows_section.classList.remove('hidden')
-      showsUI(input_Search.value)
+        shows_section.classList.remove('hidden')
+        showsUI(input_Search.value)
     }
     if (target === 'artist') {
       e.target.classList.add("bg-white", "text-black")
@@ -85,8 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
       artistsUI()
     } else return;
   })
-  
-  
+
+
 })
 
 function searchSongsUI(songArr) {
@@ -118,10 +119,10 @@ input_Btn.addEventListener("click", async () => {
   if (!search) return 0;
 
   song_search.classList.add("hidden");
-  title.innerHTML = `Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span>`;
+  title.innerHTML = `Searching&nbsp; <span class="typewriter-animation flex"> . . . .</span>`;
   let data = await searchSongs(search);
   song_search.classList.remove("hidden");
-  title.innerHTML = `Searched results for: &nbsp; <span class="capitalize font font-bold text-white"> ${search} </span>`
+  title.innerHTML = `Searched results for: &nbsp; <span class="capitalize font-bold text-white"> ${search} </span>`
   let results = data.map(item => {
     // const track = item.data;
     return {
@@ -138,10 +139,11 @@ input_Btn.addEventListener("click", async () => {
   input_Search.value = ''
 })
 
-async function searchSongs(query, type = 'track') {
+async function searchSongs(query, ty = 'track') {
   const token = await getAccessToken();
+
   const res = await fetch(
-    `https://api.spotify.com/v1/search?q=${query}&type=${type}`,
+    `https://api.spotify.com/v1/search?q=${query}&type=${ty}`,
     {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -149,7 +151,7 @@ async function searchSongs(query, type = 'track') {
     }
   );
   const data = await res.json();
-  console.log('me chala', type, data);
+  console.log('me chala');
 
   return data.tracks.items;
 }
@@ -345,13 +347,12 @@ const solidColor = solidMap[getRandGradient];
 
 async function getArtistsAblumUI(ids) {
   const { artistsInfo, artistsTracks } = await getArtistsAblum(ids);
-
   removeH3HTML(artist) // remove HTML
   const div = document.createElement("div");
   div.className = `w-full ${getRandGradient} bg-[url("${artistsInfo.image}")] relative bg-neutral-950 text-white py-8 px-6 lg:px-12`;
   div.innerHTML =
-
-    `<div><div class="flex items-center gap-6 lg:gap-10" >
+      `<div class='relative'>
+        <div class="flex items-center gap-6 lg:gap-10" >
           <div class="w-40 h-40 lg:w-48 lg:h-48 rounded-lg overflow-hidden shadow-xl">
             <img src="${artistsInfo.image}" class="w-full h-full object-cover" />
           </div>
@@ -362,7 +363,7 @@ async function getArtistsAblumUI(ids) {
             </p>
           </div>
         </div>
-        <div class="mt-8 sticky ${solidColor} backdrop-blur-md top-0 flex items-center p-3 gap-6">
+        <div class="mt-8 sticky top-0 ${solidColor} flex rounded-md items-center p-3 gap-6">
           <button class="audioBtn w-12 h-12 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition-all">
             <i class="fa-solid fa-play text-black text-xl"></i>
           </button>
@@ -381,18 +382,18 @@ async function getArtistsAblumUI(ids) {
           <ul class="space-y-2">
           ${artistsTracks.map((track, i) =>
 
-      `<li class="flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-700 cursor-pointer">
+      `<li class="flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-600/20 cursor-pointer">
               <span class="text-gray-400">${i + 1}</span>
 
               <div class="flex items-center gap-3">
                 <img src="${track.image}" class="h-12 w-12 rounded" />
                 <div>
                   <p class="font-semibold">${track.name}</p>
-                  <p class='text-gray-600 text-sm flex items-center'>${track.artist_name.map(artist => `<span>${artist}</span>`).join(', ')}</p>
+                  <p class='text-gray-600 text-xs truncate flex items-center'>${track.artist_name.map(artist => `<span>${artist}</span>`).join(', ')}</p>
                 </div>
               </div>
 
-              <span class="ml-auto text-gray-400">${track.duration}</span>
+              <span class="ml-auto text-sm text-gray-400">${track.duration}</span>
             </li>`
     ).join('')}
           </ul>
@@ -427,7 +428,7 @@ async function episodeCardUI() {
     episode_container.append(swiperDiv);
     episode_container.addEventListener('click', async (e) => {
       const slide = e.target.closest(".swiper-slide");
-      if (!slide) return
+      if (!slide) return;
       const id = slide.dataset.id;
       episodeDetailsUI(episodesList, id)
     })
@@ -559,10 +560,9 @@ async function trandingSongsUI() {
     tranding_container.append(div)
   })
 }
-async function showsUI(q) {
+async function showsUI(q, type) {
   shows_h3.style.display = 'block'
-  let search = q || 'top shows';
-  const data = await getShows(search)
+  const data = await getShows(q = 'popular shows', type)
   shows_h3.innerHTML = 'Top Shows'
   removeH3HTML(shows_container) // remove HTML
   data.forEach(d => {
@@ -671,12 +671,12 @@ async function showsEpisodeUI(id) {
   shows.append(div)
   toggleDesc()
   console.log("click chal gya");
-  
-  
+
+
 }
 // showsEpisodeUI()
 
-function toggleDesc(){
+function toggleDesc() {
   let isTrue = true;
   document.querySelector(".descDiv").addEventListener("click", (e) => {
 
