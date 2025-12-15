@@ -353,7 +353,7 @@ const getShowArray = (showsObj) => {
 
 const songs = { showEpisode: [] }
 
-export async function showsEpisode(id) {
+export async function fetchShowsEpisode(id) {
   const token = await getAccessToken();
 
   const uri1 = `https://api.spotify.com/v1/shows?ids=${id}`

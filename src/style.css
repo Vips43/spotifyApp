@@ -139,9 +139,13 @@
  background: #1f1f1f8e;
  transition: all 0.2s ease-in-out;
 }
-/* .top_main{
-    display: none;
+.play-mask {
+  width: 32px;
+  height: 32px;
+  background-color: rgb(180, 180, 180);
+  -webkit-mask: url("../images/icon-hover.svg") no-repeat center;
+  transition: all .5s ease-in-out;
 }
-.top_main.active{
-    display: block;
-} */
+.play-mask:hover {
+    mask: url("../images/icon-normal.svg") no-repeat center;
+}

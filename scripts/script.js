@@ -1,4 +1,4 @@
-import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows, showsEpisode } from './data.js';
+import { getArtistsDetails, getArtistsAblum, getEpisodes, getEpisodesDetails, getAccessToken, saveLocalStorage, getNewReleases, trandingPlaylist, getShows, fetchShowsEpisode } from './data.js';
 import { passValue } from './global.js';
 import { audioBtnWork } from './working.js';
 
@@ -44,11 +44,8 @@ category_container.addEventListener("click", () => {
 })
 
 //clear data 
-function removeH3HTML(a, b, c, d) {
-  if (a) a.innerHTML = ''
-  if (b) b.innerHTML = ''
-  if (c) b.innerHTML = ''
-  if (d) b.innerHTML = ''
+function clearEl(...els) {
+  els.forEach(el => el.innerHTML = '')
 }
 
 // load on document loaded
@@ -77,8 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (target === 'shows') {
       if (input_Search.value)
         e.target.classList.add("bg-white", "text-black")
-        shows_section.classList.remove('hidden')
-        showsUI(input_Search.value)
+      shows_section.classList.remove('hidden')
+      showsUI(input_Search.value)
     }
     if (target === 'artist') {
       e.target.classList.add("bg-white", "text-black")
@@ -91,7 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function searchSongsUI(songArr) {
-  removeH3HTML(song_search) //remove HTML
+  clearEl(song_search) //remove HTML
+
+  const fragment = document.createDocumentFragment();
+
   songArr.forEach((song, i) => {
     let div = document.createElement("div")
     div.className =
@@ -110,8 +110,9 @@ function searchSongsUI(songArr) {
           <h3 class="font-semibold truncate">${song.artistName}</h3>
           <p class="text-gray-400 text-sm truncate">${song.trackName}</p>
         </div>`;
-    song_search.append(div);
+    fragment.append(div);
   })
+  song_search.append(fragment);
 }
 
 input_Btn.addEventListener("click", async () => {
@@ -158,9 +159,8 @@ async function searchSongs(query, ty = 'track') {
 
 async function newReleasesUI() {
   const releases = await getNewReleases();
-  console.log(releases);
 
-  removeH3HTML(new_release_container) //remove HTML
+  clearEl(new_release_container) //remove HTML
   releases.forEach(item => {
     const div = document.createElement("div");
     div.className = "swiper-slide";
@@ -178,7 +178,6 @@ async function newReleasesUI() {
       </div>`;
     new_release_container.append(div);
   });
-  console.log('me chala');
 }
 
 
@@ -201,7 +200,7 @@ async function searchGenrePlaylists(genre) {
 // searchGenrePlaylists('pop')
 
 function renderGenres() {
-  removeH3HTML(category) //remove HTML
+  clearEl(category) //remove HTML
   GENRES.forEach((g, i) => {
     const li = document.createElement("li");
     li.className = "p-2 bg-neutral-900 hover:bg-neutral-700/95 rounded cursor-pointer capitalize flex gap-2 items-center justify-center md:justify-start font-inter transition-all";
@@ -230,7 +229,7 @@ function renderGenres() {
 }
 
 function renderPlaylistsUI(playlists) {
-  removeH3HTML(genre, song_search, title) // remove HTML
+  clearEl(genre, song_search, title) // remove HTML
 
   const wrapper = document.createElement("div");
   wrapper.className = "grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2";
@@ -262,7 +261,7 @@ function renderPlaylistsUI(playlists) {
 
 async function showPlaylistTracks(playlistId, name) {
   genre_h3.innerHTML = `<h3 class="text-lg sm:text-2xl font-bold title p-1 flex items-center max-h-7 w-fit">Searching&nbsp;<span class="typewriter-animation flex"> . . . .</span></h3>`;
-  removeH3HTML(title) // remove HTML
+  clearEl(title) // remove HTML
 
   const token = await getAccessToken();
   const res = await fetch(
@@ -277,10 +276,11 @@ async function showPlaylistTracks(playlistId, name) {
   console.log('me chala showPlaylistTracks:', data);
 }
 
-function renderTrackUI(tracks) {
-  removeH3HTML(genre) // remove HTML
+function renderTrackUI(tracks, name) {
+  clearEl(genre) // remove HTML
   genre_h3.innerHTML = `
   <h2 class="text-2xl font-bold mb-4">${name}</h2>`;
+  const fragment = document.createDocumentFragment()
   const wrapper = document.createElement("div");
   wrapper.className = "flex justify-around md:justify-center flex-wrap gap-2";
   tracks.forEach(t => {
@@ -304,16 +304,17 @@ function renderTrackUI(tracks) {
     `;
 
     wrapper.append(div);
-    genre.append(wrapper);
-    console.log('me chala');
   });
+  fragment.append(wrapper);
+  genre.append(fragment);
+  console.log('me chala');
 }
 
 async function artistsUI() {
   artist_h3.style.display = 'block';
   const artists = await getArtistsDetails();
   artist_h3.innerHTML = `Top Artists`
-  removeH3HTML(artist_container) // remove HTML
+  clearEl(artist_container) // remove HTML
   artists.forEach(artist => {
     const div = document.createElement("div");
     div.className = "swiper-slide";
@@ -347,11 +348,13 @@ const solidColor = solidMap[getRandGradient];
 
 async function getArtistsAblumUI(ids) {
   const { artistsInfo, artistsTracks } = await getArtistsAblum(ids);
-  removeH3HTML(artist) // remove HTML
+  clearEl(artist) // remove HTML
+
+  const fragment = document.createDocumentFragment()
   const div = document.createElement("div");
   div.className = `w-full ${getRandGradient} bg-[url("${artistsInfo.image}")] relative bg-neutral-950 text-white py-8 px-6 lg:px-12`;
   div.innerHTML =
-      `<div class='relative'>
+    `<div class='relative'>
         <div class="flex items-center gap-6 lg:gap-10" >
           <div class="w-40 h-40 lg:w-48 lg:h-48 rounded-lg overflow-hidden shadow-xl">
             <img src="${artistsInfo.image}" class="w-full h-full object-cover" />
@@ -397,14 +400,16 @@ async function getArtistsAblumUI(ids) {
             </li>`
     ).join('')}
           </ul>
-        </div>`
-  artist.append(div)
+        </div>`;
+  fragment.append(div)
+  artist.append(fragment)
   audioBtnWork(artistsInfo.audio_prev)
-  console.log('me chala');
 }
 
 async function episodeCardUI() {
   const episodesList = await getEpisodes('top')
+
+  const fragment = document.createDocumentFragment()
   episodesList.forEach(ep => {
     const swiperDiv = document.createElement('div');
     swiperDiv.dataset.id = ep.id;
@@ -425,22 +430,25 @@ async function episodeCardUI() {
         <span>${ep.release}</span> • <span>${ep.duration}</span>
       </p>
     </div></a>`;
-    episode_container.append(swiperDiv);
-    episode_container.addEventListener('click', async (e) => {
-      const slide = e.target.closest(".swiper-slide");
-      if (!slide) return;
-      const id = slide.dataset.id;
-      episodeDetailsUI(episodesList, id)
-    })
+    fragment.append(swiperDiv);
   })
-  console.log('me chala');
+  episode_container.append(fragment);
+
+  episode_container.addEventListener('click', async (e) => {
+    const slide = e.target.closest(".swiper-slide");
+    if (!slide) return;
+    const id = slide.dataset.id;
+    episodeDetailsUI(episodesList, id)
+  })
 }
 
 async function episodeDetailsUI(details, id) {
   let episodeDetails = await getEpisodesDetails(id)
   let data1 = details
   let data = episodeDetails[0];
-  removeH3HTML(episode) // remove HTML
+  clearEl(episode) // remove HTML
+
+  const fragment = document.createDocumentFragment()
   const div = document.createElement("div");
   div.dataset.id = data.id
   div.innerHTML =
@@ -521,7 +529,7 @@ async function episodeDetailsUI(details, id) {
             <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
             <i class="fa-solid fa-arrow-up-from-bracket opacity-70 hover:opacity-100 cursor-pointer"></i>
             <span class="text-sm opacity-70 hover:opacity-100 cursor-pointer">• • •</span>
-            <button onclick="audioBtn(this)"
+            <button
               class="w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
               <i class="fa-solid fa-play text-black text-lg"></i>
             </button>
@@ -532,14 +540,18 @@ async function episodeDetailsUI(details, id) {
     )).join('')}
     </ul>
   </div>`
-  episode.append(div)
+
+  fragment.append(div)
+  episode.append(fragment)
   audioBtnWork(data.audio_prev)
   console.log('me chala');
 }
 
 async function trandingSongsUI() {
   const data = await trandingPlaylist();
-  removeH3HTML(tranding_container) // remove HTML
+  clearEl(tranding_container) // remove HTML
+
+  const fragment = document.createDocumentFragment()
   data.forEach(d => {
     const div = document.createElement("div")
     div.classList = "swiper-slide !w-[180px] flex-shrink-0 h-fit";
@@ -557,14 +569,17 @@ async function trandingSongsUI() {
     <p class="text-gray-400 text-sm truncate">${d.user_name}</p>
     </div>
   </div>`;
-    tranding_container.append(div)
+    fragment.append(div)
   })
+  tranding_container.append(fragment)
 }
 async function showsUI(q, type) {
   shows_h3.style.display = 'block'
   const data = await getShows(q = 'popular shows', type)
   shows_h3.innerHTML = 'Top Shows'
-  removeH3HTML(shows_container) // remove HTML
+  clearEl(shows_container) // remove HTML
+
+  const fragment = document.createDocumentFragment()
   data.forEach(d => {
     const div = document.createElement("div")
     div.dataset.id = d.id;
@@ -583,18 +598,20 @@ async function showsUI(q, type) {
         <p class="text-gray-400 text-sm truncate">${d.publisher}</p>
         </div>
       </div></a>`;
-    shows_container.append(div)
-    div.addEventListener('click', () => {
-      const id = div.dataset.id
-      console.log('clicked', id);
-      showsEpisodeUI(id)
-    })
+    fragment.append(div)
+  })
+  shows_container.append(fragment)
+  shows_container.addEventListener('click', (e) => {
+    const card = e.target.closest(".swiper-slide");
+    if (!card) return;
+    showsEpisodeUI(div.dataset.id)
   })
 }
 async function showsEpisodeUI(id) {
-  const { showEpisode, showDetail } = await showsEpisode(id)
-  const div = document.createElement("div");
+  const { showEpisode, showDetail } = await fetchShowsEpisode(id)
 
+  const fragment = document.createDocumentFragment()
+  const div = document.createElement("div");
   div.innerHTML =
     `<div class="bg-contain bg-no-repeat max-h-80 w-full aspect-video bg-top"
     style="background-image: url('${showDetail.background}');" data-id='${showDetail.id}'>
@@ -668,23 +685,17 @@ async function showsEpisodeUI(id) {
     </ul>
   </div>`;
 
-  shows.append(div)
+  fragment.append(div)
+  shows.append(fragment)
   toggleDesc()
-  console.log("click chal gya");
-
-
 }
 // showsEpisodeUI()
 
 function toggleDesc() {
-  let isTrue = true;
-  document.querySelector(".descDiv").addEventListener("click", (e) => {
+  const desc = document.querySelector(".descDiv")
+  if (!desc) return
 
-    if (!isTrue) {
-      e.target.classList.remove('clamp-5');
-    } else {
-      e.target.classList.add('clamp-5');
-    }
-    isTrue = !isTrue
-  })
+  desc.addEventListener("click", () => {
+    desc.classList.toggle("clamp-5");
+  }, { once: true })
 }
