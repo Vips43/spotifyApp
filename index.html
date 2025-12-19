@@ -30,12 +30,20 @@
 
 <body class="bg-black h-screen overflow-y-auto text-white font-inter select-none">
 
-  <nav>
-
+  <nav class="mobile relative h-14 flex items-center w-full bg-black hidden">
+    <div class="w-full px-3 flex justify-between ">
+      <h3 class="font-bold font-inter">Good afternoon</h3>
+      <i class="fa-solid fa-gear hover:animate-pulse cursor-pointer"></i>
+    </div>
+    <div class="absolute top-0 left-0 bg-black w-full h-full flex items-center gap-2 px-3 hidden">
+      <i class="fa-solid fa-magnifying-glass hover:text-zinc-600 cursor-pointer"></i>
+      <input type="text" class="w-full bg-white rounded-lg p-1 px-3 text-black focus:outline-none">
+      <i class="fa-solid fa-xmark hover:text-red-700 cursor-pointer"></i>
+    </div>
   </nav>
 
   <!-- NAVBAR -->
-  <nav class="flex items-center justify-between h-16 p-3 bg-black border-neutral-800">
+  <nav class="flex items-center justify-between h-16 p-3 bg-black border-neutral-800 desktop hidden">
     <!-- LEFT -->
     <div class="flex items-center gap-4">
       <img src="images/spotify-logo.png" id="hellobtn" class="w-10 h-10 rounded-full bg-white" />
@@ -357,6 +365,25 @@
       </div>
     </aside>
   </div>
+
+  <footer class="mobile">
+    <nav>
+      <div class="grid grid-cols-4 place-items-center text-2xl">
+        <div class="hover:bg-neutral-800/70 w-full grid place-items-center p-3 h-full">
+          <i class="fa-regular fa-house"></i>
+        </div>
+        <div class="hover:bg-neutral-800/70 w-full grid place-items-center p-3 h-full">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="hover:bg-neutral-800/70 w-full grid place-items-center p-3 h-full">
+          <div class="play-mask bg-white "></div>
+        </div>
+        <div class="hover:bg-neutral-800/70 w-full grid place-items-center p-3 h-full">
+          <img src="images/spotify-logo.png" id="hellobtn" class="w-10 h-10 rounded-full bg-white" />
+        </div>
+      </div>
+    </nav>
+  </footer>
 
   <!-- SCRIPT -->
   <script src="./libs/swiper-bundle.min.js"></script>

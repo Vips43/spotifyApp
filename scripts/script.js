@@ -600,7 +600,7 @@ async function showsUI(q, type) {
   shows_container.addEventListener('click', (e) => {
     const card = e.target.closest(".swiper-slide");
     if (!card) return;
-    showsEpisodeUI(div.dataset.id)
+    showsEpisodeUI(card.dataset.id)
   })
 }
 async function showsEpisodeUI(id) {
@@ -648,21 +648,21 @@ async function showsEpisodeUI(id) {
         <div class="lihover p-4 flex-shrink-0 w-full min-w-0 rounded-lg">
           <div class="flex items-center gap-3">
             <img src="${d.thumb}"
-              class="h-16 object-contain aspect-video rounded" />
-            <div class="overflow-hidden w-full min-w-0">
-              <div class="font-medium text-lg leading-tight flex items-center gap-2">
+              class="h-16 object-cover aspect-square rounded" />
+            <div class="overflow-hidden w-full min-w-0 flex flex-col justify-between">
+              <div class="font-medium text-lg leading-tight flex items-center justify-start gap-2">
                 <p><span class="text-blue-700"> • </span></p>
                 <div class="clamp-2 flex">${d.desc}</div>
               </div>
-              <p class="text-neutral-400">
+              <p class="text-neutral-400 truncate">
                 <i class="fa-regular fa-circle-down"></i> Video • ${d.name}</p>
             </div>
           </div>
           <div class="my-2 text-sm space-y-2">
-          <div class='clamp-2'>
+          <div class='clamp-2 text-neutral-500'>
             <p class=" text-gray-400 ">${d.desc}</p>
           </div>
-            <p>${d.release} • ${d.duration}</p>
+            <p class='text-neutral-500'>${d.release} • ${d.duration}</p>
           </div>
           <div class="flex items-center gap-10 mt-5">
             <i class="fa-solid fa-plus opacity-70 hover:opacity-100 cursor-pointer"></i>
