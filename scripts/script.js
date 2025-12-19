@@ -83,15 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
       artistsUI()
     } else return;
   })
-
-
 })
 
 function searchSongsUI(songArr) {
   clearEl(song_search) //remove HTML
-
   const fragment = document.createDocumentFragment();
-
   songArr.forEach((song, i) => {
     let div = document.createElement("div")
     div.className =

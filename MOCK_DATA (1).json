@@ -1,0 +1,702 @@
+[
+ {
+  "id": "com.disqus.Tin",
+  "item_name": "Wrist Support Brace",
+  "item_desc": "Comfortable support brace to relieve wrist pain.",
+  "price": 19.99,
+  "quantity": 13
+ },
+ {
+  "id": "com.jimdo.Stronghold",
+  "item_name": "Spinach Pizza Rolls",
+  "item_desc": "Frozen pizza rolls stuffed with spinach and cheese, perfect for snacking.",
+  "price": 4.99,
+  "quantity": 20
+ },
+ {
+  "id": "com.wix.Greenlam",
+  "item_name": "Herbal Tea Variety Pack",
+  "item_desc": "Assorted herbal teas, perfect for a warm and relaxing drink.",
+  "price": 4.99,
+  "quantity": 16
+ },
+ {
+  "id": "org.mozilla.Cookley",
+  "item_name": "Eco-Friendly Cleaning Cloths",
+  "item_desc": "Reusable microfiber cloths for environmentally friendly cleaning.",
+  "price": 12.99,
+  "quantity": 12
+ },
+ {
+  "id": "jp.ameblo.Treeflex",
+  "item_name": "Applewood Smoked Bacon",
+  "item_desc": "Delicious bacon with a rich applewood smoked flavor.",
+  "price": 6.99,
+  "quantity": 11
+ },
+ {
+  "id": "com.hubpages.Cookley",
+  "item_name": "Safety First Aid Kit",
+  "item_desc": "Comprehensive first aid kit for home or travel emergencies.",
+  "price": 29.99,
+  "quantity": 20
+ },
+ {
+  "id": "edu.nyu.Flexidy",
+  "item_name": "Chipotle Lime Salsa",
+  "item_desc": "Spicy salsa with chipotle and lime for a zesty kick.",
+  "price": 3.99,
+  "quantity": 18
+ },
+ {
+  "id": "es.google.Biodex",
+  "item_name": "Decorative LED Neon Sign",
+  "item_desc": "Bright, vibrant sign to add flair to any space.",
+  "price": 45.99,
+  "quantity": 15
+ },
+ {
+  "id": "org.prlog.Bitchip",
+  "item_name": "Compact Pop-Up Tent",
+  "item_desc": "Easy setup tent perfect for camping and outdoor festivals.",
+  "price": 69.99,
+  "quantity": 15
+ },
+ {
+  "id": "fr.pagesperso-orange.Treeflex",
+  "item_name": "Biodegradable Trash Bags",
+  "item_desc": "Eco-friendly trash bags that break down naturally.",
+  "price": 12.99,
+  "quantity": 1
+ },
+ {
+  "id": "com.scribd.Greenlam",
+  "item_name": "Pet Hair Removal Roller",
+  "item_desc": "Lint roller designed specifically for removing pet hair from furniture.",
+  "price": 10.99,
+  "quantity": 11
+ },
+ {
+  "id": "com.google.Konklab",
+  "item_name": "Compost Bin",
+  "item_desc": "Countertop compost bin for kitchen waste.",
+  "price": 29.99,
+  "quantity": 13
+ },
+ {
+  "id": "com.multiply.Toughjoyfax",
+  "item_name": "Cordless Water Flosser",
+  "item_desc": "Rechargeable water flosser for dental hygiene.",
+  "price": 49.99,
+  "quantity": 5
+ },
+ {
+  "id": "com.hubpages.Job",
+  "item_name": "Electric Griddle with Removable Plates",
+  "item_desc": "Non-stick surface for easy cooking and cleaning.",
+  "price": 59.99,
+  "quantity": 7
+ },
+ {
+  "id": "net.jalbum.Rank",
+  "item_name": "Energy Protein Bars",
+  "item_desc": "Nutritious bars packed with protein for energy",
+  "price": 2.29,
+  "quantity": 13
+ },
+ {
+  "id": "pl.home.Overhold",
+  "item_name": "DIY Organic Gardening Kit",
+  "item_desc": "Complete kit for starting your own organic garden.",
+  "price": 39.99,
+  "quantity": 19
+ },
+ {
+  "id": "fm.last.Cardify",
+  "item_name": "Curried Lentil Salad",
+  "item_desc": "A hearty salad with lentils, veggies, and curry dressing.",
+  "price": 4.29,
+  "quantity": 15
+ },
+ {
+  "id": "org.drupal.Opela",
+  "item_name": "Pasta Salad Kit",
+  "item_desc": "All-in-one kit for making pasta salad easily.",
+  "price": 5.99,
+  "quantity": 6
+ },
+ {
+  "id": "com.ask.Alpha",
+  "item_name": "Quinoa & Black Bean Salad",
+  "item_desc": "A nutritious salad with quinoa and black beans",
+  "price": 7.49,
+  "quantity": 11
+ },
+ {
+  "id": "com.histats.Tin",
+  "item_name": "Black Bean Soup",
+  "item_desc": "Spicy and flavorful soup made with black beans, perfect as a meal or starter.",
+  "price": 3.49,
+  "quantity": 1
+ },
+ {
+  "id": "uk.co.thetimes.Ronstring",
+  "item_name": "Portable Pet Water Bottle",
+  "item_desc": "Travel-friendly water bottle for pets on the go.",
+  "price": 18.99,
+  "quantity": 19
+ },
+ {
+  "id": "com.quantcast.Alphazap",
+  "item_name": "Vegetable Stock",
+  "item_desc": "Rich vegetable stock for cooking soups and stews.",
+  "price": 2.49,
+  "quantity": 17
+ },
+ {
+  "id": "com.yolasite.Gembucket",
+  "item_name": "Fall-Themed Table Runner",
+  "item_desc": "Decorative table runner perfect for autumn gatherings.",
+  "price": 19.99,
+  "quantity": 18
+ },
+ {
+  "id": "uk.co.bbc.Bamity",
+  "item_name": "Smartphone Tripod with Bluetooth Remote",
+  "item_desc": "Tripod with wireless remote for effortless photo-taking.",
+  "price": 29.99,
+  "quantity": 15
+ },
+ {
+  "id": "io.github.Zamit",
+  "item_name": "Peach Preserves",
+  "item_desc": "Sweet and fruity peach preserves, perfect for spreading on toast.",
+  "price": 3.79,
+  "quantity": 18
+ },
+ {
+  "id": "fm.last.Biodex",
+  "item_name": "Roasted Red Pepper Dip",
+  "item_desc": "A blend of roasted red peppers and spices, perfect for dipping.",
+  "price": 3.29,
+  "quantity": 2
+ },
+ {
+  "id": "org.drupal.Ventosanzap",
+  "item_name": "Gardening Gloves",
+  "item_desc": "Durable gardening gloves with reinforced fingertips.",
+  "price": 15.99,
+  "quantity": 14
+ },
+ {
+  "id": "com.businessinsider.Fintone",
+  "item_name": "Bicycle Repair Kit",
+  "item_desc": "Essential tools for on-the-go bike maintenance.",
+  "price": 14.99,
+  "quantity": 17
+ },
+ {
+  "id": "com.ebay.Rank",
+  "item_name": "Digital Drawing Tablet",
+  "item_desc": "Tablet for digital drawing and illustration work.",
+  "price": 79.99,
+  "quantity": 16
+ },
+ {
+  "id": "edu.ucla.Zamit",
+  "item_name": "Rainbow Veggie Chips",
+  "item_desc": "Colorful veggie chips made from beets, carrots, and sweet potatoes.",
+  "price": 3.29,
+  "quantity": 14
+ },
+ {
+  "id": "org.altervista.Temp",
+  "item_name": "Wall-Mounted Wine Rack",
+  "item_desc": "Stylish and modern holder for storing wine bottles on walls.",
+  "price": 39.99,
+  "quantity": 9
+ },
+ {
+  "id": "com.samsung.Y-Solowarm",
+  "item_name": "USB-C Hub",
+  "item_desc": "Multi-port USB-C hub for connecting devices.",
+  "price": 39.99,
+  "quantity": 19
+ },
+ {
+  "id": "com.discovery.Redhold",
+  "item_name": "Veggie Lovers Pizza",
+  "item_desc": "Frozen pizza loaded with fresh vegetables and mozzarella cheese.",
+  "price": 8.99,
+  "quantity": 15
+ },
+ {
+  "id": "org.redcross.Mat Lam Tam",
+  "item_name": "Digital Kitchen Timer",
+  "item_desc": "Easy-to-read digital kitchen timer with alarms.",
+  "price": 14.99,
+  "quantity": 11
+ },
+ {
+  "id": "ch.admin.Viva",
+  "item_name": "Coffee Maker",
+  "item_desc": "Single-serve coffee maker with a built-in grinder.",
+  "price": 89.99,
+  "quantity": 18
+ },
+ {
+  "id": "com.usnews.Tres-Zap",
+  "item_name": "Outdoor Camping Hammock",
+  "item_desc": "Lightweight and durable hammock for relaxing in nature.",
+  "price": 29.99,
+  "quantity": 14
+ },
+ {
+  "id": "com.diigo.Daltfresh",
+  "item_name": "Outdoor Folding Table",
+  "item_desc": "Lightweight and portable folding table for camping or picnics.",
+  "price": 39.99,
+  "quantity": 17
+ },
+ {
+  "id": "com.shinystat.Alpha",
+  "item_name": "Compact Refrigerator",
+  "item_desc": "Mini refrigerator ideal for small spaces.",
+  "price": 199.99,
+  "quantity": 4
+ },
+ {
+  "id": "edu.stanford.Redhold",
+  "item_name": "Foldable Picnic Table",
+  "item_desc": "Lightweight and portable picnic table for outdoor use.",
+  "price": 49.99,
+  "quantity": 12
+ },
+ {
+  "id": "org.npr.Duobam",
+  "item_name": "Electric Hot Water Dispenser",
+  "item_desc": "Instant hot water dispenser for tea and cooking.",
+  "price": 59.99,
+  "quantity": 8
+ },
+ {
+  "id": "edu.stanford.Treeflex",
+  "item_name": "Reversible Swimming Pool Lounger",
+  "item_desc": "Floating lounger for relaxation in swimming pools or lakes.",
+  "price": 34.99,
+  "quantity": 5
+ },
+ {
+  "id": "com.com.Konklab",
+  "item_name": "Frozen Berry Blend",
+  "item_desc": "A mix of frozen berries for smoothies or desserts",
+  "price": 4.99,
+  "quantity": 19
+ },
+ {
+  "id": "com.mozilla.Stringtough",
+  "item_name": "Smartphone Projector Kit",
+  "item_desc": "DIY kit to convert your smartphone into a mini projector.",
+  "price": 24.99,
+  "quantity": 1
+ },
+ {
+  "id": "cn.gov.miitbeian.Hatity",
+  "item_name": "Almond Flour Cookies",
+  "item_desc": "Delicious cookies made with almond flour for a gluten-free treat.",
+  "price": 4.99,
+  "quantity": 16
+ },
+ {
+  "id": "com.mediafire.Transcof",
+  "item_name": "Buttermilk Pancakes",
+  "item_desc": "Fluffy pancakes with buttermilk flavor.",
+  "price": 3.99,
+  "quantity": 13
+ },
+ {
+  "id": "com.dailymotion.Zontrax",
+  "item_name": "Sweet Potatoes (organic)",
+  "item_desc": "Fresh organic sweet potatoes, great for roasting or mashing.",
+  "price": 1.99,
+  "quantity": 2
+ },
+ {
+  "id": "com.tripod.Otcom",
+  "item_name": "BBQ Sauce",
+  "item_desc": "A smoky barbecue sauce, ideal for grilling and dipping.",
+  "price": 3.49,
+  "quantity": 6
+ },
+ {
+  "id": "com.feedburner.Cookley",
+  "item_name": "Vegan Alfredo Sauce",
+  "item_desc": "Creamy, dairy-free Alfredo sauce",
+  "price": 4.99,
+  "quantity": 12
+ },
+ {
+  "id": "com.sphinn.It",
+  "item_name": "Dark Chocolate Covered Almonds",
+  "item_desc": "Roasted almonds dipped in rich dark chocolate.",
+  "price": 7.19,
+  "quantity": 4
+ },
+ {
+  "id": "gov.usgs.Cookley",
+  "item_name": "Fresh Cilantro",
+  "item_desc": "Bright and fragrant cilantro, great for garnishes.",
+  "price": 1.49,
+  "quantity": 16
+ },
+ {
+  "id": "com.economist.Ronstring",
+  "item_name": "Fridge Magnet Set",
+  "item_desc": "Fun fridge magnets to decorate your kitchen.",
+  "price": 15.99,
+  "quantity": 1
+ },
+ {
+  "id": "net.php.Stringtough",
+  "item_name": "Water-Resistant Bluetooth Speaker",
+  "item_desc": "Durable speaker designed for outdoor use with water resistance.",
+  "price": 59.99,
+  "quantity": 6
+ },
+ {
+  "id": "cn.com.china.Home Ing",
+  "item_name": "Sweetened Condensed Milk",
+  "item_desc": "Rich and creamy milk perfect for baking or desserts.",
+  "price": 1.89,
+  "quantity": 10
+ },
+ {
+  "id": "com.zimbio.Gembucket",
+  "item_name": "Inflatable Paddle Board",
+  "item_desc": "Lightweight and portable paddle board for water sports.",
+  "price": 349.99,
+  "quantity": 5
+ },
+ {
+  "id": "com.ucoz.Toughjoyfax",
+  "item_name": "Electric Griddle with Lid",
+  "item_desc": "Non-stick griddle for pancakes, burgers, and more.",
+  "price": 49.99,
+  "quantity": 12
+ },
+ {
+  "id": "com.cbsnews.Keylex",
+  "item_name": "Whole Roasted Chicken",
+  "item_desc": "Seasoned and roasted to perfection, ready to eat.",
+  "price": 9.99,
+  "quantity": 20
+ },
+ {
+  "id": "org.pbs.Greenlam",
+  "item_name": "Patterned Knit Scarf",
+  "item_desc": "Add a pop of color with this stylish patterned knit scarf.",
+  "price": 25.99,
+  "quantity": 16
+ },
+ {
+  "id": "com.youtube.Tempsoft",
+  "item_name": "Fishing Rod",
+  "item_desc": "Lightweight fishing rod suitable for beginners.",
+  "price": 49.99,
+  "quantity": 7
+ },
+ {
+  "id": "com.booking.Prodder",
+  "item_name": "Honey BBQ Riblets",
+  "item_desc": "Tender riblets coated in a honey barbecue glaze, perfect for grilling or baking.",
+  "price": 12.99,
+  "quantity": 12
+ },
+ {
+  "id": "com.soundcloud.Solarbreeze",
+  "item_name": "Roasted Vegetable Medley",
+  "item_desc": "A mix of frozen roasted vegetables for an easy side dish.",
+  "price": 3.99,
+  "quantity": 5
+ },
+ {
+  "id": "jp.exblog.Span",
+  "item_name": "Fashionable Fanny Pack",
+  "item_desc": "A trendy fanny pack, perfect for hands-free outings.",
+  "price": 24.99,
+  "quantity": 15
+ },
+ {
+  "id": "com.cyberchimps.Alphazap",
+  "item_name": "Gardening Fairy Figurines",
+  "item_desc": "Cute fairy figurines to decorate your garden or potted plants.",
+  "price": 14.99,
+  "quantity": 20
+ },
+ {
+  "id": "com.comsenz.Sonair",
+  "item_name": "Granola",
+  "item_desc": "Crunchy and flavorful mix of oats and honey.",
+  "price": 4.79,
+  "quantity": 8
+ },
+ {
+  "id": "gov.nasa.It",
+  "item_name": "Ceramic Non-Stick Frying Pan",
+  "item_desc": "Durable non-stick frying pan for easy cooking and cleaning.",
+  "price": 39.99,
+  "quantity": 6
+ },
+ {
+  "id": "de.t-online.Stronghold",
+  "item_name": "Cinnamon Apple Sauce",
+  "item_desc": "Delicious apple sauce with a hint of cinnamon",
+  "price": 2.49,
+  "quantity": 9
+ },
+ {
+  "id": "com.facebook.Tresom",
+  "item_name": "Foldable Electric Scooter",
+  "item_desc": "Compact electric scooter for commuting and short trips.",
+  "price": 349.99,
+  "quantity": 8
+ },
+ {
+  "id": "com.hc360.Stringtough",
+  "item_name": "Vegetable Sushi Rolls",
+  "item_desc": "Fresh sushi rolls filled with a variety of vegetables.",
+  "price": 5.99,
+  "quantity": 5
+ },
+ {
+  "id": "com.mashable.Transcof",
+  "item_name": "USB Flash Drive",
+  "item_desc": "32GB USB flash drive with fast data transfer speeds.",
+  "price": 9.99,
+  "quantity": 14
+ },
+ {
+  "id": "com.cdbaby.Home Ing",
+  "item_name": "Garlic and Herb Rub",
+  "item_desc": "A seasoning blend of garlic and herbs to enhance any dish.",
+  "price": 2.29,
+  "quantity": 16
+ },
+ {
+  "id": "com.deliciousdays.Voyatouch",
+  "item_name": "Adjustable Kitchen Broom Stand",
+  "item_desc": "Space-saving broom holder for organized cleaning supplies.",
+  "price": 14.99,
+  "quantity": 10
+ },
+ {
+  "id": "ru.google.Gembucket",
+  "item_name": "Classic Slim Fit Shirt",
+  "item_desc": "A tailored slim fit shirt for a polished look at work.",
+  "price": 49.99,
+  "quantity": 18
+ },
+ {
+  "id": "com.deliciousdays.Zontrax",
+  "item_name": "Noise Cancelling Ear Muffs",
+  "item_desc": "Ear protection for shooting and industrial use.",
+  "price": 24.99,
+  "quantity": 3
+ },
+ {
+  "id": "com.weebly.Fixflex",
+  "item_name": "Luxury Yoga Mat",
+  "item_desc": "High-density, non-slip yoga mat for stability and comfort.",
+  "price": 39.99,
+  "quantity": 17
+ },
+ {
+  "id": "com.bluehost.Stringtough",
+  "item_name": "Frozen Pizza",
+  "item_desc": "Delicious frozen pizza with a variety of toppings.",
+  "price": 7.99,
+  "quantity": 13
+ },
+ {
+  "id": "com.wordpress.Aerified",
+  "item_name": "Ceramic Bakeware Set",
+  "item_desc": "Durable ceramic bakeware for casseroles and desserts.",
+  "price": 49.99,
+  "quantity": 5
+ },
+ {
+  "id": "edu.msu.Zoolab",
+  "item_name": "Fresh Strawberries",
+  "item_desc": "Sweet and juicy strawberries, perfect for desserts.",
+  "price": 3.99,
+  "quantity": 16
+ },
+ {
+  "id": "com.imdb.Solarbreeze",
+  "item_name": "Foldable Yoga Mat",
+  "item_desc": "Compact yoga mat that folds for easy storage and transport.",
+  "price": 29.99,
+  "quantity": 20
+ },
+ {
+  "id": "ru.narod.Redhold",
+  "item_name": "Organic Coconut Oil",
+  "item_desc": "Cold-pressed coconut oil, perfect for cooking, baking, or skin care.",
+  "price": 8.99,
+  "quantity": 15
+ },
+ {
+  "id": "pl.home.Lotstring",
+  "item_name": "Suction Cup Hooks",
+  "item_desc": "Reusable suction cup hooks for hanging items.",
+  "price": 9.99,
+  "quantity": 15
+ },
+ {
+  "id": "com.tripod.Stringtough",
+  "item_name": "Coffee Capsule Dispenser",
+  "item_desc": "Organize coffee capsules with this stylish dispenser.",
+  "price": 24.99,
+  "quantity": 12
+ },
+ {
+  "id": "com.marketwatch.Redhold",
+  "item_name": "Mushroom Soup (canned)",
+  "item_desc": "Creamy soup full of rich mushroom flavor.",
+  "price": 2.49,
+  "quantity": 19
+ },
+ {
+  "id": "com.reddit.Opela",
+  "item_name": "Cotton Tote Bag Set",
+  "item_desc": "Reusable tote bags for shopping and eco-friendly living.",
+  "price": 29.99,
+  "quantity": 16
+ },
+ {
+  "id": "com.washingtonpost.Holdlamis",
+  "item_name": "Veggie Chips Variety Pack",
+  "item_desc": "A colorful variety of crunchy veggie chips for snacking.",
+  "price": 3.79,
+  "quantity": 1
+ },
+ {
+  "id": "com.facebook.Subin",
+  "item_name": "Party Mini Dress",
+  "item_desc": "Eye-catching mini dress with sequins, ideal for party nights out.",
+  "price": 69.99,
+  "quantity": 15
+ },
+ {
+  "id": "com.1688.Duobam",
+  "item_name": "Compact Pop-Up Tent",
+  "item_desc": "Easy setup tent perfect for camping and outdoor festivals.",
+  "price": 69.99,
+  "quantity": 3
+ },
+ {
+  "id": "com.myspace.Bigtax",
+  "item_name": "Classic Beef Chili",
+  "item_desc": "Hearty chili made with premium ground beef and kidney beans.",
+  "price": 7.99,
+  "quantity": 15
+ },
+ {
+  "id": "org.drupal.Sonair",
+  "item_name": "Nutritional Yeast",
+  "item_desc": "A healthy vegan cheese alternative packed with nutrients and flavor.",
+  "price": 3.59,
+  "quantity": 4
+ },
+ {
+  "id": "com.linkedin.Pannier",
+  "item_name": "Personal Blender with Travel Cup",
+  "item_desc": "Blender for smoothies with a portable cup.",
+  "price": 39.99,
+  "quantity": 2
+ },
+ {
+  "id": "au.com.smh.Fixflex",
+  "item_name": "Coconut Granola",
+  "item_desc": "Crunchy granola mixed with coconut flakes.",
+  "price": 4.19,
+  "quantity": 15
+ },
+ {
+  "id": "com.examiner.Bytecard",
+  "item_name": "Sriracha Hot Chili Sauce",
+  "item_desc": "Spicy and tangy chili sauce for adding heat to any dish.",
+  "price": 2.99,
+  "quantity": 3
+ },
+ {
+  "id": "com.list-manage.Tresom",
+  "item_name": "Bicycle Lock",
+  "item_desc": "Heavy-duty bicycle lock for security.",
+  "price": 29.99,
+  "quantity": 18
+ },
+ {
+  "id": "com.samsung.Zontrax",
+  "item_name": "Cold Brew Coffee Concentrate",
+  "item_desc": "Rich and smooth cold brew coffee concentrate, just add water or milk.",
+  "price": 7.99,
+  "quantity": 13
+ },
+ {
+  "id": "org.unesco.Flexidy",
+  "item_name": "Car Emergency Kit",
+  "item_desc": "Comprehensive emergency kit for roadside assistance.",
+  "price": 49.99,
+  "quantity": 1
+ },
+ {
+  "id": "com.oakley.Temp",
+  "item_name": "Essential White Button-Up",
+  "item_desc": "A classic white button-up shirt for a polished appearance.",
+  "price": 44.99,
+  "quantity": 5
+ },
+ {
+  "id": "com.hexun.Overhold",
+  "item_name": "Vegetable Stir Fry Mix",
+  "item_desc": "A mix of fresh vegetables for quick stir-fries.",
+  "price": 3.29,
+  "quantity": 13
+ },
+ {
+  "id": "com.apple.Bamity",
+  "item_name": "Body Pillow Case",
+  "item_desc": "Soft and breathable pillowcase for body pillows.",
+  "price": 14.99,
+  "quantity": 10
+ },
+ {
+  "id": "com.icq.Gembucket",
+  "item_name": "USB Desk Fan",
+  "item_desc": "Compact USB fan for personal cooling.",
+  "price": 14.99,
+  "quantity": 2
+ },
+ {
+  "id": "com.mac.Transcof",
+  "item_name": "Heat-Resistant Silicone Mat",
+  "item_desc": "Protects surfaces while baking or cooking with hot items.",
+  "price": 19.99,
+  "quantity": 13
+ },
+ {
+  "id": "com.mac.Job",
+  "item_name": "Strawberry Rhubarb Jam",
+  "item_desc": "A sweet and tart jam, perfect on toast or in desserts.",
+  "price": 4.29,
+  "quantity": 4
+ },
+ {
+  "id": "com.patch.Fintone",
+  "item_name": "Lemon Zest Olive Oil",
+  "item_desc": "High-quality olive oil infused with fresh lemon zest.",
+  "price": 8.99,
+  "quantity": 17
+ }
+]

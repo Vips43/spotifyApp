@@ -7,14 +7,13 @@ function router() {
 
   // hide all pages
   document.querySelectorAll('.route').forEach(sec => {
-    sec.classList.add("hidden"); 
+    sec.classList.add("hidden");
   });
 
   // show active page
   if (page) {
     page.classList.remove("hidden");
     page.scrollIntoView({ behavior: "smooth", block: "start" });
-    
   }
 }
 
