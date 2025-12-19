@@ -600,6 +600,10 @@ video {
   left: 0px;
 }
 
+.bottom-0{
+  bottom: 0px;
+}
+
 .z-10{
   z-index: 10;
 }
