@@ -443,7 +443,7 @@ async function episodeDetailsUI(details, id) {
   let data1 = details
   let data = episodeDetails[0];
   clearEl(episode) // remove HTML
-
+  
   const fragment = document.createDocumentFragment()
   const div = document.createElement("div");
   div.dataset.id = data.id
@@ -469,7 +469,7 @@ async function episodeDetailsUI(details, id) {
       </div>
 
       <div class="audioDiv flex items-center gap-6">
-        <button class="audioBtn w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition">
+        <button data-src='${data.audio_prev}' class="audioBtn w-14 h-14 bg-green-500 flex items-center justify-center rounded-full hover:scale-110 transition">
           <i class="fa-solid fa-play text-black text-xl"></i>
         </button>
 
@@ -525,8 +525,8 @@ async function episodeDetailsUI(details, id) {
             <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
             <i class="fa-solid fa-arrow-up-from-bracket opacity-70 hover:opacity-100 cursor-pointer"></i>
             <span class="text-sm opacity-70 hover:opacity-100 cursor-pointer">• • •</span>
-            <button
-              class="w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
+            <button data-src="${d.audio_prev}"
+              class="audioBtn w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
               <i class="fa-solid fa-play text-black text-lg"></i>
             </button>
           </div>
@@ -539,7 +539,8 @@ async function episodeDetailsUI(details, id) {
 
   fragment.append(div)
   episode.append(fragment)
-  audioBtnWork(data.audio_prev)
+  
+  audioBtnWork()
   console.log('me chala');
 }
 
@@ -669,8 +670,8 @@ async function showsEpisodeUI(id) {
             <i class="fa-regular fa-circle-down opacity-70 hover:opacity-100 cursor-pointer"></i>
             <i class="fa-solid fa-arrow-up-from-bracket opacity-70 hover:opacity-100 cursor-pointer"></i>
             <span class="text-sm opacity-70 hover:opacity-100 cursor-pointer">• • •</span>
-            <button
-              class="w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
+            <button data-src='${d.audio_prev}'
+              class="audioBtn w-10 h-10 bg-white flex items-center justify-center hover:scale-[1.1] rounded-full transition ml-auto">
               <i class="fa-solid fa-play text-black text-lg"></i>
             </button>
           </div>
@@ -683,6 +684,7 @@ async function showsEpisodeUI(id) {
 
   fragment.append(div)
   shows.append(fragment)
+  audioBtnWork()
   toggleDesc()
 }
 // showsEpisodeUI()
