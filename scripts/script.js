@@ -502,7 +502,7 @@ async function episodeDetailsUI(details, id) {
   <div class="relative mt-10 bg-neutral-900">
     <h3 class="sticky top-[115px] z-10 bg-neutral-900 text-xl font-semibold py-3 border-b border-neutral-700">More Episode like this</h3>
 
-    <ul class="space-y-2 w-full">
+    <ul class="w-full">
     ${data1.map(d => (
       `<li class="flex items-center gap-4 cursor-pointer border-b border-neutral-700" data-id='{d.id}'>
         <div class="lihover p-4 flex-shrink-0 w-full min-w-0 rounded-lg">
