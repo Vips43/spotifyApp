@@ -104,7 +104,7 @@ function searchSongsUI(songArr) {
         <audio class="audio" data-href='${song.songSRC}' href=""></audio>
         <div class="caption">
           <h3 class="font-semibold truncate">${song.artistName}</h3>
-          <p class="text-gray-400 text-sm truncate">${song.trackName}</p>
+          <p class="text-gray-400 text-xs truncate">${song.trackName}</p>
         </div>`;
     fragment.append(div);
   })
